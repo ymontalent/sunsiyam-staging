@@ -1,0 +1,63 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Video>
+@using ContentModels = SunSiyam.Core.Models;
+
+
+<div class="video__section">
+    <div class="video__wrap block__padding">
+        <div class="container">
+            <div class="video__iframe">
+                @if (!string.IsNullOrEmpty(Model.YouTubeID))
+                {
+                    <div id="player"></div>
+                    <script>
+                        var tag = document.createElement('script');
+
+                        tag.src = "https://www.youtube.com/iframe_api";
+                        var firstScriptTag = document.getElementsByTagName('script')[0];
+                        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+                        var player;
+                        function onYouTubeIframeAPIReady() {
+                            player = new YT.Player('player', {
+                                height: '390',
+                                width: '640',
+                                videoId: "@Model.YouTubeID",
+                                playerVars: {
+                                    enablejsapi: 1,
+                                    disablekb: 1,
+                                    controls: 0,
+                                    autoplay: 1,
+                                    mute: 1,
+                                    playlist: "@Model.YouTubeID",
+                                    playsinline: 1,
+                                    loop: 1,
+                                    rel: 0
+                                },
+                                events: {
+                                    'onReady': onPlayerReady
+                                }
+                            });
+                        }
+
+                        function onPlayerReady(event) {
+                            event.target.playVideo();
+                        }
+
+                        function mute() {
+                            if (player) player.mute();
+                        }
+
+                        function unmute() {
+                            if (player) player.unMute();
+                        }
+                    </script>
+                }
+                else
+                {
+                    <iframe src="@Model.VideoLink.GetLinkUrl()" loading="lazy" id="vimeo-player" width="640" height="360" frameborder="0" allow="fullscreen; autoplay" allowfullscreen></iframe>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="divider divider-gray"></div>
+</div>

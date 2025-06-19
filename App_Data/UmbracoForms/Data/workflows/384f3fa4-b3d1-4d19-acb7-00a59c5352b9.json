@@ -1,0 +1,28 @@
+{
+  "id": "384f3fa4-b3d1-4d19-acb7-00a59c5352b9",
+  "name": "info.iruveli@sunsiyam.com",
+  "form": "ddfe3087-5f3a-41ec-8744-4cd492d18edd",
+  "active": true,
+  "includeSensitiveData": "False",
+  "workflowTypeId": "e96badd7-05be-4978-b8d9-b3d733de70a5",
+  "executesOn": "Submitted",
+  "settings": {
+    "Message": "Received New Enquiry",
+    "Attachment": "",
+    "Email": "info.iruveli@sunsiyam.com",
+    "CcEmail": "",
+    "BccEmail": "",
+    "SenderEmail": "",
+    "ReplyToEmail": "",
+    "Subject": "The Form '{form_name}' was submitted"
+  },
+  "sortOrder": 0,
+  "isMandatory": false,
+  "condition": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "enabled": false,
+    "actionType": "Show",
+    "logicType": "All",
+    "rules": []
+  }
+}

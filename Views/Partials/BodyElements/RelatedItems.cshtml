@@ -1,0 +1,53 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.RelatedItems>
+@using ContentModels = SunSiyam.Core.Models;
+
+<div class="gridfilter__section">
+    <div class="gridfilter__wrap">
+        <div class="container">
+            <div class="gridfilter__head">
+                <h2 class="block__title">@Model.Heading</h2>
+            </div>
+
+            @if (Model.Items != null && Model.Items.Count() > 0)
+            {
+                <div class="gridfilter__content">
+                    <div class="gridfilter__items">
+                        @foreach (var item in Model.Items)
+                        {
+                            var url = "";
+
+                            if (item.Buttons != null && item.Buttons.Count() > 0 && item.Buttons.FirstOrDefault().ButtonLink != null)
+                            {
+                                url = item.Buttons.FirstOrDefault().ButtonLink.GetLinkUrl().ToString();
+                            }
+
+                            <div class="gridfilter__item">
+                                <div class="gridfilter__item-image">
+                                    <a href="@url"><img src="@item.Image.GetCroppedImageUrl("536x536")" alt="@item.Image.Name" class="img-fluid" /></a>
+                                </div>
+                                <div class="gridfilter__item-content">
+                                    <div class="gridfilter__item-category">@item.SubHeading</div>
+                                    <h5 class="gridfilter__item-title">@item.Heading</h5>
+                                    <div class="gridfilter__item-description font-18">
+                                        @item.Description
+                                    </div>
+
+                                    @if (item.Buttons != null && item.Buttons.Count() > 0)
+                                    {
+                                        <div class="gridfilter__item-button">
+                                            @foreach (var btn in item.Buttons)
+                                            {
+                                                <a href="@btn.ButtonLink.GetLinkUrl()" class="btn btn-outline-black">@btn.ButtonLabel</a>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="divider divider-gray"></div>
+</div>

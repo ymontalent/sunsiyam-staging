@@ -1,0 +1,126 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.RestaurantsBarsDetailPage>
+@using ContentModels = SunSiyam.Core.Models;
+@{
+    Layout = "layout.cshtml";
+    var page = Umbraco.AssignedContentItem;
+    var hasResortParent = Model.AncestorOrSelf<ResortsHomePage>();
+    if (hasResortParent != null)
+    {
+        ViewBag.BodyClass = "resort-" + hasResortParent.ResortCategory.ToLower().Trim() + " single header__black";
+    }
+}
+
+@RenderPage("Partials/BodyElements/Breadcrumb.cshtml")
+
+<div class="intro__section">
+    <div class="container text-center">
+        <div class="intro__image mb-5">
+            <img src="@Model.FeaturedImage.GetCroppedImageUrl("1640x820")" alt="@Model.FeaturedImage.Name" class="img-fluid w-100" />
+        </div>
+        <h1 class="block__title h2">@Model.Name</h1>
+        <div class="block__description font-26 pt-xl-1">
+            @Model.ShortDescription
+        </div>
+    </div>
+</div>
+<div class="content__section">
+    <div class="content__wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <div class="content__description font-20">
+                        @Model.LongDescription
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="content__list">
+                        @if (!string.IsNullOrEmpty(Model.RestaurantsBarsInfo.FirstOrDefault().Heading))
+                        {
+                            <h6 class="block__sub-title mb-0">@Model.RestaurantsBarsInfo.FirstOrDefault().Heading</h6>
+                        }
+                        @if (Model.RestaurantsBarsInfo.FirstOrDefault().ItemLinks != null && Model.RestaurantsBarsInfo.FirstOrDefault().ItemLinks.Count() > 0)
+                        {
+                            <ul class="custom__list list-unstyled mb-0">
+                                @foreach (var item in Model.RestaurantsBarsInfo.FirstOrDefault().ItemLinks)
+                                {
+                                    if (item.IsValidLink() == true)
+                                    {
+                                        <li>
+                                            <a href="@item.GetLinkUrl()">@item.Name</a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li>@item.Name</li>
+                                    }
+                                }
+                            </ul>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="divider divider-gray"></div>
+</div>
+
+@if (Model.GalleryImages != null && Model.GalleryImages.Count() > 0)
+{
+    <div class="content-slider__section">
+        <div class="content-slider__wrap">
+            <div class="container">
+                <div class="content-slider__items">
+                    @foreach (var item in Model.GalleryImages)
+                    {
+                        <div class="content-slider__item">
+                            <div class="content-slider__image">
+                                <img src="@item.GetCroppedImageUrl("1640x820")" alt="@item.Name" class="img-fluid">
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="divider divider-gray"></div>
+    </div>
+}
+
+@{
+    var items = Umbraco.AssignedContentItem.Siblings();
+    if (!items.Any())
+    {
+        return;
+    }
+
+    var i = 0;
+
+    <div class="content-more__section">
+        <div class="content-more__wrap">
+            <h3 class="content-more__title">@Umbraco.GetDictionaryValue("Explore our " + Model.RestaurantsBarsCategory.ToLower())</h3>
+            <div class="content-more__slider">
+                @foreach (var item in items.OfType<RestaurantsBarsDetailPage>())
+                {
+                    if (i < 9)
+                    {
+                        i++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    <div class="content-more__slide">
+                        <a href="@item.Url()">
+                            <div class="content-more__slide-image">
+                                <img src="@item.FeaturedImage.GetCroppedImageUrl("467x534")" alt="@item.FeaturedImage.Name" class="img-fluid">
+                            </div>
+                            <div class="content-more__slide-title">
+                                @item.Name
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="divider divider-gray"></div>
+    </div>
+}

@@ -1,0 +1,180 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.CalendarEventPage>
+@using ContentModels = SunSiyam.Core.Models;
+@{
+    Layout = "layout.cshtml";
+    var page = Umbraco.AssignedContentItem;
+    var hasResortParent = Model.AncestorOrSelf<ResortsHomePage>();
+    if (hasResortParent != null)
+    {
+        ViewBag.BodyClass = "resort-" + hasResortParent.ResortCategory.ToLower().Trim() + " single header__black";
+    }
+
+    var startDateDay = Model.EventStartDate.Day;
+    var startDateMonth = Model.EventStartDate.ToString("MMMM");
+    var startDateYear = Model.EventStartDate.Year;
+    var endDateDay = Model.EventEndDate.Day;
+    var endDateMonth = Model.EventEndDate.ToString("MMMM");
+    var endDateYear = Model.EventEndDate.Year;
+
+    var eventDate = "";
+    if (Model.DateType == "Full Month")
+    {
+        if (startDateMonth == endDateMonth && startDateYear == endDateYear)
+        {
+            eventDate = startDateMonth + " " + startDateYear;
+        }
+        else if (startDateMonth != endDateMonth && startDateYear == endDateYear)
+        {
+            eventDate = startDateMonth + " - " + endDateMonth + " " + startDateYear;
+        }
+        else
+        {
+            eventDate = startDateMonth + " " + startDateYear + " - " + endDateMonth + " " + endDateYear;
+        }
+
+    }
+    else
+    {
+        if (startDateMonth == endDateMonth && startDateYear == endDateYear)
+        {
+            eventDate = startDateDay + " - " + endDateDay + " " + startDateMonth + " " + startDateYear;
+        }
+        else if (startDateMonth != endDateMonth && startDateYear == endDateYear)
+        {
+            eventDate = startDateDay + " " + startDateMonth + " - " + endDateDay + " " + endDateMonth + " " + startDateYear;
+        }
+        else
+        {
+            eventDate = startDateDay + " " + startDateMonth + " " + startDateYear + " - " + endDateDay + " " + endDateMonth + " " + endDateYear;
+        }
+    }
+}
+
+<div class="calendar-gallery__section">
+    <div class="calendar-gallery__wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xxl-7">
+                    @if (Model.GalleryImages.Any())
+                    {
+                        <div class="calendar-gallery__slider">
+                            @foreach (var gallery in Model.GalleryImages)
+                            {
+                                <div class="calendar-gallery__slide">
+                                    <div class="calendar-gallery__slide-wrap">
+                                        <a href="@gallery.Url()" data-toggle="lightbox" data-gallery="gallery" class="calendar-gallery__slide-link">
+                                            <img src="@gallery.GetCroppedImageUrl("947x1120")" class="calendar-gallery__slide-image" alt="@gallery.Name" />
+                                        </a>
+                                        <div class="calendar-gallery__slide-overlay">
+                                            <h6 class="calendar-gallery__slide-title text-white">Gallery</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+                <div class="col-12 col-lg-6 col-xxl-5">
+                    <div class="calendar-gallery__info">
+                        <div class="calendar-gallery__title-wrap mb-xl-4">
+                            <h6 class="block__sub-title text-black mb-0">@eventDate</h6>
+                            <h1 class="block__title h3">@Model.Name</h1>
+                        </div>
+                        @if (Model.Features.Any())
+                        {
+                            <ul class="custom__list list-unstyled mb-0">
+                                @foreach (var item in Model.Features)
+                                {
+                                    <li>@item</li>
+                                }
+                            </ul>
+                        }
+
+                        <div class="calendar-gallery__description mt-auto font-20">
+                            @Model.Description
+                        </div>
+                        @if (Model.BookingButton != null && Model.BookingButton.IsValidLink())
+                        {
+                            <div class="calendar-gallery__button flex-wrap">
+                                <a href="@Model.BookingButton.GetLinkUrl()" class="btn btn-outline-black">@Umbraco.GetDictionaryValue("Book Now")</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="divider divider-gray"></div>
+</div>
+
+@if (page.Parent != null && page.Parent.Children.Count() > 1)
+{
+    <div class="calendar-event__section">
+        <div class="calendar-event__wrap">
+            <div class="calendar-event__head">
+                <div class="container text-center">
+                    <h6 class="block__sub-title text-black">@Umbraco.GetDictionaryValue("Upcoming events at sun siyam resorts")</h6>
+                </div>
+            </div>
+
+            <div class="calendar-event__content">
+                <div class="calendar-event__slider">
+                    @foreach (var eventDetails in page.Parent.Children.OfType<CalendarEventPage>())
+                    {
+                        var startDay = eventDetails.EventStartDate.Day;
+                        var startMonth = eventDetails.EventStartDate.ToString("MMMM");
+                        var startYear = eventDetails.EventStartDate.Year;
+                        var endDay = eventDetails.EventEndDate.Day;
+                        var endMonth = eventDetails.EventEndDate.ToString("MMMM");
+                        var endYear = eventDetails.EventEndDate.Year;
+
+                        var eventDetailsDate = "";
+                        if (Model.DateType == "Full Month")
+                        {
+                            if (startMonth == endMonth && startYear == endYear)
+                            {
+                                eventDetailsDate = startMonth + " " + startYear;
+                            }
+                            else if (startMonth != endMonth && startYear == endYear)
+                            {
+                                eventDetailsDate = startMonth + " - " + endMonth + " " + startYear;
+                            }
+                            else
+                            {
+                                eventDetailsDate = startMonth + " " + startYear + " - " + endMonth + " " + endYear;
+                            }
+                        }
+                        else
+                        {
+                            if (startMonth == endMonth && startYear == endYear)
+                            {
+                                eventDetailsDate = startDay + " - " + endDay + " " + startMonth + " " + startYear;
+                            }
+                            else if (startMonth != endMonth && startYear == endYear)
+                            {
+                                eventDetailsDate = startDay + " " + startMonth + " - " + endDay + " " + endMonth + " " + startYear;
+                            }
+                            else
+                            {
+                                eventDetailsDate = startDay + " " + startMonth + " " + startYear + " - " + endDay + " " + endMonth + " " + endYear;
+                            }
+                        }
+
+                        <div class="calendar-event__slide">
+                            <a href="@eventDetails.Url()">
+                                <div class="calendar-event__slide-image">
+                                    <img src="@eventDetails.FeaturedImage.GetCroppedImageUrl("467x534")" alt="@eventDetails.FeaturedImage.Name" class="img-fluid">
+                                </div>
+                                <div class="calendar-event__slide-title">
+                                    <span class="calendar-event__slide-date">@eventDetailsDate</span>
+                                    @eventDetails.Name
+                                </div>
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="divider divider-gray"></div>
+    </div>
+}

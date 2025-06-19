@@ -1,0 +1,186 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.DestinationInfoSection>
+@using ContentModels = SunSiyam.Core.Models;
+@{
+	
+}
+
+<div class="brandSignature__section">
+    <div class="divider divider-gray"></div>
+    <div class="brandSignature__wrap block__padding">
+        <div class="container">
+            <div class="brandSignature__head">
+                <h6 class="block__sub-title text-navy-blue mb-xl-3">@Html.Raw(Model.SubHeading.Trim())</h6>
+                <div class="row">
+                    <div class="col-12 col-lg-6 col-xxl-6">
+                        @if (!string.IsNullOrEmpty(Model.HeadingTag))
+                        {
+                            var titleClass = "";
+                            if (Model.HeadingTag.ToLower() == "h1")
+                            {
+                                titleClass = " h2";
+                            }
+                            @Html.Wrap(Model.HeadingTag, Model.Heading.Trim(), new { @class = "block__title" + titleClass })
+                        }
+                        else
+                        {
+                            <h2 class="block__title">@Html.Raw(Model.Heading.Trim())</h2>
+                        }
+                    </div>
+                    <div class="col-12 col-lg-6 col-xxl-5">
+                        <div class="block__description text-navy-blue font-20 mt-lg-3">
+                            @Model.Description
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="brandSignature__content font-20">
+                @if (Model.InfoSections != null && Model.InfoSections.Count() > 0)
+                {
+                    var i = 0;
+                    foreach (var item in Model.InfoSections)
+                    {
+                        i++;
+
+                        if (i == 1)
+                        {
+                            <div class="brandSignature__one">
+                                <div class="row position-relative">
+                                    <div class="col-12 col-lg-6">
+                                        <div class="brandSignature__info">
+                                            <h3 class="brandSignature__title">@item.Heading</h3>
+                                            <div class="brandSignature__description">
+                                                @item.Description
+                                            </div>
+                                            <div class="brandSignature__parallax-image">
+                                                <img src="@item.OverlayImage1.GetCroppedImageUrl("536x690")" alt="@item.OverlayImage1.Name" class="img-fluid" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="brandSignature__image">
+                                            <img src="@item.MainImage.GetCroppedImageUrl("808x988")" alt="@item.MainImage.Name" class="img-fluid" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else if (i == 2)
+                        {
+                            <div class="brandSignature__two">
+                                <div class="row flex-column-reverse flex-lg-row">
+                                    <div class="col-12 col-lg-6 position-relative">
+                                        <div class="brandSignature__image">
+                                            <img src="@item.MainImage.GetCroppedImageUrl("674x993")" alt="@item.MainImage.Name" class="img-fluid" />
+                                        </div>
+                                        <div class="brandSignature__stamp">
+                                            <img src="@item.OverlayImage1.GetCroppedImageUrl("176x176")" alt="@item.OverlayImage1.Name" class="img-fluid" />
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6 position-relative d-flex justify-content-between flex-column">
+                                        <div class="brandSignature__info">
+                                            <h3 class="brandSignature__title">@item.Heading</h3>
+                                            <div class="brandSignature__description">
+                                                @item.Description
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else if (i == 3)
+                        {
+                            <div class="brandSignature__three">
+                                <div class="row">
+                                    <div class="col-12 col-lg-5">
+                                        <div class="brandSignature__info">
+                                            <h3 class="brandSignature__title">@item.Heading</h3>
+                                            <div class="brandSignature__description">
+                                                @item.Description
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-7 position-relative">
+                                        <div class="brandSignature__parallax-image text-center">
+                                            <img src="@item.OverlayImage1.GetCroppedImageUrl("414x593")" alt="@item.OverlayImage1.Name" class="img-fluid" />
+                                        </div>
+                                        <div class="brandSignature__image text-center text-md-end">
+                                            <img src="@item.MainImage.GetCroppedImageUrl("820x995")" alt="@item.MainImage.Name" class="img-fluid" />
+                                        </div>
+                                        <div class="brandSignature__stamp">
+                                            <img src="@item.OverlayImage2.GetCroppedImageUrl("176x176")" alt="@item.OverlayImage2.Name" class="img-fluid" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else if (i == 4)
+                        {
+                            <div class="brandSignature__four">
+                                <div class="row flex-column-reverse flex-lg-row">
+                                    <div class="col-12 col-lg-6">
+                                        <div class="brandSignature__image">
+                                            <img src="@item.MainImage.GetCroppedImageUrl("536x613")" alt="@item.MainImage.Name" class="img-fluid" />
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="brandSignature__info">
+                                            <h3 class="brandSignature__title">@item.Heading</h3>
+                                            <div class="brandSignature__description">
+                                                @item.Description
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            if (i % 2 != 0)
+                            {
+                                <div class="brandSignature__five">
+                                    <div class="row">
+                                        <div class="col-12 col-lg-5">
+                                            <div class="brandSignature__info">
+                                                <h3 class="brandSignature__title">@item.Heading</h3>
+                                                <div class="brandSignature__description">
+                                                    @item.Description
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-lg-7">
+                                            <div class="brandSignature__image text-center text-md-end ms-lg-auto">
+                                                <img src="@item.MainImage.GetCroppedImageUrl("864x827")" alt="@item.MainImage.Name" class="img-fluid" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="brandSignature__five">
+                                    <div class="row flex-lg-row-reverse">
+                                        <div class="col-12 col-lg-5">
+                                            <div class="brandSignature__info">
+                                                <h3 class="brandSignature__title">@item.Heading</h3>
+                                                <div class="brandSignature__description">
+                                                    @item.Description
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-lg-7">
+                                            <div class="brandSignature__image text-center text-md-end">
+                                                <img src="@item.MainImage.GetCroppedImageUrl("864x827")" alt="@item.MainImage.Name" class="img-fluid" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        }
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>

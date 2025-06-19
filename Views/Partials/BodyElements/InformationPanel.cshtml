@@ -1,0 +1,47 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.InformationPanel>
+@using ContentModels = SunSiyam.Core.Models;
+
+<div class="content__section">
+    <div class="content__wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    @if (!string.IsNullOrEmpty(Model.Heading))
+                    {
+                        <h4 class="content__title mb-4 mb-lg-5">@Model.Heading</h4>
+                    }
+                    <div class="content__description font-20">
+                        @Model.Description
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="content__list">
+                        @if (!string.IsNullOrEmpty(Model.FeatureList.FirstOrDefault().Heading))
+                        {
+                            <h6 class="block__sub-title mb-0">@Model.FeatureList.FirstOrDefault().Heading</h6>
+                        }
+                        @if (Model.FeatureList.FirstOrDefault().ItemLinks != null && Model.FeatureList.FirstOrDefault().ItemLinks.Count() > 0)
+                        {
+                            <ul class="custom__list list-unstyled mb-0">
+                                @foreach (var item in Model.FeatureList.FirstOrDefault().ItemLinks)
+                                {
+                                    if (item.GetLinkUrl().ToString() != "#")
+                                    {
+                                        <li>
+                                            <a href="@item.GetLinkUrl()">@item.Name</a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li>@item.Name</li>
+                                    }
+                                }
+                            </ul>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="divider divider-gray"></div>
+</div>

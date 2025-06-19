@@ -1,0 +1,59 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.ExperiencePackages>
+@using ContentModels = SunSiyam.Core.Models;
+
+<div class="weddingPackages__section">
+    <div class="weddingPackages__wrap">
+        <div class="container">
+            <div class="weddingPackages__head">
+                <h2 class="block__title">@Model.Heading</h2>
+            </div>
+            <div class="weddingPackages__content text-navy-blue">
+                <div class="row">
+                    <div class="col-12 col-md-6 col-lg-5">
+                        <div class="weddingPackages__content-inner font-20">
+                            <div class="weddingPackages__description">
+                                @Model.Description
+                            </div>
+                            @if (Model.DownloadableFiles.Any())
+                            {
+                                <div class="weddingPackages__button">
+                                    <div class="weddingPackages__button-text">@Umbraco.GetDictionaryValue("Click to download")</div>
+                                    <div class="weddingPackages__button-inner">
+                                        @foreach (var btn in Model.DownloadableFiles)
+                                        {
+                                            <a href="@btn.ButtonLink.GetLinkUrl()" class="btn btn-outline-navy-blue">@btn.ButtonLabel</a>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-6 ms-lg-auto">
+                        @if (Model.PackageItems.Any())
+                        {
+                            <ul class="custom__list list-unstyled mb-0">
+                                @foreach (var package in Model.PackageItems)
+                                {
+                                    <li>@package</li>
+                                }
+                            </ul>
+                        }
+
+                    </div>
+                </div>
+            </div>
+            @if (Model.Buttons.Any())
+            {
+                <div class="weddingPackages__mainButton mt-xl-5">
+                    <div class="container text-center">
+                        @foreach (var btn in Model.Buttons)
+                        {
+                            <a href="@btn.ButtonLink.GetLinkUrl()" class="btn btn-outline-black">@btn.ButtonLabel</a>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="divider divider-gray"></div>
+</div>

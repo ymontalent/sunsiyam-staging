@@ -1,0 +1,92 @@
+{
+  "Action": "Import",
+  "Username": "yash.marquee@gmail.com",
+  "Server": "EC2AMAZ-FB3S9U4",
+  "When": "2025-01-08T12:49:55.0650455+00:00",
+  "Changes": [
+    {
+      "HandlerAlias": "templateHandler",
+      "Success": false,
+      "ItemType": "Umbraco.Core.Models.ITemplate, Umbraco.Core, Version=8.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Message": "The template '.cshtml' file is missing.",
+      "Exception": null,
+      "Change": "Import",
+      "FileName": "C:\\inetpub\\wwwroot\\sunsiyam-build\\uSync\\v8\\Templates\\infosectionwithimageslider.config",
+      "Name": "Info Section With Image Slider",
+      "RequiresPostProcessing": false,
+      "DetailMessage": null,
+      "Details": null,
+      "key": "95041ea2-6de4-4a51-987f-e53c0a0b3c3a"
+    },
+    {
+      "HandlerAlias": "templateHandler",
+      "Success": false,
+      "ItemType": "Umbraco.Core.Models.ITemplate, Umbraco.Core, Version=8.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Message": "The template '.cshtml' file is missing.",
+      "Exception": null,
+      "Change": "Import",
+      "FileName": "C:\\inetpub\\wwwroot\\sunsiyam-build\\uSync\\v8\\Templates\\relateditem.config",
+      "Name": "Related Item",
+      "RequiresPostProcessing": false,
+      "DetailMessage": null,
+      "Details": null,
+      "key": "802cfc80-ecc1-418c-9f5c-46d03aaf8f3b"
+    },
+    {
+      "HandlerAlias": "templateHandler",
+      "Success": false,
+      "ItemType": "Umbraco.Core.Models.ITemplate, Umbraco.Core, Version=8.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Message": "The template '.cshtml' file is missing.",
+      "Exception": null,
+      "Change": "Import",
+      "FileName": "C:\\inetpub\\wwwroot\\sunsiyam-build\\uSync\\v8\\Templates\\relateditems.config",
+      "Name": "Related Items",
+      "RequiresPostProcessing": false,
+      "DetailMessage": null,
+      "Details": null,
+      "key": "8d1f329c-dc17-48da-8f1c-351223edd166"
+    },
+    {
+      "HandlerAlias": "contentTypeHandler",
+      "Success": true,
+      "ItemType": "Umbraco.Core.Models.IContentType, Umbraco.Core, Version=8.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Message": "",
+      "Exception": null,
+      "Change": "Import",
+      "FileName": "C:\\inetpub\\wwwroot\\sunsiyam-build\\uSync\\v8\\ContentTypes\\relateditem.config",
+      "Name": "Related Item",
+      "RequiresPostProcessing": true,
+      "DetailMessage": null,
+      "Details": null,
+      "key": "d86b62d8-0ca1-415f-b55a-45aff53d6d8d"
+    },
+    {
+      "HandlerAlias": "contentTypeHandler",
+      "Success": true,
+      "ItemType": "Umbraco.Core.Models.IContentType, Umbraco.Core, Version=8.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Message": "",
+      "Exception": null,
+      "Change": "Import",
+      "FileName": "C:\\inetpub\\wwwroot\\sunsiyam-build\\uSync\\v8\\ContentTypes\\infosectionwithimageslider.config",
+      "Name": "Info Section With Image Slider",
+      "RequiresPostProcessing": true,
+      "DetailMessage": null,
+      "Details": null,
+      "key": "38429c8e-9c7c-4fae-b373-4563b00f6a9d"
+    },
+    {
+      "HandlerAlias": "contentTypeHandler",
+      "Success": true,
+      "ItemType": "Umbraco.Core.Models.IContentType, Umbraco.Core, Version=8.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Message": "",
+      "Exception": null,
+      "Change": "Import",
+      "FileName": "C:\\inetpub\\wwwroot\\sunsiyam-build\\uSync\\v8\\ContentTypes\\relateditems.config",
+      "Name": "Related Items",
+      "RequiresPostProcessing": true,
+      "DetailMessage": null,
+      "Details": null,
+      "key": "0b0d5d4c-9c32-41b2-afd0-ea2fb7ce7f41"
+    }
+  ]
+}

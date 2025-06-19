@@ -1,0 +1,86 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.AccommodationsHighlights>
+@using ContentModels = SunSiyam.Core.Models;
+
+@{ 
+    List<string> accommodationsLabels = new List<string>();
+    var accommodations = new Dictionary<string, List<AccommodationsDetailsPage>>();
+
+    if (Model.SelectAccommodation != null && Model.SelectAccommodation.Count() > 0)
+    {
+        foreach(var accommodation in Model.SelectAccommodation.OfType<AccommodationsDetailsPage>())
+        {
+            if (accommodationsLabels.IndexOf(accommodation.Category) < 0)
+            {
+                accommodationsLabels.Add(accommodation.Category);
+            }
+
+            if (!accommodations.ContainsKey(accommodation.Category))
+            {
+                accommodations[accommodation.Category] = new List<AccommodationsDetailsPage>();
+            }
+            accommodations[accommodation.Category].Add(accommodation);
+        }
+    }
+
+}
+
+<div class="accommodation__section">
+    <div class="accommodation__intro">
+        <div class="container">
+            <h2 class="block__title">@Model.Heading</h2>
+            <div class="block__description text-navy-blue font-20 pt-xl-2">
+                @Model.Description
+            </div>
+        </div>
+    </div>
+    @if (accommodationsLabels.Count() > 0)
+    {
+        foreach (var label in accommodationsLabels)
+        {
+            <div class="accommodation__wrap">
+                <div class="accommodation__head">
+                    <div class="container">
+                        <h3 class="accommodation__title">@label</h3>
+                    </div>
+                </div>
+                <div class="accommodation__content">
+                    <div class="accommodation__slider">
+                        @if (accommodations[label].Count() > 0)
+                        {
+                            foreach (var accommodation in accommodations[label].OfType<AccommodationsDetailsPage>())
+                            {
+                                <div class="accommodation__slide">
+                                    <div class="accommodation__slide-image">
+                                        <a href="@accommodation.Url()">
+                                            <img src="@accommodation.FeaturedImage.GetCroppedImageUrl("536x657")" alt="@accommodation.Name" class="img-fluid">
+                                            <h4 class="accommodation__slide-title">@accommodation.Name</h4>
+                                        </a>
+                                    </div>
+                                    <div class="accommodation__slide-content">
+                                        @if (accommodation.Features != null && accommodation.Features.Count() > 0)
+                                        {
+                                            <ul class="accommodation__slide-list list-unstyled font-18">
+                                                @foreach (var feature in accommodation.Features.Take(3))
+                                                {
+                                                    <li>@feature</li>
+                                                }
+                                            </ul>
+                                        }
+                                        <div class="accommodation__slide-button">
+                                            <a href="@accommodation.Url()" class="btn btn-outline-navy-blue">@Umbraco.GetDictionaryValue("Discover")</a>
+                                            @if (accommodation.BookingUrl != null)
+                                            {
+                                                <a href="@accommodation.BookingUrl.GetLinkUrl()" class="btn btn-outline-navy-blue btn-hover-navy-blue">@accommodation.BookingUrl.Name</a>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="divider divider-gray"></div>
+        }
+    }
+</div>

@@ -1,0 +1,31 @@
+@inherits UmbracoViewPage
+@{
+    var page = Umbraco.AssignedContentItem;
+
+    var currentCulture = Model.GetCultureFromDomains().Substring(0, 2);
+    var countryCode = new Dictionary<string, string>();
+    countryCode.Add("en", "en-US");
+    countryCode.Add("ar", "ar-EG");
+    countryCode.Add("zh", "zh-CN");
+    countryCode.Add("fr", "fr-FR");
+    countryCode.Add("de", "de-DE");
+    countryCode.Add("es", "es-ES");
+    countryCode.Add("ru", "ru-RU");
+}
+
+@if (currentCulture.ToLower() == "en")
+{
+    <link rel="alternate" hreflang="x-default" href="@Model.Url(mode: UrlMode.Absolute)" />
+}
+else if (page.Cultures.Any() && currentCulture.ToLower() != "en")
+{
+    var findIndex = page.Cultures.Where((e) => e.Key.Substring(0, 2).ToLower() == "en");
+    <link rel="alternate" hreflang="x-default" href="@findIndex.FirstOrDefault().Key" />
+}
+@if (page.Cultures.Any())
+{
+    foreach (var variant in page.Cultures)
+    {
+        <link rel="alternate" hreflang="@countryCode[variant.Key.Substring(0, 2)]" href="@Model.Url(culture: variant.Key, mode: UrlMode.Absolute)" />
+    }
+}

@@ -1,0 +1,229 @@
+{
+  "name": "Vilu Reef Wellness Enquiry",
+  "created": "2025-01-31T12:12:57.8075912+00:00",
+  "pages": [
+    {
+      "fieldSets": [
+        {
+          "caption": null,
+          "sortOrder": 0,
+          "id": "ecbfb078-bae7-467f-b8b6-f40b1e44ab26",
+          "page": "00000000-0000-0000-0000-000000000000",
+          "containers": [
+            {
+              "caption": null,
+              "width": 12,
+              "fields": [
+                {
+                  "caption": "Title",
+                  "tooltip": null,
+                  "placeholder": null,
+                  "cssClass": null,
+                  "alias": "title",
+                  "id": "65ddbe6c-4b8b-4660-8293-d49e1cc5a30c",
+                  "fieldTypeId": "3f92e01b-29e2-4a30-bf33-9df5580ed52c",
+                  "prevalueSourceId": "00000000-0000-0000-0000-000000000000",
+                  "dataSourceFieldKey": null,
+                  "containsSensitiveData": false,
+                  "mandatory": false,
+                  "regex": null,
+                  "requiredErrorMessage": null,
+                  "invalidErrorMessage": null,
+                  "condition": {
+                    "id": "87e83835-e5e0-4914-b662-eeb8a05946bc",
+                    "enabled": false,
+                    "actionType": "Show",
+                    "logicType": "All",
+                    "rules": []
+                  },
+                  "settings": {
+                    "DefaultValue": "",
+                    "Placeholder": "",
+                    "ShowLabel": "",
+                    "MaximumLength": "",
+                    "FieldType": "text",
+                    "AutocompleteAttribute": ""
+                  },
+                  "preValues": [],
+                  "parsedPreValues": [],
+                  "allowedUploadTypes": null,
+                  "allowMultipleFileUploads": true
+                },
+                {
+                  "caption": "Name",
+                  "tooltip": null,
+                  "placeholder": null,
+                  "cssClass": null,
+                  "alias": "name",
+                  "id": "5c27214c-ebdd-4687-bd86-593d91c063a6",
+                  "fieldTypeId": "3f92e01b-29e2-4a30-bf33-9df5580ed52c",
+                  "prevalueSourceId": "00000000-0000-0000-0000-000000000000",
+                  "dataSourceFieldKey": null,
+                  "containsSensitiveData": false,
+                  "mandatory": true,
+                  "regex": null,
+                  "requiredErrorMessage": "Please enter you name",
+                  "invalidErrorMessage": null,
+                  "condition": {
+                    "id": "e7e44546-8f53-4631-97eb-8b337d752023",
+                    "enabled": false,
+                    "actionType": "Show",
+                    "logicType": "All",
+                    "rules": []
+                  },
+                  "settings": {
+                    "DefaultValue": "",
+                    "Placeholder": "",
+                    "ShowLabel": "",
+                    "MaximumLength": "",
+                    "FieldType": "text",
+                    "AutocompleteAttribute": ""
+                  },
+                  "preValues": [],
+                  "parsedPreValues": [],
+                  "allowedUploadTypes": null,
+                  "allowMultipleFileUploads": true
+                },
+                {
+                  "caption": "Email",
+                  "tooltip": null,
+                  "placeholder": null,
+                  "cssClass": null,
+                  "alias": "email",
+                  "id": "27ceced3-eb45-4502-a0ca-be28340fed2f",
+                  "fieldTypeId": "3f92e01b-29e2-4a30-bf33-9df5580ed52c",
+                  "prevalueSourceId": "00000000-0000-0000-0000-000000000000",
+                  "dataSourceFieldKey": null,
+                  "containsSensitiveData": false,
+                  "mandatory": true,
+                  "regex": "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$",
+                  "requiredErrorMessage": "Please enter your email address.",
+                  "invalidErrorMessage": "Please enter your valid email address.",
+                  "condition": {
+                    "id": "12c0aeb1-f152-44ee-a74e-854e43d5e253",
+                    "enabled": false,
+                    "actionType": "Show",
+                    "logicType": "All",
+                    "rules": []
+                  },
+                  "settings": {
+                    "DefaultValue": "",
+                    "Placeholder": "",
+                    "ShowLabel": "",
+                    "MaximumLength": "",
+                    "FieldType": "email",
+                    "AutocompleteAttribute": ""
+                  },
+                  "preValues": [],
+                  "parsedPreValues": [],
+                  "allowedUploadTypes": null,
+                  "allowMultipleFileUploads": true
+                },
+                {
+                  "caption": "Subject",
+                  "tooltip": null,
+                  "placeholder": null,
+                  "cssClass": null,
+                  "alias": "subject",
+                  "id": "790b5629-b9d0-40d0-9972-786cf30b990a",
+                  "fieldTypeId": "3f92e01b-29e2-4a30-bf33-9df5580ed52c",
+                  "prevalueSourceId": "00000000-0000-0000-0000-000000000000",
+                  "dataSourceFieldKey": null,
+                  "containsSensitiveData": false,
+                  "mandatory": true,
+                  "regex": null,
+                  "requiredErrorMessage": null,
+                  "invalidErrorMessage": null,
+                  "condition": {
+                    "id": "34bd1b49-6533-4cee-8e3e-a2ca3dd92dbc",
+                    "enabled": false,
+                    "actionType": "Show",
+                    "logicType": "All",
+                    "rules": []
+                  },
+                  "settings": {
+                    "DefaultValue": "",
+                    "Placeholder": "",
+                    "ShowLabel": "",
+                    "MaximumLength": "",
+                    "FieldType": "text",
+                    "AutocompleteAttribute": ""
+                  },
+                  "preValues": [],
+                  "parsedPreValues": [],
+                  "allowedUploadTypes": null,
+                  "allowMultipleFileUploads": true
+                },
+                {
+                  "caption": "Message",
+                  "tooltip": null,
+                  "placeholder": null,
+                  "cssClass": null,
+                  "alias": "message",
+                  "id": "03ff613d-c221-43c7-aef7-ed2391ee6b75",
+                  "fieldTypeId": "023f09ac-1445-4bcb-b8fa-ab49f33bd046",
+                  "prevalueSourceId": "00000000-0000-0000-0000-000000000000",
+                  "dataSourceFieldKey": null,
+                  "containsSensitiveData": false,
+                  "mandatory": true,
+                  "regex": null,
+                  "requiredErrorMessage": null,
+                  "invalidErrorMessage": null,
+                  "condition": {
+                    "id": "cb8ca292-9530-4ab3-81bf-8abe776a7500",
+                    "enabled": false,
+                    "actionType": "Show",
+                    "logicType": "All",
+                    "rules": []
+                  },
+                  "settings": {
+                    "DefaultValue": "",
+                    "Placeholder": "",
+                    "ShowLabel": "",
+                    "AutocompleteAttribute": "",
+                    "NumberOfRows": "2",
+                    "MaximumLength": ""
+                  },
+                  "preValues": [],
+                  "parsedPreValues": [],
+                  "allowedUploadTypes": null,
+                  "allowMultipleFileUploads": true
+                }
+              ]
+            }
+          ],
+          "condition": null
+        }
+      ],
+      "caption": null,
+      "sortOrder": 0,
+      "id": "0851ba5d-7eec-4389-b265-d5eec930d68c",
+      "form": "00000000-0000-0000-0000-000000000000",
+      "buttonCondition": null
+    }
+  ],
+  "id": "1ccc49ec-e2f2-4409-a582-318460c372ef",
+  "fieldIndicationType": "MarkMandatoryFields",
+  "indicator": "*",
+  "showValidationSummary": false,
+  "hideFieldValidation": false,
+  "requiredErrorMessage": "Please provide a value for {0}",
+  "invalidErrorMessage": "Please provide a valid value for {0}",
+  "messageOnSubmit": "Thank you",
+  "goToPageOnSubmit": 14455,
+  "xPathOnSubmit": null,
+  "manualApproval": false,
+  "storeRecordsLocally": true,
+  "autocompleteAttribute": "",
+  "cssClass": null,
+  "disableDefaultStylesheet": false,
+  "useClientDependency": false,
+  "workflows": [
+    "e19abc02-eb35-4efc-8175-11e537742592"
+  ],
+  "datasource": null,
+  "submitLabel": "Submit",
+  "nextLabel": "Next",
+  "prevLabel": "Previous",
+  "folderId": null
+}

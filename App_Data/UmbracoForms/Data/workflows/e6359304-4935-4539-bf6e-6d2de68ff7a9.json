@@ -1,0 +1,28 @@
+{
+  "id": "e6359304-4935-4539-bf6e-6d2de68ff7a9",
+  "name": "info.vilureef@sunsiyam.com",
+  "form": "8fc39204-1e72-4aca-915a-1a0836d01673",
+  "active": true,
+  "includeSensitiveData": "False",
+  "workflowTypeId": "e96badd7-05be-4978-b8d9-b3d733de70a5",
+  "executesOn": "Submitted",
+  "settings": {
+    "Message": "Received New Enquiry",
+    "Attachment": "",
+    "Email": "info.vilureef@sunsiyam.com",
+    "CcEmail": "",
+    "BccEmail": "",
+    "SenderEmail": "",
+    "ReplyToEmail": "",
+    "Subject": "The Form '{form_name}' was submitted"
+  },
+  "sortOrder": 0,
+  "isMandatory": false,
+  "condition": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "enabled": false,
+    "actionType": "Show",
+    "logicType": "All",
+    "rules": []
+  }
+}

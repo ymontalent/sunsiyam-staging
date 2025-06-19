@@ -1,0 +1,49 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Rewards>
+@using ContentModels = SunSiyam.Core.Models;
+
+
+<div class="rewarded__section">
+    <div class="rewarded__wrap block__padding">
+        <div class="container">
+            <div class="rewarded__head">
+                <h6 class="block__sub-title text-black mb-xl-4">@Html.Raw(Model.SubHeading)</h6>
+                <h2 class="block__title">@Html.Raw(Model.Heading)</h2>
+            </div>
+            <div class="rewarded__content">
+                <div class="row">
+                    <div class="col-12 col-lg-6 col-xl-6 position-relative">
+                        <div class="rewarded__image" style="background-image:url('@Model.Image.GetCroppedImageUrl("808x730")');"></div>
+                        <div class="rewarded__caption">@Model.ImageCaption</div>
+                        <div class="rewarded__stamp">
+                            <video src="@Model.ImageBadge.Url()" type="video/mp4" muted loop autoplay></video>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 offset-xxl-1 col-xxl-5">
+                        <div class="rewarded__info">
+                            <h5 class="rewarded__title">@Model.BenifitsTitle.Trim()</h5>
+                            @if (Model.Benifits != null && Model.Benifits.Count() > 0)
+                            {
+                                <ul class="rewarded__list list-unstyled">
+                                    @foreach (var benifit in Model.Benifits)
+                                    {
+                                        <li>@benifit</li>
+                                    }
+                                </ul>
+                            }
+                            @if (Model.Buttons != null && Model.Buttons.Count() > 0)
+                            {
+                                <div class="rewarded__button">
+                                    @foreach (var btn in Model.Buttons)
+                                    {
+                                        <a href="@btn.ButtonLink.GetLinkUrl()" class="btn btn-outline-black">@btn.ButtonLabel</a>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="divider divider-gray"></div>
+</div>

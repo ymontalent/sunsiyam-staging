@@ -1,0 +1,293 @@
+﻿@inherits UmbracoViewPage
+@{
+    var page = Umbraco.AssignedContentItem;
+
+    var websiteSettings = Umbraco.GetAuxiliaryContent<IAuxiliaryFoldersComposition, WebsiteSettings>(s => s.WebsiteSettings);
+
+    var mainNavigation = websiteSettings.MainNavigation;
+    var sidebarButtons = websiteSettings.SidebarButtons;
+    var sidebarFooterNavigation = websiteSettings.SidebarFooterNavigation;
+
+    ResortsHomePage resortsHomePage = Model.AncestorOrSelf<ResortsHomePage>();
+    if (resortsHomePage != null)
+    {
+        mainNavigation = resortsHomePage.MainNavigation;
+        sidebarButtons = resortsHomePage.SidebarButtons;
+        sidebarFooterNavigation = resortsHomePage.SidebarFooterNavigation;
+    }
+}
+
+<div class="offcanvas offcanvas__navbar" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+    <div class="container">
+        <div class="offcanvas__header">
+            <div class="offcanvas__logo" id="offcanvasNavbarLabel">
+                <a href="/">
+                    @Html.Raw(System.IO.File.ReadAllText(Server.MapPath(websiteSettings.StickyHeaderLogo.Url())))
+                </a>
+            </div>
+            <div class="offcanvas__resort-dropdown dropdown">
+                @{
+                    var currentPage = "";
+                }
+                @if (websiteSettings.GroupNavigation != null && websiteSettings.GroupNavigation.Count() > 0 && resortsHomePage != null)
+                {
+                    <ul class="offcanvas__resort-select dropdown-menu">
+                        @foreach (var group in websiteSettings.GroupNavigation)
+                        {
+                            if (group.ChildLink.Count() > 0)
+                            {
+                                foreach (var groupChild in group.ChildLink)
+                                {
+                                    if ((page.Url() == groupChild.GetLinkUrl().ToString()) || (resortsHomePage != null && groupChild.GetLinkUrl().ToString() == resortsHomePage.Url()))
+                                    {
+                                        currentPage = groupChild.Name.Trim();
+                                    }
+                                    else
+                                    {
+                                        <li>@groupChild.GetLink()</li>
+                                    }
+                                }
+                            }
+                        }
+                    </ul>
+                }
+                @if (resortsHomePage != null)
+                {
+                    <button class="offcanvas__resort-selected dropdown-toggle" type="button" bs-auto-close="false" data-bs-toggle="dropdown" aria-expanded="false">@currentPage</button>
+                }
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas__body">
+            <div class="offcanvas__main-nav">
+                @if (mainNavigation != null && mainNavigation.Count() > 0)
+                {
+                    var active = "";
+                    var i=0;
+
+                    <ul class="navbar-nav">
+                        @foreach (var item in mainNavigation)
+                        {
+                            if(active == "" && page.Url() == item.ParentLink.GetLinkUrl().ToString() && i == 0)
+                            {
+                                i++;
+                                active = "active";
+                            }
+                            else
+                            {
+                                active = "";
+                            }
+
+                            <li class="nav-item">
+                                <a class="nav-link @active" aria-current="page" href="@item.ParentLink.GetLinkUrl()">@item.ParentLink.Name.Trim()</a>
+                            </li>
+                        }
+                    </ul>
+                }
+
+                @if (sidebarButtons != null && sidebarButtons.Count() > 0)
+                {
+                    <div class="offcanvas__button mt-auto">
+                        @foreach (var button in sidebarButtons)
+                        {
+                            <a href="@button.ButtonLink.GetLinkUrl()" class="btn btn-outline-black btn-small">@button.ButtonLabel.Trim()</a>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="offcanvas__resort-nav">
+                @if (websiteSettings.SelectResorts != null && websiteSettings.SelectResorts.Count() > 0 && resortsHomePage == null)
+                {
+
+                    List<string> filterTabLable = new List<string>();
+
+                    foreach (var resort in websiteSettings.SelectResorts)
+                    {
+                        if (filterTabLable.IndexOf(resort.ResortCategory) < 0)
+                        {
+                            filterTabLable.Add(resort.ResortCategory);
+                        }
+                    }
+
+                    if (filterTabLable.Count() > 0)
+                    {
+                        foreach (var lable in filterTabLable)
+                        {
+                            <div class="offcanvas__resort-item">
+                                <div class="offcanvas__resort-name">@lable</div>
+                                <div class="offcanvas__resort-lists">
+                                    @foreach (var resort in websiteSettings.SelectResorts)
+                                    {
+                                        if (resort.ResortCategory == lable)
+                                        {
+                                            ResortsHomePage selectedResort = null;
+                                            if (resort.Resort != null)
+                                            {
+                                                selectedResort = resort.Resort.FirstOrDefault() as ResortsHomePage;
+                                            }
+
+
+                                            if (resort.IsComingSoon == false)
+                                            {
+                                                <div class="offcanvas__resort-list">
+                                                    <a href="@selectedResort.Url()">
+                                                        <div class="offcanvas__resort-image">
+                                                            <img src="@resort.ResortFeaturedImage.GetCroppedImageUrl("390x288")" alt="@resort.ResortTitle.Trim()">
+                                                        </div>
+                                                        <div class="offcanvas__resort-title">@resort.ResortTitle.Trim()</div>
+                                                    </a>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="offcanvas__resort-list offcanvas__resort-coming">
+                                                    <div class="offcanvas__resort-image">
+                                                        <img src="@resort.ResortFeaturedImage.GetCroppedImageUrl("390x288")" alt="@resort.ResortTitle.Trim()">
+                                                    </div>
+                                                    <div class="offcanvas__resort-title">@resort.ResortTitle.Trim() <em>Coming @resort.ComingSoonDate.Year</em></div>
+                                                </div>
+                                            }
+
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+                else if (resortsHomePage != null)
+                {
+                    if (resortsHomePage.ResortsNavigation != null && resortsHomePage.ResortsNavigation.Count() > 0)
+                    {
+                        <div class="offcanvas__resort-lists">
+                            @foreach (var resort in resortsHomePage.ResortsNavigation)
+                            {
+                                if (resort.ContentType.Alias == "offersPage")
+                                {
+                                    var selectedPage = resort as OffersPage;
+
+                                    <div class="offcanvas__resort-list">
+                                        <a href="@selectedPage.Url()">
+                                            <div class="offcanvas__resort-image">
+                                                <img src="@selectedPage.FeaturedImage.GetCroppedImageUrl("516x301")" alt="@selectedPage.Heading.Trim()">
+                                            </div>
+                                            <div class="offcanvas__resort-title">@selectedPage.Heading.Trim()</div>
+                                        </a>
+                                    </div>
+                                }
+                                else if (resort.ContentType.Alias == "accommodationsPage")
+                                {
+                                    var selectedPage = resort as AccommodationsPage;
+
+                                    <div class="offcanvas__resort-list">
+                                        <a href="@selectedPage.Url()">
+                                            <div class="offcanvas__resort-image">
+                                                <img src="@selectedPage.FeaturedImage.GetCroppedImageUrl("516x301")" alt="@selectedPage.Heading.Trim()">
+                                            </div>
+                                            <div class="offcanvas__resort-title">@selectedPage.Heading.Trim()</div>
+                                        </a>
+                                    </div>
+                                }
+                                else if (resort.ContentType.Alias == "experiencesPage")
+                                {
+                                    var selectedPage = resort as ExperiencesPage;
+
+                                    <div class="offcanvas__resort-list">
+                                        <a href="@selectedPage.Url()">
+                                            <div class="offcanvas__resort-image">
+                                                <img src="@selectedPage.FeaturedImage.GetCroppedImageUrl("516x301")" alt="@selectedPage.Heading.Trim()">
+                                            </div>
+                                            <div class="offcanvas__resort-title">@selectedPage.Heading.Trim()</div>
+                                        </a>
+                                    </div>
+                                }
+                                else if (resort.ContentType.Alias == "restaurantsBars")
+                                {
+                                    var selectedPage = resort as RestaurantsBars;
+
+                                    <div class="offcanvas__resort-list">
+                                        <a href="@selectedPage.Url()">
+                                            <div class="offcanvas__resort-image">
+                                                <img src="@selectedPage.FeaturedImage.GetCroppedImageUrl("516x301")" alt="@selectedPage.Heading.Trim()">
+                                            </div>
+                                            <div class="offcanvas__resort-title">@selectedPage.Heading.Trim()</div>
+                                        </a>
+                                    </div>
+                                }
+                                else if (resort.ContentType.Alias == "facilities")
+                                {
+                                    var selectedPage = resort as Facilities;
+
+                                    <div class="offcanvas__resort-list">
+                                        <a href="@selectedPage.Url()">
+                                            <div class="offcanvas__resort-image">
+                                                <img src="@selectedPage.FeaturedImage.GetCroppedImageUrl("516x301")" alt="@selectedPage.Heading.Trim()">
+                                            </div>
+                                            <div class="offcanvas__resort-title">@selectedPage.Heading.Trim()</div>
+                                        </a>
+                                    </div>
+                                }
+                                else if (resort.ContentType.Alias == "calendarEventPage")
+                                {
+                                    var selectedPage = resort as CalendarEventPage;
+
+                                    <div class="offcanvas__resort-list">
+                                        <a href="@selectedPage.Url()">
+                                            <div class="offcanvas__resort-image">
+                                                <img src="@selectedPage.FeaturedImage.GetCroppedImageUrl("516x301")" alt="@selectedPage.Name.Trim()">
+                                            </div>
+                                            <div class="offcanvas__resort-title">@selectedPage.Name.Trim()</div>
+                                        </a>
+                                    </div>
+                                }
+                                else if (resort.ContentType.Alias == "contentPage")
+                                {
+                                    var selectedPage = resort as ContentPage;
+
+                                    <div class="offcanvas__resort-list">
+                                        <a href="@selectedPage.Url()">
+                                            <div class="offcanvas__resort-image">
+                                                <img src="@selectedPage.FeaturedImage.GetCroppedImageUrl("516x301")" alt="@selectedPage.Heading.Trim()">
+                                            </div>
+                                            <div class="offcanvas__resort-title">@selectedPage.Heading.Trim()</div>
+                                        </a>
+                                    </div>
+                                }
+                                else if (resort.ContentType.Alias == "destinationPage")
+                                {
+                                    var selectedPage = resort as DestinationPage;
+
+                                    <div class="offcanvas__resort-list">
+                                        <a href="@selectedPage.Url()">
+                                            <div class="offcanvas__resort-image">
+                                                <img src="@selectedPage.FeaturedImage.GetCroppedImageUrl("516x301")" alt="@selectedPage.Heading.Trim()">
+                                            </div>
+                                            <div class="offcanvas__resort-title">@selectedPage.Heading.Trim()</div>
+                                        </a>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+        @if (sidebarFooterNavigation != null && sidebarFooterNavigation.Count() > 0)
+        {
+            <div class="offcanvas__footer">
+                @foreach (var nav in sidebarFooterNavigation)
+                {
+                    if (nav.ChildLink.Count() > 0)
+                    {
+                        <ul class="list-unstyled mb-0">
+                            @foreach (var navItem in nav.ChildLink)
+                            {
+                                <li>@navItem.GetLink()</li>
+                            }
+                        </ul>
+                    }
+                }
+            </div>
+        }
+    </div>
+</div>

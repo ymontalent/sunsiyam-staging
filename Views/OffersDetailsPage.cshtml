@@ -1,0 +1,86 @@
+﻿@using ContentModels = SunSiyam.Core.Models;
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.OfferDetailsPage>
+@{
+    Layout = "layout.cshtml";
+    var page = Umbraco.AssignedContentItem;
+    var hasResortParent = Model.AncestorOrSelf<ResortsHomePage>();
+    if (hasResortParent != null)
+    {
+        ViewBag.BodyClass = "resort-" + hasResortParent.ResortCategory.ToLower().Trim() + " single header__black";
+    }
+}
+
+@RenderPage("Partials/BodyElements/Breadcrumb.cshtml")
+
+<div class="offers-intro__section">
+    <div class="offers-intro__wrap text-center">
+        <div class="container">
+            <div class="offers-intro__image">
+                <img src="@Model.OfferImage.GetCroppedImageUrl("1640x705")" alt="@Model.OfferImage.Name" class="img-fluid">
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-11 col-xl-10 col-xxl-7">
+                    <h1 class="block__title h2">@Model.OfferTitle.Trim()</h1>
+                    @if (!string.IsNullOrEmpty(Model.OfferSubtitle))
+                    {
+                        <h2 class="h3 mt-2">@Model.OfferSubtitle</h2>
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.OfferDescription.ToString()))
+                    {
+                        <div class="block__description font-20 pt-xl-1">
+                            @Model.OfferDescription
+                        </div>
+                    }
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="offers-intro__detail">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-5 col-xxl-4">
+                    <div class="offers-intro__detail-includes">
+                        @if (Model.OfferFeatures != null && Model.OfferFeatures.Count() > 0)
+                        {
+                            <h3 class="offers-intro__detail-title h4 mb-xl-4">@Umbraco.GetDictionaryValue("Offer Includes")</h3>
+                            <ul class="custom__list list-unstyled mb-4 mb-xl-5">
+                                @foreach (var item in Model.OfferFeatures)
+                                {
+                                    <li>@Html.Raw(item)</li>
+                                }
+                            </ul>
+                        }
+
+                        <div class="offers-intro__detail-button">
+                            <a href="@Model.Parent.Url()" class="btn btn-outline-currentColor">@Umbraco.GetDictionaryValue("View All Offers")</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-7 col-xxl-8">
+                    <div class="offers-intro__detail-terms">
+                        @if (Model.TermsConditions != null && Model.TermsConditions.Count() > 0)
+                        {
+                            <h3 class="offers-intro__detail-title h4 mb-xl-4">@Umbraco.GetDictionaryValue("Terms & Conditions")</h3>
+                            <ul class="custom__list list-unstyled mb-4 mb-xl-5">
+                                @foreach (var item in Model.TermsConditions)
+                                {
+                                    <li>@Html.Raw(item)</li>
+                                }
+                            </ul>
+                        }
+
+                        @if (Model.OfferBookingUrl != null)
+                        {
+                            <div class="offers-intro__detail-button">
+                                <a href="@Model.OfferBookingUrl.GetLinkUrl()" class="btn btn-outline-black">@Model.OfferBookingUrl.Name</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="divider divider-gray"></div>
+</div>

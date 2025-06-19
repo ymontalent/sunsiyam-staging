@@ -1,0 +1,135 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.HubItems>
+@using ContentModels = SunSiyam.Core.Models;
+
+
+<div class="hub__section">
+    <div class="hub__wrap">
+        <div class="hub__head">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-6 col-xxl-6">
+                        @if (!string.IsNullOrEmpty(Model.SubHeading))
+                        {
+                            <h6 class="block__sub-title text-black mb-xl-3">@Model.SubHeading</h6>
+                        }
+                        <h2 class="block__title">@Html.Raw(Model.Heading)</h2>
+                    </div>
+                    <div class="col-12 col-lg-6 col-xxl-5">
+                        <div class="block__description text-black font-20">
+                            @Model.Description
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (Model.Items.Count() > 0)
+        {
+            var i = 0;
+            foreach (var item in Model.Items)
+            {
+                <div class="hub__content">
+                    <div class="container">
+                        <div class="hub__item">
+                            <div class="row">
+                                @{
+                                    var colClass = "col-lg-6 offset-xxl-1 col-xxl-5";
+
+                                    if (item.Image != null)
+                                    {
+                                        <div class="col-12 col-lg-6 col-xl-6">
+                                            <div class="hub__item-image">
+                                                <img src="@item.Image.GetCroppedImageUrl("808x730")" alt="@item.Image.Name" class="img-fluid">
+                                            </div>
+                                            <div class="hub__item-caption">@item.SubHeading</div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        colClass = "";
+                                    }
+                                }
+                                <div class="col-12 @colClass">
+                                    <div class="hub__item-content">
+                                        <h2 class="hub__item-title h3 mb-xl-4">@item.Heading</h2>
+                                        <div class="hub__item-description font-20">
+                                            @item.Description
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @if (item.SubItems != null && item.SubItems.Count() > 0)
+                        {
+                            <div class="hub__slider">
+                                @foreach (var data in item.SubItems)
+                                {
+                                    if (data.ContentType.Alias == "accommodationsDetailsPage")
+                                    {
+                                        var accommodation = data.AncestorOrSelf<AccommodationsDetailsPage>();
+
+                                        <div class="hub__slide">
+                                            <div class="hub__slide-image">
+                                                <a href="@accommodation.Url()">
+                                                    <img src="@accommodation.FeaturedImage.GetCroppedImageUrl("536x536")" alt="@accommodation.Name" class="img-fluid">
+                                                    <h4 class="hub__slide-title">@accommodation.Name</h4>
+                                                </a>
+                                            </div>
+                                            <div class="hub__slide-content">
+                                                @if (accommodation.Features != null && accommodation.Features.Count() > 0)
+                                                {
+                                                    <ul class="hub__slide-list list-unstyled font-18">
+                                                        @foreach (var feature in accommodation.Features.Take(3))
+                                                        {
+                                                            <li>@feature</li>
+                                                        }
+                                                    </ul>
+                                                }
+                                                <div class="hub__slide-button">
+                                                    <a href="@accommodation.Url()" class="btn btn-outline-navy-blue">@Umbraco.GetDictionaryValue("Discover")</a>
+                                                    @if (accommodation.BookingUrl != null)
+                                                    {
+                                                        <a href="@accommodation.BookingUrl.GetLinkUrl()" class="btn btn-outline-navy-blue btn-hover-navy-blue">@accommodation.BookingUrl.Name</a>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else if (data.ContentType.Alias == "experienceDetailsPage")
+                                    {
+                                        var experience = data.AncestorOrSelf<ExperienceDetailsPage>();
+
+                                        <div class="hub__slide">
+                                            <div class="hub__slide-image">
+                                                <a href="@experience.Url()">
+                                                    <img src="@experience.FeaturedImage.GetCroppedImageUrl("536x536")" alt="@experience.Name" class="img-fluid">
+                                                    <h4 class="hub__slide-title">@experience.Name</h4>
+                                                </a>
+                                            </div>
+                                            <div class="hub__slide-content">
+                                                <div class="hub__slide-description font-18">
+                                                    @experience.ShortDescription
+                                                </div>
+                                                <div class="hub__slide-button">
+                                                    <a href="@experience.Url()" class="btn btn-outline-navy-blue">@Umbraco.GetDictionaryValue("Discover")</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+
+                            </div>
+                        }
+                    </div>
+                    @{
+                        i++;
+
+                        if (i < Model.Items.Count())
+                        {
+                            <div class="divider divider-gray"></div>
+                        }
+                    }
+                </div>
+            }
+        }
+    </div>
+</div>

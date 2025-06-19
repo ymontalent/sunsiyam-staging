@@ -1,0 +1,28 @@
+{
+  "id": "afee18fd-6775-4c0c-85d7-4e0bda3d1cac",
+  "name": "info.irufushi@sunsiyam.com",
+  "form": "08aa60d5-d648-4dc8-8ebc-60db3e881535",
+  "active": true,
+  "includeSensitiveData": "False",
+  "workflowTypeId": "e96badd7-05be-4978-b8d9-b3d733de70a5",
+  "executesOn": "Submitted",
+  "settings": {
+    "Message": "Received New Enquiry",
+    "Attachment": "",
+    "Email": "info.irufushi@sunsiyam.com",
+    "CcEmail": "",
+    "BccEmail": "",
+    "SenderEmail": "",
+    "ReplyToEmail": "",
+    "Subject": "The Form '{form_name}' was submitted"
+  },
+  "sortOrder": 0,
+  "isMandatory": false,
+  "condition": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "enabled": false,
+    "actionType": "Show",
+    "logicType": "All",
+    "rules": []
+  }
+}

@@ -1,0 +1,89 @@
+﻿@inherits UmbracoViewPage<IntroWithCta>
+@{
+    var page = Umbraco.AssignedContentItem;
+}
+
+<div class="intro__section">
+    <div class="intro__wrap text-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-11 col-xl-10 col-xxl-7">
+                    <div class="intro__content px-xl-4">
+                        @if (!string.IsNullOrEmpty(Model.SubHeading))
+                        {
+                            <h6 class="block__subtitle">@Html.Raw(Model.SubHeading.Trim())</h6>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.HeadingTag))
+                        {
+                            var titleClass = "";
+                            if (Model.HeadingTag.ToLower() == "h1")
+                            {
+                                titleClass = " h2";
+                            }
+                            @Html.Wrap(Model.HeadingTag, Model.Heading.Trim(), new { @class = "block__title" + titleClass })
+                        }
+                        else
+                        {
+                            <h2 class="block__title">@Html.Raw(Model.Heading.Trim())</h2>
+                        }
+                        @{
+                            var fontSize = "font-20";
+                            if (page.ContentType.Alias == "homePage")
+                            {
+                                fontSize = "font-25";
+                            }
+                        }
+                        <div class="@fontSize">
+                            @Html.Raw(Model.Description)
+                        </div>
+                    </div>
+                    @if (Model.Buttons != null && Model.Buttons.Count() > 0)
+                    {
+                        <div class="intro__button">
+                            @foreach (var btn in Model.Buttons)
+                            {
+                                <a href="@btn.ButtonLink.GetLinkUrl()" class="btn btn-outline-navy-blue">@btn.ButtonLabel</a>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+
+            @if (Model.MoreInfo != null && Model.MoreInfo.Count() > 0)
+            {
+                <div class="row justify-content-center">
+                    <div class="col-12 col-xxl-10">
+                        <div class="intro__columns d-flex flex-wrap justify-content-between px-xxl-5">
+                            @foreach (var item in Model.MoreInfo)
+                            {
+                                <div class="intro__column">
+                                    <h6>@item.Title.Trim()</h6>
+                                    <div class="font-20">
+                                        <p>@item.Details.Trim()</p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    @if (Model.BottomDivider == true)
+    {
+        var dividerClass ="";
+        if(page.ContentType.Alias != "resortsHomePage")
+        {
+            dividerClass = "divider divider-black";
+        }
+
+        <div class="text-center @dividerClass">
+            @if (Model.DividerSeal != null)
+            {
+                <div class="divider__logo rounded-circle">
+                    <img src="@Model.DividerSeal.Url()" alt="Shell" class="img-fluid" />
+                </div>
+            }
+        </div>
+    }
+</div>

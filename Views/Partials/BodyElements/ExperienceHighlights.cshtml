@@ -1,0 +1,78 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.ExperienceHighlights>
+@using ContentModels = SunSiyam.Core.Models;
+
+<div class="experiences__section experiences__@Model.ResortsCategory.ToLower()">
+    <div class="experiences__intro divider">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-11 col-xl-10 col-xxl-7">
+                    <div class="experiences__intro-title">@Model.ResortsCategory Collection</div>
+                    <div class="experiences__intro-description font-18">
+                        @Model.Description
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.SelectResort != null && Model.SelectResort.Count() > 0)
+    {
+        var i = 0;
+        foreach (var resort in Model.SelectResort)
+        {
+            ResortsHomePage selectedResort = resort.SelectResort.FirstOrDefault() as ResortsHomePage;
+
+            if (i > 0)
+            {
+                <div class="experiences__intro divider"></div>
+            }
+            i++;
+            <div class="experiences__wrap">
+                <div class="experiences__head">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-lg-11 col-xl-10 col-xxl-7">
+                                <div class="experiences__logo">
+                                    @Html.Raw(System.IO.File.ReadAllText(Server.MapPath(selectedResort.ResortLogo.Url())))
+                                </div>
+                                <div class="experiences__description text-black font-20">
+                                    @resort.ResortIntro
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @if (resort.SelectExperiences != null && resort.SelectExperiences.Count() > 0)
+                {
+                    <div class="experiences__content">
+                        <div class="experiences__slider">
+                            @foreach (var experiences in resort.SelectExperiences.OfType<ExperienceDetailsPage>())
+                            {
+                                <div class="experiences__slide">
+                                    <a href="@experiences.Url()">
+                                        <div class="experiences__slide-image">
+                                            <img src="@experiences.FeaturedImage.GetCroppedImageUrl("468x630")" alt="@experiences.FeaturedImage.Name" class="img-fluid">
+                                        </div>
+                                        <div class="experiences__slide-title">@experiences.Heading</div>
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+                @if (resort.Buttons != null && resort.Buttons.Count() > 0)
+                {
+                    <div class="experiences__button">
+                        <div class="container">
+                            @foreach (var btn in resort.Buttons)
+                            {
+                                <a href="@btn.ButtonLink.GetLinkUrl()" class="btn btn-outline-black">@btn.ButtonLabel</a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    }
+    <div class="divider divider-gray"></div>
+</div>

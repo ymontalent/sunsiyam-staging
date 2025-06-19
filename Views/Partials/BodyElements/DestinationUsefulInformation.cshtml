@@ -1,0 +1,76 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.DestinationUsefulInformation>
+@using ContentModels = SunSiyam.Core.Models;
+@{
+
+}
+
+<div class="usefulInformation__section">
+    <div class="usefulInformation__wrap block__padding">
+        <div class="container">
+            <div class="usefulInformation__head">
+                <div class="row">
+                    <div class="col-12 col-lg-6 col-xxl-6">
+                        <h2 class="block__title">@Html.Raw(Model.Heading)</h2>
+                    </div>
+                    <div class="col-12 col-lg-6 col-xxl-4">
+                        <div class="block__description text-navy-blue font-20">
+                            @Model.Description
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if (Model.Faqs != null && Model.Faqs.Count() > 0)
+            {
+                <div class="usefulInformation__content">
+                    <div class="usefulInformation__accordion" id="usefulInformation__accordion">
+                        @{
+                            var i = 0;
+                            var socialPost = Model.Faqs;
+                            var halfCount = socialPost.Count() / 2;
+                            var leftPosts = socialPost.Take(halfCount);
+                            var rightPosts = socialPost.Skip(halfCount);
+                            <div class="row">
+                                <div class="col-12 col-lg-6">
+                                    @foreach (var faq in leftPosts)
+                                    {
+                                        <div class="usefulInformation__accordion-item">
+                                            <div class="usefulInformation__accordion-header" id="usefulInformation__accordion-@i">
+                                                <button class="usefulInformation__accordion-button collapsed font-26" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@i" aria-expanded="false" aria-controls="collapse-@i">@faq.Question</button>
+                                            </div>
+                                            <div id="collapse-@i" class="usefulInformation__accordion-collapse collapse" aria-labelledby="usefulInformation__accordion-@i" data-bs-parent="#usefulInformation__accordion">
+                                                <div class="usefulInformation__accordion-content font-20">
+                                                    @faq.Answer
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        i++;
+                                    }
+                                </div>
+                                <div class="col-12 col-lg-6">
+                                    @foreach (var faq in rightPosts)
+                                    {
+                                        <div class="usefulInformation__accordion-item">
+                                            <div class="usefulInformation__accordion-header" id="usefulInformation__accordion-@i">
+                                                <button class="usefulInformation__accordion-button collapsed font-26" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@i" aria-expanded="false" aria-controls="collapse-@i">@faq.Question</button>
+                                            </div>
+                                            <div id="collapse-@i" class="usefulInformation__accordion-collapse collapse" aria-labelledby="usefulInformation__accordion-@i" data-bs-parent="#usefulInformation__accordion">
+                                                <div class="usefulInformation__accordion-content font-20">
+                                                    @faq.Answer
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        i++;
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="divider divider-gray"></div>
+</div>

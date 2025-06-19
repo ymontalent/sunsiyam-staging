@@ -1,0 +1,63 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.InfoSectionWithImageSlider>
+@using ContentModels = SunSiyam.Core.Models;
+
+
+<div class="tabbed__section">
+    <div class="tabbed__wrap block__padding">
+        <div class="container">
+            <div class="tabbed__head">
+                @if (!string.IsNullOrEmpty(Model.HeadingTag))
+                {
+                    var titleClass = "";
+                    if (Model.HeadingTag.ToLower() == "h1")
+                    {
+                        titleClass = " h2";
+                    }
+                    @Html.Wrap(Model.HeadingTag, Model.Heading.Trim(), new { @class = "block__title"+titleClass })
+                }
+                else
+                {
+                    <h2 class="block__title">@Html.Raw(Model.Heading.Trim())</h2>
+                }
+            </div>
+            <div class="tabbed__content">
+                <div class="row">
+                    <div class="col-12 col-lg-5 col-xl-4">
+                        <div class="d-flex flex-column gap-4 h-100">
+                            <div class="tabbed__intro text-black font-20 pe-xxl-5">
+                                @Model.Description
+                            </div>
+
+                            @if (Model.Highlights != null && Model.Highlights.Count() > 0)
+                            {
+                                <div class="tabbed__lists text-black mt-auto">
+                                    @foreach (var item in Model.Highlights)
+                                    {
+                                        <div class="tabbed__list">
+                                            <div class="tabbed__heading font-26 active">@item.Title</div>
+                                            <div class="tabbed__description font-20">
+                                                @item.Description
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-7 col-xl-8">
+                        @if (Model.Highlights != null && Model.Highlights.Count() > 0)
+                        {
+                            <div class="tabbed__slider">
+                                @foreach (var item in Model.Highlights)
+                                {
+                                    <div class="tabbed__slide" style="background-image: url('@item.Image.GetCroppedImageUrl("1033x1234")');"></div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="divider divider-gray"></div>
+</div>

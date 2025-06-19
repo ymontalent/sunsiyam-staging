@@ -1,0 +1,59 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.ResortHighlight>
+@using ContentModels = SunSiyam.Core.Models;
+@{
+	Layout = null;
+}
+
+<div class="resort-highlights__section">
+    <div class="resort-highlights__wrap block__padding">
+        <div class="container">
+            <div class="resort-highlights__image">
+                <img src="@Model.HighlightImage.GetCroppedImageUrl("1640x922")" alt="@Model.HighlightImage.Name" class="img-fluid">
+            </div>
+            <div class="resort-highlights__head">
+                <h2 class="block__title">@Html.Raw(Model.Heading.Trim())</h2>
+            </div>
+            <div class="resort-highlights__content">
+                <div class="row">
+                    <div class="col-12 col-md-6 col-lg-5">
+                        <div class="resort-highlights__content-inner font-20">
+                            <div class="resort-highlights__description">
+                                @Model.Description
+                            </div>
+                            @if (Model.Buttons != null && Model.Buttons.Count() > 0)
+                            {
+                                <div class="resort-highlights__button mt-auto">
+                                    <div class="resort-highlights__button-text">@Umbraco.GetDictionaryValue("Click to download")</div>
+                                    <div class="resort-highlights__button-inner">
+                                        @foreach (var btn in Model.Buttons)
+                                        {
+                                            <a href="@btn.ButtonLink.GetLinkUrl()" class="btn btn-outline-navy-blue">@btn.ButtonLabel</a>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    @if (Model.Highlights != null && Model.Highlights.Count() > 0)
+                    {
+                        <div class="col-12 col-md-6 col-lg-6 mx-lg-auto">
+                            <div class="resort-highlights__lists font-26">
+                                @foreach (var item in Model.Highlights)
+                                {
+                                    <div class="resort-highlights__list">
+                                        <div class="resort-highlights__list-image">
+                                            <img src="@item.Icon.Url()" alt="@item.Icon.Name">
+                                        </div>
+                                        <div class="resort-highlights__list-text">@item.HighlightText</div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="divider divider-gray"></div>
+</div>

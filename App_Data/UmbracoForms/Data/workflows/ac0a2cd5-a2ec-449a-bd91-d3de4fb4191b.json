@@ -1,0 +1,28 @@
+{
+  "id": "ac0a2cd5-a2ec-449a-bd91-d3de4fb4191b",
+  "name": "Send template email to yash.marquee@gmail.com",
+  "form": "074d54b5-7858-4ef0-b358-d58608321504",
+  "active": true,
+  "includeSensitiveData": "False",
+  "workflowTypeId": "17c61629-d984-4e86-b43b-a8407b3efea9",
+  "executesOn": "Submitted",
+  "settings": {
+    "RazorViewFilePath": "Forms/Emails/Default-Template.cshtml",
+    "Attachment": "",
+    "Email": "yash.marquee@gmail.com",
+    "CcEmail": "",
+    "BccEmail": "",
+    "SenderEmail": "",
+    "ReplyToEmail": "",
+    "Subject": "'{form_name}' Subscribed Newsletter"
+  },
+  "sortOrder": 1,
+  "isMandatory": false,
+  "condition": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "enabled": false,
+    "actionType": "Show",
+    "logicType": "All",
+    "rules": []
+  }
+}

@@ -1,0 +1,50 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.ImageCarousel>
+@using ContentModels = SunSiyam.Core.Models;
+
+<div class="gallery__section">
+    <div class="gallery__wrap">
+        <div class="gallery__head">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-lg-11 col-xl-10 col-xxl-7">
+                        @if (!string.IsNullOrEmpty(Model.HeadingTag))
+                        {
+                            var titleClass = "";
+                            if (Model.HeadingTag.ToLower() == "h1")
+                            {
+                                titleClass = " h2";
+                            }
+                            @Html.Wrap(Model.HeadingTag, Model.Heading.Trim(), new { @class = "block__title" + titleClass })
+                        }
+                        else
+                        {
+                            <h2 class="block__title">@Html.Raw(Model.Heading.Trim())</h2>
+                        }
+
+                        @if (!string.IsNullOrEmpty(Model.Description.ToString()))
+                        {
+                            <div class="block__description text-navy-blue font-20 px-xxl-3 pt-lg-4">
+                                @Model.Description
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (Model.Images != null && Model.Images.Count() > 0)
+        {
+            <div class="gallery__slider">
+                @foreach (var item in Model.Images)
+                {
+                    <div class="gallery__slide">
+                        <a href="@item.Url()" data-toggle="lightbox" data-gallery="@Model.Heading.ToLower().Replace(" ","")-gallery" class="gallery__slide-image">
+                            <img src="@item.GetCroppedImageUrl("536x348")" alt="@item.Name" class="img-fluid">
+                        </a>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+    <div class="divider divider-gray"></div>
+</div>

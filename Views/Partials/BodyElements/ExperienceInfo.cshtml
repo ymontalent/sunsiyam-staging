@@ -1,0 +1,101 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.ExperienceInfo>
+@using ContentModels = SunSiyam.Core.Models;
+
+<div class="weddingOptions__section">
+    <div class="weddingOptions__wrap">
+        <div class="container">
+            <div class="weddingOptions__head">
+                <div class="row justify-content-center text-center">
+                    <div class="col-12 col-lg-11 col-xl-10 col-xxl-7">
+                        @if (!string.IsNullOrEmpty(Model.HeadingTag))
+                        {
+                            var titleClass = "";
+                            if (Model.HeadingTag.ToLower() == "h1")
+                            {
+                                titleClass = " h2";
+                            }
+                            @Html.Wrap(Model.HeadingTag, Model.Heading.Trim(), new { @class = "block__title" + titleClass })
+                        }
+                        else
+                        {
+                            <h2 class="block__title">@Html.Raw(Model.Heading.Trim())</h2>
+                        }
+                        <div class="block__description text-navy-blue font-20 px-xxl-3 pt-lg-4">
+                            @Model.Description
+                        </div>
+                        @if (Model.Buttons != null && Model.Buttons.Count() > 0)
+                        {
+                            <div class="block__button mt-4">
+                                @foreach (var btn in Model.Buttons)
+                                {
+                                    <a href="@btn.ButtonLink.GetLinkUrl()" class="btn btn-outline-navy-blue">@btn.ButtonLabel</a>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="weddingOptions__content font-20">
+                <div class="weddingOptions__one">
+                    <div class="row position-relative">
+                        <div class="col-12 col-lg-6">
+                            <div class="weddingOptions__info">
+                                @if (Model.Glance.Any())
+                                {
+                                    <h3 class="weddingOptions__title">@Umbraco.GetDictionaryValue("At a glance")</h3>
+                                    <div class="weddingOptions__description">
+                                        <ul class="custom__list list-unstyled mb-0">
+                                            @foreach (var item in Model.Glance)
+                                            {
+                                                <li>@item</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                }
+                                @if (Model.GlanceLeftOverlayImage != null)
+                                {
+                                    <div class="weddingOptions__parallax-image">
+                                        <img src="@Model.GlanceLeftOverlayImage.GetCroppedImageUrl("383x542")" alt="@Model.GlanceLeftOverlayImage.Name" class="img-fluid" />
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 pe-xxl-0">
+                            @if (Model.GlanceLeftImage != null)
+                            {
+                                <div class="weddingOptions__image">
+                                    <img src="@Model.GlanceLeftImage.GetCroppedImageUrl("820x995")" alt="@Model.GlanceLeftImage.Name" class="img-fluid" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                @if (Model.OtherSectionLeftImage != null && !string.IsNullOrEmpty(Model.OtherSectionTitle))
+                {
+                    <div class="weddingOptions__two">
+                        <div class="row flex-column-reverse flex-lg-row">
+                            <div class="col-12 col-lg-6 position-relative">
+                                <div class="weddingOptions__image">
+                                    <img src="@Model.OtherSectionLeftImage.GetCroppedImageUrl("820x1046")" alt="@Model.OtherSectionLeftImage.Name" class="img-fluid" />
+                                </div>
+                                <div class="weddingOptions__stamp">
+                                    <img src="@Model.OtherSectionLeftOverlayImage.GetCroppedImageUrl("206x212")" alt="@Model.OtherSectionLeftOverlayImage.Name" class="img-fluid" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 position-relative d-flex justify-content-between flex-column">
+                                <div class="weddingOptions__info">
+                                    <h3 class="weddingOptions__title mb-0">@Model.OtherSectionTitle</h3>
+                                    <div class="weddingOptions__description">
+                                        @Model.OtherSectionDescription
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="divider divider-gray"></div>
+</div>

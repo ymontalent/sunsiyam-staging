@@ -1,0 +1,120 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.OffersHighlights>
+@using ContentModels = SunSiyam.Core.Models;
+
+<div class="offerfilter__section">
+    <div class="offerfilter__wrap">
+        <div class="container">
+            <div class="offerfilter__head">
+                <div class="row justify-content-center text-center">
+                    <div class="col-12 col-lg-11 col-xl-10 col-xxl-7">
+                        @if (!string.IsNullOrEmpty(Model.HeadingTag))
+                        {
+                            var titleClass = "";
+                            if (Model.HeadingTag.ToLower() == "h1")
+                            {
+                                titleClass = " h2";
+                            }
+                            <div class="transform--will-fade-up transition--1000" data-animate-in-view="transform--completed-fade-up">
+                                @Html.Wrap(Model.HeadingTag.Trim(), Model.Heading.Trim(), new { @class = "block__title"+ titleClass })
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="slider__sub-title transform--will-fade-up transition--1000" data-animate-in-view="transform--completed-fade-up">
+                                <h2 class="block__title">@Model.Heading.Trim()</h2>
+                            </div>
+                        }
+                        <div class="block__description font-20">
+                            @Model.Description
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="offerfilter__content">
+                @{
+                    List<string> filtersLable = new List<string>();
+                    filtersLable.Add("All");
+
+                    if (Model.SelectOffers != null && Model.SelectOffers.Count() > 0)
+                    {
+                        foreach (var offer in Model.SelectOffers.OfType<OfferDetailsPage>())
+                        {
+                            if (offer.AncestorOrSelf<ResortsHomePage>() == null)
+                            {
+                                continue;
+                            }
+
+                            ResortsHomePage resort = offer.AncestorOrSelf<ResortsHomePage>();
+
+                            if (filtersLable.IndexOf(resort.Name) < 0)
+                            {
+                                filtersLable.Add(resort.Name.Trim());
+                            }
+                        }
+                    }
+
+                    if (filtersLable.Any())
+                    {
+                        <ul class="offerfilter__tabs list-unstyled">
+                            @{
+                                var i = 0;
+                            }
+                            @foreach (var lable in filtersLable)
+                            {
+                                var isActive = "";
+                                if (i == 0)
+                                {
+                                    isActive = "active";
+                                    i++;
+                                }
+                                <li data-filter="@lable.Trim().ToLower().Replace(" ", "_")" class="offerfilter__tabs-btn btn @isActive">@lable</li>
+                            }
+                        </ul>
+
+                        <div class="offerfilter__tab-content">
+                            @foreach (var offer in Model.SelectOffers.OfType<OfferDetailsPage>())
+                            {
+                                if (offer.AncestorOrSelf<ResortsHomePage>() == null)
+                                {
+                                    continue;
+                                }
+
+                                ResortsHomePage resort = offer.AncestorOrSelf<ResortsHomePage>();
+
+                                <div class="offerfilter__item @resort.ResortCategory.ToLower() @resort.Name.Trim().ToLower().Replace(" ", "_")">
+                                    <div class="offerfilter__item-image">
+                                        <img src="@offer.OfferImage.GetCroppedImageUrl("536x450")" alt="@offer.OfferImage.Name" class="img-fluid" />
+                                    </div>
+                                    <div class="offerfilter__item-tag">@resort.Name</div>
+                                    <div class="offerfilter__item-content">
+                                        <h5 class="offerfilter__item-title">@offer.OfferTitle</h5>
+                                        @if (offer.OfferFeatures != null && offer.OfferFeatures.Count() > 0)
+                                        {
+                                            <ul class="offerfilter__item-list list-unstyled font-18">
+                                                @foreach (var feature in offer.OfferFeatures.Take(3))
+                                                {
+                                                    <li>@feature</li>
+                                                }
+                                            </ul>
+
+                                            <div class="offerfilter__item-button">
+                                                <a href="@offer.Url()" class="btn btn-outline-black">@Umbraco.GetDictionaryValue("Discover")</a>
+                                                @if (offer.OfferBookingUrl != null)
+                                                {
+                                                    <a href="@offer.OfferBookingUrl.GetLinkUrl()" class="btn btn-outline-black btn-hover-black">@offer.OfferBookingUrl.Name</a>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    <div class="divider divider-gray"></div>
+</div>

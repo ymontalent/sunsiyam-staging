@@ -1,0 +1,78 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage
+@{
+    Layout = null;
+
+    var currentLanguage = Model.GetCultureFromDomains().Split(new char[] { '-' }).FirstOrDefault().ToUpper();
+    var lang = String.IsNullOrEmpty(currentLanguage) ? "" : currentLanguage.ToLower();
+
+    var websiteSettings = Umbraco.GetAuxiliaryContent<IAuxiliaryFoldersComposition, WebsiteSettings>(s => s.WebsiteSettings);
+    var page = Umbraco.AssignedContentItem;
+    Umbraco.RenderMacro("TestError");
+}
+<!DOCTYPE html>
+<html lang="@lang" class="@lang">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" href="@websiteSettings.WebsiteFavicon.Url()" />
+    @Html.Partial("Seo")
+    @Html.Partial("HrefLang")
+    @Html.Raw(websiteSettings.HeaderMarkup)
+    <link rel="stylesheet" type="text/css" href="/assets/main.css">
+    <!--<script src="/scripts/links.js"></script>-->
+    <!-- Userback Widget -->
+<script>
+  window.Userback = window.Userback || {};
+  Userback.access_token = "A-wAOUNDIjf5PmqTNHqbfd2CGBp";
+  (function(d) {
+    var s = d.createElement('script');
+    s.async = true;
+    s.src = 'https://static.userback.io/widget/v1.js';
+    (d.head || d.body).appendChild(s);
+  })(document);
+</script>
+
+
+
+</head>
+
+<body class="@ViewBag.BodyClass">
+
+    @if (websiteSettings.ShowCookiePanel == true && !websiteSettings.CookiePanelText.ToString().IsNullOrWhiteSpace())
+    {
+        <div class="cookie-message" id="notification-banner" data-notification-banner-keep-hidden-for-n-days="1">
+            <div class="notification-banner__wrapper grid-x grid-margin-x">
+                <div class="notification-banner__text cell small-12 medium-auto large-auto vertical-center">
+                    <p>
+                        @websiteSettings.CookiePanelText.RemoveSurroundingTag("p")
+                        <a href="#" class="cookiebar-close">Accept</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
+
+    @Html.Raw(websiteSettings.BodyMarkup)
+
+    @Html.Partial("NotificationBanner")
+
+    @Html.Partial("Header", page)
+
+
+    <main id="mainContent" role="main">
+        @RenderBody()
+    </main>
+
+    @Html.Partial("Footer")
+
+    <script src="/assets/js/popper.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/lightbox.bundle.min.js"></script>
+
+    <script src="/assets/main.js"></script>
+    @RenderSection("FooterScript", required: false)
+
+    @Html.Raw(websiteSettings.BodyBottomMarkup)
+</body>
+</html>

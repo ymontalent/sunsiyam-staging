@@ -1,0 +1,23 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.ExperienceInquire>
+@using ContentModels = SunSiyam.Core.Models;
+
+<div class="weddingEnquiry__section" id="enquiry">
+    <div class="weddingEnquiry__wrap">
+        <div class="container">
+            <div class="weddingEnquiry__head">
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+                        <h2 class="block__title">@Html.Raw(Model.Heading)</h2>
+                        <div class="block__description text-navy-blue font-20">
+                            @Model.Description
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="weddingEnquiry__content">
+                @Html.Action("RenderForm", "UmbracoForms", new { formId = Model.Form, theme = "SunSiyam", includeScripts = false })
+            </div>
+        </div>
+    </div>
+    <div class="divider divider-gray"></div>
+</div>

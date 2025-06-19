@@ -1,0 +1,70 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.OfferSlider>
+@using ContentModels = SunSiyam.Core.Models;
+@{
+    var page = Umbraco.AssignedContentItem;
+}
+
+<div class="offers__section">
+    <div class="offers__wrap block__padding">
+        <div class="container">
+            <div class="offers__head">
+                <h6 class="block__sub-title text-black mb-xl-2">@Model.SubHeading.Trim()</h6>
+                <div class="row">
+                    <div class="col-12 col-lg-6 col-xxl-6">
+                        <h2 class="block__title">@Html.Raw(Model.Heading)</h2>
+                    </div>
+                    <div class="col-12 col-lg-6 col-xxl-5">
+                        <div class="block__description text-black font-20">
+                            @Model.Description
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="offers__content">
+                @if (Model.SelectOffers != null && Model.SelectOffers.Count() > 0)
+                {
+                    <div class="offers__slider">
+                        @foreach (var offer in Model.SelectOffers.OfType<OfferDetailsPage>())
+                        {
+                            if (offer.AncestorOrSelf<ResortsHomePage>() == null)
+                            {
+                                continue;
+                            }
+
+                            ResortsHomePage resort = offer.AncestorOrSelf<ResortsHomePage>();
+
+                            <div class="offers__slide">
+                                <h6 class="offers__slide-category text-black">@offer.OfferCategory Offers</h6>
+                                <div class="offers__slide-image">
+                                    <img src="@offer.OfferImage.GetCroppedImageUrl("812x487")" alt="@offer.OfferTitle" class="img-fluid">
+                                </div>
+                                <div class="offers__slide-content">
+                                    <h6 class="offers__slide-sub-title">@resort.Name.Trim()</h6>
+                                    <h5 class="offers__slide-title">@offer.OfferTitle</h5>
+                                    <div class="offers__slide-text font-18">
+                                        @offer.OfferDescription
+                                    </div>
+
+                                    <div class="offers__slide-button">
+                                        <a href="@offer.Url()" class="btn btn-outline-black">@Umbraco.GetDictionaryValue("View Offer")</a>
+                                        @if (offer.OfferBookingUrl != null)
+                                        {
+                                            <a href="@offer.OfferBookingUrl.GetLinkUrl()" class="btn btn-outline-black btn-hover-black">@offer.OfferBookingUrl.Name.Trim()</a>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            @if (Model.ShowBrowseMore == true)
+            {
+                <div class="offers__button text-center">
+                    <a href="@Model.BrowseMoreButton.GetLinkUrl()" class="btn btn-outline-black">@Model.BrowseMoreButton.Name.Trim()</a>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="divider divider-gray"></div>
+</div>

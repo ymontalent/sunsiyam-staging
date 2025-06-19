@@ -1,0 +1,76 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.SocialWall>
+@using ContentModels = SunSiyam.Core.Models;
+@{
+	Layout = null;
+}
+<div class="social-marquee__section">
+    <div class="social-marquee__wrap block__padding">
+        <div class="social-marquee__head">
+            <div class="container">
+                <h6 class="block__sub-title text-black mb-xl-2">@Model.SubHeading</h6>
+                <div class="row">
+                    <div class="col-12 col-lg-9 col-xxl-10">
+                        <h2 class="block__title">@Model.Heading</h2>
+                    </div>
+                    <div class="col-12 col-lg-3 col-xxl-2">
+                        <div class="text-navy-blue font-20">
+                            @Model.Description
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (Model.SocialPosts != null && Model.SocialPosts.Count() > 0)
+        {
+            <div class="social-marquee__content">
+                <div class="social-marquee__items social-marquee__lfr">
+                    @foreach (var post in Model.SocialPosts)
+                    {
+                        <div class="social-marquee__item">
+                            @{
+                                var socialLink = "javascript:;";
+                                if (post.SocialLink != null)
+                                {
+                                    socialLink = post.SocialLink.GetLinkUrl().ToString();
+                                }
+                            }
+                            <a href="@socialLink">
+                                @if (post.SocialLogo != null)
+                                {
+                                    <div class="social-marquee__icon">
+                                        @Html.Raw(System.IO.File.ReadAllText(Server.MapPath(post.SocialLogo.Url())))
+                                    </div>
+                                }
+                                <img src="@post.SocialImage.GetCroppedImageUrl("319x396")" alt="@post.SocialImage.Name" class="img-fluid" />
+                            </a>
+                        </div>
+                    }
+                </div>
+                <div class="social-marquee__items social-marquee__rfl" dir="rtl">
+                    @foreach (var post in Model.SocialPosts.Reverse())
+                    {
+                        <div class="social-marquee__item">
+                            @{
+                                var socialLink = "javascript:;";
+                                if (post.SocialLink != null && post.SocialLink.IsValidLink())
+                                {
+                                    socialLink = post.SocialLink.GetLinkUrl().ToString();
+                                }
+                            }
+                            <a href="@socialLink">
+                                @if (post.SocialLogo != null)
+                                {
+                                    <div class="social-marquee__icon">
+                                        @Html.Raw(System.IO.File.ReadAllText(Server.MapPath(post.SocialLogo.Url())))
+                                    </div>
+                                }
+                                <img src="@post.SocialImage.GetCroppedImageUrl("319x396")" alt="@post.SocialImage.Name" />
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+    <div class="divider divider-gray"></div>
+</div>

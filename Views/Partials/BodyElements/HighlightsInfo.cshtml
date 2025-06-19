@@ -1,0 +1,73 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.HighlightsInfo>
+@using ContentModels = SunSiyam.Core.Models;
+
+<div class="weddingLocation__section">
+    <div class="weddingLocation__wrap">
+        <div class="container">
+            <div class="weddingLocation__head">
+                <h2 class="block__title">@Html.Raw(Model.Heading)</h2>
+            </div>
+            <div class="weddingLocation__content">
+                <div class="row">
+                    <div class="col-12 col-lg-5 col-xl-4">
+                        <div class="d-flex flex-column h-100">
+                            <div class="tabbed__intro text-black font-20 pe-xl-5">
+                                @Model.Description
+                            </div>
+
+                            @if (Model.Information.Any())
+                            {
+                                <div class="tabbed__lists text-black mt-auto">
+                                    @foreach (var item in Model.Information)
+                                    {
+                                        <div class="tabbed__list">
+                                            <div class="tabbed__heading font-26 active">@item.Title</div>
+                                            <div class="tabbed__description font-20">@item.Description</div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            @if (Model.DownloadableFiles.Any())
+                            {
+                                <div class="weddingLocation__button d-flex flex-column align-items-start">
+                                    <div class="weddingLocation__button-text font-20">@Umbraco.GetDictionaryValue("Click to download")</div>
+                                    <div class="weddingLocation__button-inner">
+                                        @foreach (var btn in Model.DownloadableFiles)
+                                        {
+                                            <a href="@btn.ButtonLink.GetLinkUrl()" class="btn btn-outline-navy-blue">@btn.ButtonLabel</a>
+                                        }
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-7 col-xl-8">
+                        @if (Model.Information.Any())
+                        {
+                            <div class="tabbed__slider">
+                                @foreach (var galleryItem in Model.Information)
+                                {
+                                    <div class="tabbed__slide" style="background-image: url('@galleryItem.Image.GetCroppedImageUrl("1033x1234")');"></div>
+                                }
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+            @if (Model.Buttons.Any())
+            {
+                <div class="weddingPackages__mainButton mt-xl-5">
+                    <div class="container text-center">
+                        @foreach (var btn in Model.Buttons)
+                        {
+                            <a href="@btn.ButtonLink.GetLinkUrl()" class="btn btn-outline-black">@btn.ButtonLabel</a>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="divider divider-gray"></div>
+</div>

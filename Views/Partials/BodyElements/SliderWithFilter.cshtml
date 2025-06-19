@@ -1,0 +1,156 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.SliderWithFilter>
+@using ContentModels = SunSiyam.Core.Models;
+@{
+    if (Model.SliderType == null)
+    {
+        return;
+    }
+
+    var sliderType = Model.SliderType.ToString();
+    var resorts = Model.Resorts;
+    var acccomodations = Model.Accomodations;
+    var experiences = Model.Experiences;
+    var offers = Model.Offers;
+
+    List<string> filterTabLable = new List<string>();
+    var filterTabLableSuffix = "";
+
+    if (sliderType == "Resorts" && resorts != null && resorts.Any())
+    {
+        filterTabLableSuffix = "Collections";
+        filterTabLable.Add("All");
+        foreach (var resort in resorts.OfType<ResortsHomePage>())
+        {
+            if (filterTabLable.IndexOf(resort.ResortCategory) < 0)
+            {
+                filterTabLable.Add(resort.ResortCategory);
+            }
+        }
+    }
+    if (sliderType == "Accomodations" && acccomodations != null && acccomodations.Any())
+    {
+        filterTabLableSuffix = "";
+        filterTabLable.Add("All");
+        foreach (var acccomodation in acccomodations.OfType<AccommodationsDetailsPage>())
+        {
+            if (filterTabLable.IndexOf(acccomodation.Category) < 0)
+            {
+                filterTabLable.Add(acccomodation.Category);
+            }
+        }
+    }
+}
+
+@if (filterTabLable.Count() > 0)
+{
+    <div class="sliderfilter__section">
+        <div class="sliderfilter__wrap block__padding overflow-hidden">
+            <div class="container">
+                <div class="sliderfilter__head pt-2">
+                    <div class="row">
+                        <div class="col-12 col-lg-6 col-xxl-6">
+                            @if (!string.IsNullOrEmpty(Model.SliderSubHeading))
+                            {
+                                <h6 class="block__sub-title text-black mb-xl-3">@Model.SliderSubHeading</h6>
+                            }
+                            <h2 class="block__title">@Html.Raw(Model.SliderHeading)</h2>
+                        </div>
+                        <div class="col-12 col-lg-6 col-xxl-5">
+                            <div class="block__description text-black font-20">
+                                @Model.SliderDescription
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sliderfilter__content">
+                    <ul class="sliderfilter__tabs">
+                        @{
+                            var i = 0;
+                            foreach (var lable in filterTabLable)
+                            {
+                                var isActive = "";
+                                if (i == 0)
+                                {
+                                    isActive = "active";
+                                }
+                                i++;
+                                <li data-filter="@lable.Replace(" ", "_").ToLower()" class="sliderfilter__item @isActive">@lable @filterTabLableSuffix</li>
+                            }
+                        }
+                    </ul>
+                    <div class="sliderfilter__tab-content">
+                        <div class="sliderfilter__slider">
+                            @if (resorts != null && resorts.Count() > 0)
+                            {
+                                foreach (var resort in resorts.OfType<ResortsHomePage>())
+                                {
+                                    <div class="sliderfilter__slide @resort.ResortCategory.Replace(" ", "_").ToLower()">
+                                        <div class="sliderfilter__slide-wrap">
+                                            <a href="@resort.Url()" class="img-fluid sliderfilter__slide-link">
+                                                <img src="@resort.FeaturedImage.GetCroppedImageUrl("536x892")" class="img-fluid sliderfilter__slide-image" alt="Slide Image" />
+                                            </a>
+                                            <div class="sliderfilter__slide-overlay">
+                                                <div class="sliderfilter__slide-content">
+                                                    <div class="sliderfilter__slide-logo">
+                                                        @Html.Raw(System.IO.File.ReadAllText(Server.MapPath(resort.ResortLogo.Url())))
+                                                    </div>
+                                                    <h6 class="sliderfilter__slide-sub-title text-white">@Html.Raw(resort.ResortTagline)</h6>
+                                                </div>
+                                                <div class="sliderfilter__slide-button mt-auto">
+                                                    <a href="@resort.Url()" class="btn btn-outline-light-gray">View Resort</a>
+                                                    @if (resort.BookingUrl != null && resort.BookingUrl.IsValidLink())
+                                                    {
+                                                        <a href="@resort.BookingUrl.GetLinkUrl()" class="btn btn-outline-light-gray">@Umbraco.GetDictionaryValue("Book Now")</a>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+
+                            @if (acccomodations != null && acccomodations.Count() > 0)
+                            {
+                                foreach (var accommodation in acccomodations.OfType<AccommodationsDetailsPage>())
+                                {
+                                    <div class="sliderfilter__slide @accommodation.Category.Replace(" ", "_").ToLower()">
+                                        <div class="sliderfilter__slide-wrap">
+                                            <a href="@accommodation.Url()" class="img-fluid sliderfilter__slide-link">
+                                                <img src="@accommodation.FeaturedImage.GetCroppedImageUrl("536x892")" class="img-fluid sliderfilter__slide-image" alt="Slide Image" />
+                                            </a>
+                                            <div class="sliderfilter__slide-overlay">
+                                                <div class="sliderfilter__slide-content">
+                                                    @*<h3 class="sliderfilter__slide-title text-white">@accommodation.Name.Trim()</h3>*@
+                                                    <h3 class="sliderfilter__slide-title text-white">@accommodation.Name</h3>
+                                                </div>
+                                                <div class="mt-auto">
+                                                    @if (accommodation.Features != null && accommodation.Features.Count() > 0)
+                                                    {
+                                                        <ul class="sliderfilter__slide-list text-white font-18">
+                                                            @foreach (var item in accommodation.Features.Take(3))
+                                                            {
+                                                                <li>@item</li>
+                                                            }
+                                                        </ul>
+                                                    }
+                                                    <div class="sliderfilter__slide-button">
+                                                        <a href="@accommodation.Url()" class="btn btn-outline-light-gray">@Umbraco.GetDictionaryValue("Discover")</a>
+                                                        @if (accommodation.BookingUrl != null && accommodation.BookingUrl.IsValidLink())
+                                                        {
+                                                            <a href="@accommodation.BookingUrl.GetLinkUrl()" class="btn btn-outline-light-gray">@Umbraco.GetDictionaryValue("Book Now")</a>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="divider divider-gray"></div>
+    </div>
+}

@@ -1,0 +1,143 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.AccommodationsDetailsPage>
+@using ContentModels = SunSiyam.Core.Models;
+@{
+    Layout = "layout.cshtml";
+    var page = Umbraco.AssignedContentItem;
+    var hasResortParent = Model.AncestorOrSelf<ResortsHomePage>();
+    if (hasResortParent != null)
+    {
+        ViewBag.BodyClass = "resort-" + hasResortParent.ResortCategory.ToLower().Trim()+ " single header__black";
+    }
+
+    List<string> accommodationsLabels = new List<string>();
+    if (page.Parent != null && page.Parent.Children.Count() > 1)
+    {
+        foreach (var accommodation in page.Parent.Children.OfType<AccommodationsDetailsPage>())
+        {
+            if(accommodationsLabels.IndexOf(accommodation.Category) < 0 && accommodation.Id != page.Id)
+            {
+                accommodationsLabels.Add(accommodation.Category);
+            }
+        }
+    }
+}
+<div class="accommodation-intro__section">
+    <div class="accommodation-intro__wrap text-center">
+        <div class="container">
+            <div class="accommodation-intro__image">
+                <img src="@Model.FeaturedImage.GetCroppedImageUrl("1640x705")" alt="@Model.Name.Trim()" class="img-fluid">
+            </div>
+            <h1 class="block__title h2">@Model.Name.Trim()</h1>
+            <div class="block__description intro__description font-26 pt-xl-1">
+                @Model.LongDescription
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="accommodation-gallery__section">
+    <div class="accommodation-gallery__wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xxl-7">
+                    @if (Model.GalleryImages.Any())
+                    {
+                        <div class="accommodation-gallery__slider">
+                            @foreach (var img in Model.GalleryImages)
+                            {
+                                <div class="accommodation-gallery__slide">
+                                    <div class="accommodation-gallery__slide-wrap">
+                                        <a href="@img.Url()" data-toggle="lightbox" data-gallery="gallery" class="accommodation-gallery__slide-link">
+                                            <img src="@img.GetCroppedImageUrl("947x761")" alt="@img.Name" class="accommodation-gallery__slide-image">
+                                        </a>
+                                        <div class="accommodation-gallery__slide-overlay">
+                                            <h6 class="accommodation-gallery__slide-title text-white">@Umbraco.GetDictionaryValue("Gallery")</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+                <div class="col-12 col-lg-6 col-xxl-5">
+                    <div class="accommodation-gallery__info">
+                        @if (Model.Features.Any())
+                        {
+                            <h6 class="block__sub-title text-black mb-0">@Umbraco.GetDictionaryValue("Key Features")</h6>
+                            <ul class="custom__list list-unstyled mb-0">
+                                @foreach (var item in Model.Features)
+                                {
+                                    <li>@item</li>
+                                }
+                            </ul>
+                        }
+                        <div class="accommodation-gallery__description mt-auto font-20">
+                            @Model.ShortDescription
+                        </div>
+                        @if (Model.BookingUrl != null && Model.BookingUrl.IsValidLink())
+                        {
+                            <div class="accommodation-gallery__button flex-wrap">
+                                <a href="@Model.BookingUrl.GetLinkUrl()" class="btn btn-outline-black">@Umbraco.GetDictionaryValue("Book Now")</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.FloorPlan != null)
+{
+    <div class="accommodation-inline-image__section">
+        <div class="accommodation-inline-image__wrap">
+            <div class="container">
+                <img src="@Model.FloorPlan.Url()" alt="@Model.FloorPlan.Name" class="img-fluid" />
+            </div>
+        </div>
+        <div class="divider divider-gray"></div>
+    </div>
+}
+
+@if (accommodationsLabels.Count() > 0)
+{
+    <div class="accommodation-sliderfilter__section">
+        <div class="accommodation-sliderfilter__wrap">
+            <div class="accommodation-sliderfilter__head">
+                <div class="container text-center">
+                    <h6 class="block__sub-title text-black">@Umbraco.GetDictionaryValue("You might also be interested in")</h6>
+                    <ul class="accommodation-sliderfilter__tabs d-flex align-items-center justify-content-center flex-wrap">
+                        <li data-filter="all" class="accommodation-sliderfilter__tabs-btn btn active">All</li>
+                        @foreach (var label in accommodationsLabels)
+                        {
+                            <li data-filter="@label.Replace(" ","").ToLower()" class="accommodation-sliderfilter__tabs-btn btn">@label</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+
+            <div class="accommodation-sliderfilter__content">
+                <div class="accommodation-sliderfilter__slider">
+                    @if (page.Parent != null && page.Parent.Children.Count() > 1)
+                    {
+                        foreach (var accommodation in page.Parent.Children.OfType<AccommodationsDetailsPage>())
+                        {
+                            if (accommodation.Id != page.Id)
+                            {
+                                <div class="accommodation-sliderfilter__slide @accommodation.Category.Replace(" ","").ToLower()">
+                                    <a href="@accommodation.Url()">
+                                        <div class="accommodation-sliderfilter__slide-image">
+                                            <img src="@accommodation.FeaturedImage.GetCroppedImageUrl("468x630")" alt="@accommodation.Name" class="img-fluid">
+                                        </div>
+                                        <div class="accommodation-sliderfilter__slide-title">@accommodation.Name</div>
+                                    </a>
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="divider divider-gray"></div>
+    </div>
+}

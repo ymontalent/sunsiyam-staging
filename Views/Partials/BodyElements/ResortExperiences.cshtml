@@ -1,0 +1,40 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.ResortExperiences>
+@using ContentModels = SunSiyam.Core.Models;
+
+<div class="resort-experiences__section">
+    <div class="resort-experiences__wrap">
+        <div class="container">
+            <div class="resort-experiences__head">
+                <h6 class="block__sub-title text-black mb-xl-3">@Model.SubHeading</h6>
+                <h2 class="block__title">@Model.Heading</h2>
+            </div>
+            @if (Model.SelectExperience.Any())
+            {
+                <div class="resort-experiences__content">
+                    <div class="row">
+                        <div class="col-12 col-lg-5 col-xl-4">
+                            <div class="tabbed__lists text-black">
+                                @foreach (var exp in Model.SelectExperience.OfType<ExperienceDetailsPage>())
+                                {
+                                    <div class="tabbed__list">
+                                        <div class="tabbed__heading font-26 active">@exp.Name</div>
+                                        <div class="tabbed__description font-20">@exp.ShortDescription</div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-7 col-xl-8">
+                            <div class="tabbed__slider">
+                                @foreach (var exp in Model.SelectExperience.OfType<ExperienceDetailsPage>())
+                                {
+                                    <div class="tabbed__slide" style="background-image: url('@exp.FeaturedImage.GetCroppedImageUrl("1033x1234")');"></div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="divider divider-gray"></div>
+</div>

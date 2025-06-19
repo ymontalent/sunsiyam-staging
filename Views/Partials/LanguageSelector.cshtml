@@ -1,0 +1,39 @@
+﻿@inherits UmbracoViewPage
+@*@using Endzone.Umbraco.ModelsBuilderExtensions.Extensions*@
+@{
+    var page = Umbraco.AssignedContentItem;
+    var currentCulture = Model.GetCultureFromDomains().Substring(0, 2).ToUpper();
+}
+    
+
+@if (page.Cultures.Count() > 1)
+{
+    <div class="header__language dropdown">
+        <button class="header__language-selected dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">@currentCulture</button>
+        <ul class="header__language-select dropdown-menu">
+            @foreach (var culture in page.Cultures)
+            {
+                if (culture.Key.Substring(0, 2).ToUpper() != currentCulture)
+                {
+                    <li><a href="@Model.Url(culture.Key)">@(culture.Key.Substring(0, 2).ToUpper())</a></li>
+                }
+
+            }
+        </ul>
+    </div>
+}
+
+@*
+<div class="header__language dropdown">
+    <button class="header__language-selected dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">EN</button>
+    <ul class="header__language-select dropdown-menu">
+        <li><a href="">EN</a></li>
+        <li><a href="">AR</a></li> 
+        <li><a href="">ZH</a></li>
+        <li><a href="">FR</a></li>
+        <li><a href="">DE</a></li> 
+        <li><a href="">RU</a></li> 
+        <li><a href="">ES</a></li>
+    </ul>
+</div>
+*@

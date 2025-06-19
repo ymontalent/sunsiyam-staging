@@ -1,0 +1,92 @@
+﻿@inherits UmbracoViewPage<BookingWidget>
+@using ContentModels = SunSiyam.Core.Models;
+
+<div class="static-search__section" id="book-now">
+    <div class="container">
+        <form class="static-search__form">
+            <div class="static-search__destination">
+                <label for="destination">Destination</label>
+                <div class="static-search__select font-25">
+                    <select id="resort" name="resort" value="">
+                        <option value="" selected disabled>Where would you like to go?</option>
+                        @if (Model.ResortPicker != null && Model.ResortPicker.Count() > 0)
+                        {
+                            foreach (var resort in Model.ResortPicker.OfType<ResortsHomePage>())
+                            {
+                                <option value="@resort.ResortBookingHotelID" data-url="@resort.BookingUrl.GetLinkUrl()">@resort.Name.Trim()</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="static-search__datepicker">
+                <label for="date">Date</label>
+                <div class="static-search__datepicker-input font-25">
+                    <input type="text" id="date" value="Check In – Check Out" readonly />
+                </div>
+                <div class="static-search__datepicker-dropdown p-3 p-md-4">
+                    <ul class="nav nav-pills mb-3" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="exactDate_tab" data-bs-toggle="pill" data-bs-target="#exactDate" type="button" role="tab" aria-controls="exactDate" aria-selected="true">Exact Dates</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="flexibleDate_tab" data-bs-toggle="pill" data-bs-target="#flexibleDate" type="button" role="tab" aria-controls="flexibleDate" aria-selected="false">Flexible Dates</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content py-3">
+                        <div class="tab-pane fade show active" id="exactDate" role="tabpanel" aria-labelledby="exactDate_tab">
+                            <div class="static-search__datepicker-exact">
+                                <div class="static-search__datepicker-in">
+                                    <label for="check_in">Check In</label>
+                                    <input type="text" name="check_in_text" id="check_in_text" readonly />
+                                </div>
+                                <div class="static-search__datepicker-out">
+                                    <label for="check_out">Check Out</label>
+                                    <input type="text" name="check_out_text" id="check_out_text" readonly />
+                                </div>
+                                <input type="hidden" class="static-search__datepicker-range" readonly />
+                                <input type="hidden" id="check_in" readonly />
+                                <input type="hidden" id="check_out" readonly />
+                            </div>
+                            <div class="static-search__datepicker-info"></div>
+                        </div>
+                        <div class="tab-pane fade" id="flexibleDate" role="tabpanel" aria-labelledby="flexibleDate_tab">
+                            <div class="static-search__datepicker-flexible">
+                                <div class="static-search__datepicker-nights">
+                                    <label for="nights">How many nights?</label>
+                                    <div class="static-search__datepicker-nights-selector">
+                                        <button id="decreaseNights">-</button>
+                                        <span id="nightsCount">1</span>
+                                        <button id="increaseNights">+</button>
+                                    </div>
+                                </div>
+                                <div class="static-search__datepicker-month-selection"></div>
+                                <div class="static-search__datepicker-buttons">
+                                    <button class="cancelBtn btn btn-sm btn-default" type="button">Reset</button>
+                                    <button class="doneBtn btn btn-sm btn-primary" type="button">Done</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="static-search__guests">
+                <label for="guests">Number of guests</label>
+                <div class="static-search__select font-25">
+                    <select id="guests" value="">
+                        <option value="" selected disabled>0</option>
+                        @for (var i = 1; i <= 20; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="static-search__button">
+                <input type="hidden" id="desktopView" value="@Model.DesktopCheckAvaibility.ToString().ToLower()" />
+                <input type="hidden" id="mobileView" value="@Model.ResponsiveCheckAvaibility.ToString().ToLower()" />
+                <button type="button" id="checkAvailability" class="btn btn-outline-black btn-large" disabled>Check Availability</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,49 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.ExperienceDetailsPage>
+@using ContentModels = SunSiyam.Core.Models;
+@{
+    Layout = "layout.cshtml";
+    var hasResortParent = Model.AncestorOrSelf<ResortsHomePage>();
+    if (hasResortParent != null)
+    {
+        ViewBag.BodyClass = "resort-" + hasResortParent.ResortCategory.ToLower().Trim();
+    }
+    this.RenderElements(Model.BodyElements, "BodyElements");
+
+    var items = Umbraco.AssignedContentItem.Siblings();
+    if (!items.Any())
+    {
+        return;
+    }
+
+    var i = 0;
+
+    <div class="content-more__section">
+        <div class="content-more__wrap">
+            <h3 class="content-more__title">@Umbraco.GetDictionaryValue("Our Experiences")</h3>
+            <div class="content-more__slider">
+                @foreach (var item in items.OfType<ExperienceDetailsPage>().OrderByDescending(x => x.PriorityLevel))
+                {
+                    if (i < 9)
+                    {
+                        i++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    <div class="content-more__slide">
+                        <a href="@item.Url()">
+                            <div class="content-more__slide-image">
+                                <img src="@item.FeaturedImage.GetCroppedImageUrl("467x534")" alt="@item.FeaturedImage.Name" class="img-fluid">
+                            </div>
+                            <div class="content-more__slide-title">
+                                @item.Name
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="divider divider-gray"></div>
+    </div>
+}

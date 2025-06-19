@@ -1,0 +1,25 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.AboutWidget>
+@using ContentModels = SunSiyam.Core.Models;
+
+<div class="content-box__section">
+    <div class="content-box__wrap">
+        <div class="container">
+            <div class="row g-0">
+                <div class="col-12 col-lg-6">
+                    <div class="content-box__image">
+                        <img src="@Model.Image.GetCroppedImageUrl("820x547")" alt="@Model.Image.Name" class="img-fluid">
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="content-box__info text-center">
+                        <h4 class="block__title">@Model.Heading</h4>
+                        <div class="block__description font-20">
+                            @Model.Description
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="divider divider-gray"></div>
+</div>

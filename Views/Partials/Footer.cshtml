@@ -1,0 +1,169 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage
+@{
+    var websiteSettings = Umbraco.GetAuxiliaryContent<IAuxiliaryFoldersComposition, WebsiteSettings>(s => s.WebsiteSettings);
+
+    var mainLogo = websiteSettings.MainLogo;
+    var footerNavigations = websiteSettings.FooterNavigation;
+    var isContactEnabled = websiteSettings.IsContactEnabled;
+    var emailAddress = websiteSettings.EmailAddress;
+    var phoneNumber = websiteSettings.PhoneNumber;
+    var whatsappNumber = websiteSettings.WhatsappNumber;
+    var contactPage = websiteSettings.ContactPage;
+    var contactMenuTitle = websiteSettings.ContactMenuTitle;
+    var newsletterEnabled = websiteSettings.NewsletterEnabled;
+    var newsletterTitle = websiteSettings.NewsletterTitle;
+    var newsletterSubtitle = websiteSettings.NewsletterSubtitle;
+    var membershipEnabled = websiteSettings.MembershipEnabled;
+    var membershipTitle = websiteSettings.MembershipTitle;
+    var membershipSubtitle = websiteSettings.MembershipSubtitle;
+    var membershipButton = websiteSettings.MembershipButton;
+    ResortsHomePage resortsHomePage = Model.AncestorOrSelf<ResortsHomePage>();
+
+    if (resortsHomePage != null)
+    {
+        mainLogo = resortsHomePage.MainLogo;
+        footerNavigations = resortsHomePage.FooterNavigation;
+        isContactEnabled = resortsHomePage.IsContactEnabled;
+        emailAddress = resortsHomePage.EmailAddress;
+        phoneNumber = resortsHomePage.PhoneNumber;
+        whatsappNumber = resortsHomePage.WhatsappNumber;
+        contactPage = resortsHomePage.ContactPage;
+        contactMenuTitle = resortsHomePage.ContactMenuTitle;
+        newsletterEnabled = resortsHomePage.NewsletterEnabled;
+        newsletterTitle = resortsHomePage.NewsletterTitle;
+        newsletterSubtitle = resortsHomePage.NewsletterSubtitle;
+        membershipEnabled = resortsHomePage.MembershipEnabled;
+        membershipTitle = resortsHomePage.MembershipTitle;
+        membershipSubtitle = resortsHomePage.MembershipSubtitle;
+        membershipButton = resortsHomePage.MembershipButton;
+    }
+}
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer__top">
+            <div class="row">
+                <div class="col-12 col-xl-7">
+                    <div class="footer__top-wrap d-flex flex-wrap justify-content-center justify-content-lg-start">
+                        @if (mainLogo !=null && !string.IsNullOrEmpty(mainLogo.Url()))
+                        {
+                            <div class="footer__logo">
+                                <img src="@mainLogo.Url()" alt="Logo" class="footer-logo">
+                            </div>
+                        }
+
+                        @if (footerNavigations !=null && footerNavigations.Count() > 0)
+                        {
+                            var i = 1;
+                            <div class="footer__menus flex-fill d-flex flex-wrap justify-content-between gap-4 gap-lg-2 gap-xl-0">
+                                @foreach (var navigrationItem in footerNavigations)
+                                {
+                                    <div class="footer__menu-column footer__menu-column-@i">
+                                        <h5 class="text-uppercase">@navigrationItem.Title.Trim()</h5>
+                                        @if (navigrationItem.Navigation != null && navigrationItem.Navigation.Count() > 0)
+                                        {
+                                            <ul>
+                                                @foreach (var item in navigrationItem.Navigation)
+                                                {
+                                                    <li>@item.GetLink()</li>
+                                                }
+                                            </ul>
+                                        }
+                                    </div>
+
+                                    i++;
+                                }
+
+                                @if (isContactEnabled == true)
+                                {
+                                    <div class="footer__menu-column footer__menu-column-@i">
+                                        <h5 class="text-uppercase">@contactMenuTitle</h5>
+                                        <div class="contact-info">
+                                            <ul>
+                                                @if (!string.IsNullOrEmpty(emailAddress.Trim()))
+                                                {
+                                                    <li>
+                                                        <strong>Email</strong>
+                                                        <br>
+                                                        <a href="mailto:@emailAddress.Trim()">@emailAddress.Trim()</a>
+                                                    </li>
+                                                }
+                                                @if (!string.IsNullOrEmpty(phoneNumber.Trim()))
+                                                {
+                                                    <li>
+                                                        <strong>Phone</strong>
+                                                        <br>
+                                                        <a href="tel:@phoneNumber.Trim()">@phoneNumber.Trim()</a>
+                                                    </li>
+                                                }
+                                                @if (!string.IsNullOrEmpty(whatsappNumber.Trim()))
+                                                {
+                                                    <li>
+                                                        <strong>Whatsapp</strong>
+                                                        <br>
+                                                        <a href="tel:@whatsappNumber.Trim()">@whatsappNumber.Trim()</a>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
+                                        @if (contactPage != null)
+                                        {
+                                            <ul>
+                                                <li><a href="@contactPage.GetLinkUrl()">@contactPage.Name.Trim()</a></li>
+                                            </ul>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-12 col-xl-5 footer-col">
+                    @if (newsletterEnabled == true)
+                    {
+                        <div class="subscribe subscribe__newsletter">
+                            <h5 class="text-uppercase">@newsletterTitle.Trim()</h5>
+                            <p>@newsletterSubtitle.Trim()</p>
+                            @if (websiteSettings.NewsletterForm != null)
+                            {
+                                @Html.Action("RenderForm", "UmbracoForms", new { formId = websiteSettings.NewsletterForm, theme = "Newsletter", includeScripts = false })
+                            }
+                        </div>
+                    }
+
+                    @if (membershipEnabled == true)
+                    {
+                        <div class="subscribe subscribe__membership">
+                            <h5 class="text-uppercase">@membershipTitle.Trim()</h5>
+                            <div class="subscribe__gap d-flex flex-wrap flex-sm-nowrap justify-content-center justify-content-sm-between align-items-center">
+                                <p>@membershipSubtitle.Trim()</p>
+
+                                <a href="@membershipButton.GetLinkUrl()" class="btn btn-outline-navy-blue">@membershipButton.Name.Trim()</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        @if (websiteSettings.SocialLink != null && websiteSettings.SocialLink.Count() > 0)
+        {
+            <div class="footer__bottom">
+                <div class="row">
+                    <div class="col-12">
+                        <ul class="social-links d-flex d-sm-inline-flex justify-content-center justify-content-sm-start list-unstyled mb-0">
+                            @foreach (var social in websiteSettings.SocialLink)
+                            {
+                                <li>
+                                    <a href="@social.SocialLink.GetLinkUrl()" class="facebook" target="_blank">
+                                        @Html.Raw(System.IO.File.ReadAllText(Server.MapPath(social.Image.Url())))
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</footer>

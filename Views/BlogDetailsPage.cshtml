@@ -1,0 +1,61 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.BlogDetailsPage>
+@using ContentModels = SunSiyam.Core.Models;
+@{
+    Layout = "layout.cshtml";
+    ViewBag.BodyClass = "single header__black";
+}
+
+@RenderPage("Partials/BodyElements/Breadcrumb.cshtml")
+
+<div class="intro__section text-center">
+    <div class="block__padding pt-0">
+        <div class="container">
+            <h6 class="block__sub-title">@Model.PublishDate.ToString("MMMM yyyy")</h6>
+            <h1 class="block__title h2 my-4">@Model.Heading</h1>
+            <div class="intro__description font-25">
+                @Model.BlogContent
+            </div>
+        </div>
+    </div>
+    <div class="divider divider-gray"></div>
+</div>
+
+@{
+    var items = Umbraco.AssignedContentItem.Siblings();
+    if (!items.Any())
+    {
+        return;
+    }
+
+    var i = 0;
+
+    <div class="content-more__section">
+        <div class="content-more__wrap block__padding">
+            <div class="content-more__slider">
+                @foreach (var item in items.OfType<BlogDetailsPage>().OrderByDescending(x => x.PublishDate))
+                {
+                    if (i < 9)
+                    {
+                        i++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    <div class="content-more__slide">
+                        <a href="@item.Url()">
+                            <div class="content-more__slide-image">
+                                <img src="@item.FeaturedImage.GetCroppedImageUrl("467x534")" alt="@item.FeaturedImage.Name" class="img-fluid">
+                            </div>
+                            <div class="content-more__slide-title">
+                                <span class="content-more__slide-date">@item.PublishDate.ToString("MMMM yyyy")</span>
+                                @item.Name
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="divider divider-gray"></div>
+    </div>
+}

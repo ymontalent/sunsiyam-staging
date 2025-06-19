@@ -1,0 +1,165 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.SliderFullHeight>
+@using ContentModels = SunSiyam.Core.Models;
+@{
+    var page = Umbraco.AssignedContentItem;
+    var websiteSettings = Umbraco.GetAuxiliaryContent<IAuxiliaryFoldersComposition, WebsiteSettings>(s => s.WebsiteSettings);
+}
+
+<div class="slider__section">
+    @if (Model.ShowVideo)
+    {
+        <div class="slider__video">
+            @if (!string.IsNullOrEmpty(Model.YouTubeID))
+            {
+                <div id="player"></div>
+                <script>
+                    var tag = document.createElement('script');
+
+                    tag.src = "https://www.youtube.com/iframe_api";
+                    var firstScriptTag = document.getElementsByTagName('script')[0];
+                    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+                    var player;
+                    function onYouTubeIframeAPIReady() {
+                        player = new YT.Player('player', {
+                            height: '390',
+                            width: '640',
+                            videoId: "@Model.YouTubeID",
+                            playerVars: {
+                                enablejsapi: 1,
+                                disablekb: 1,
+                                controls: 0,
+                                autoplay: 1,
+                                mute: 1,
+                                playlist: "@Model.YouTubeID",
+                                playsinline: 1,
+                                loop: 1,
+                                rel: 0
+                            },
+                            events: {
+                                'onReady': onPlayerReady
+                            }
+                        });
+                    }
+
+                    function onPlayerReady(event) {
+                        event.target.playVideo();
+                    }
+
+                    function mute() {
+                        if (player) player.mute();
+                    }
+
+                    function unmute() {
+                        if (player) player.unMute();
+                    }
+                </script>
+            }
+            else
+            {
+                <iframe src="@Model.Video.GetLinkUrl()" loading="lazy" id="vimeo-player" width="640" height="360" frameborder="0" allow="fullscreen; autoplay" allowfullscreen></iframe>
+            }
+            <div class="slider__video-bar">
+                <input type="checkbox" id="volumeSwitch">
+                <label for="volumeSwitch">
+                    <span class="volume-off" onclick="unmute()" id="volumeOff"><img src="/assets/img/audio-control-off.svg" alt="Volume Off"></span>
+                    <span class="volume-on" onclick="mute()" id="volumeOn"><img src="/assets/img/audio-control-on.svg" alt="Volume On"></span>
+                </label>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="slider__carousel">
+            @foreach (var slide in Model.Slides)
+            {
+                <div class="slider__carousel-slide">
+                    <img src="@slide.Image.Url()" alt="@slide.Image.Name" class="img-fluid slider__carousel-image">
+                </div>
+            }
+        </div>
+    }
+
+    @{
+        var infoPosition = "mt-auto";
+        if (!string.IsNullOrEmpty(Model.SliderInfoPosition) && Model.SliderInfoPosition == "Top Align")
+        {
+            infoPosition = "";
+        }
+        else if (!string.IsNullOrEmpty(Model.SliderInfoPosition) && Model.SliderInfoPosition == "Center Align")
+        {
+            infoPosition = "my-auto";
+        }
+
+
+        var gridClass = "";
+
+        if(page.ContentType.Alias == "homePage")
+        {
+            gridClass = "col-md-9 col-xl-7";
+        }
+    }
+
+
+    @if (!string.IsNullOrEmpty(Model.SliderHeading) || !string.IsNullOrEmpty(Model.SliderSubheading) || Model.SliderButton.Count() > 0)
+    {
+        <div class="slider__content">
+            <div class="container text-center text-white h-100">
+                <div class="row justify-content-center h-100">
+                    <div class="col-12 h-100 d-flex flex-column @gridClass">
+                        <div class="slider__info @infoPosition">
+                            @if (!string.IsNullOrEmpty(Model.SubheadingTag))
+                            {
+                                <div class="transform--will-fade-up transition--1000" data-animate-in-view="transform--completed-fade-up">
+                                    @Html.Wrap(Model.SubheadingTag.Trim(), Model.SliderSubheading.Trim(), new { @class = "slider__sub-title" })
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="slider__sub-title transform--will-fade-up transition--1000" data-animate-in-view="transform--completed-fade-up">
+                                    @Model.SliderSubheading.Trim()
+                                </div>
+                            }
+
+                            @if (!string.IsNullOrEmpty(Model.HeadingTag))
+                            {
+                                <div class="transform--will-fade-up transition--1500" data-animate-in-view="transform--completed-fade-up">
+                                    @Html.Wrap(Model.HeadingTag.Trim(), Model.SliderHeading.Trim(), new { @class = "slider__title" })
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="transform--will-fade-up transition--1500" data-animate-in-view="transform--completed-fade-up">
+                                    <h1 class="slider__title">@Model.SliderHeading.Trim()</h1>
+                                </div>
+                            }
+
+                            @if (!string.IsNullOrEmpty(Model.SliderInfoText.ToHtmlString()))
+                            {
+                                <div class="slider__description font-26 transform--will-fade-up transition--2000" data-animate-in-view="transform--completed-fade-up">
+                                    @Model.SliderInfoText
+                                </div>
+                            }
+                        </div>
+                        @if (Model.SliderButton != null && Model.SliderButton.Count() > 0)
+                        {
+                            <div class="transform--will-fade-up transition--2000" data-animate-in-view="transform--completed-fade-up">
+                                @foreach (var button in Model.SliderButton)
+                                {
+                                    <a class="btn btn-outline-white btn-large" href="@button.ButtonLink.GetLinkUrl()">@button.ButtonLabel.Trim()</a>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(websiteSettings.Badge.Url()) && Model.EnableBadge == true)
+    {
+        <div class="slider__stamp">
+            <video src="@websiteSettings.Badge.Url()" type="video/mp4" muted loop autoplay></video>
+        </div>
+    }
+</div>

@@ -1,0 +1,94 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.CalendarEventsHighlights>
+@using ContentModels = SunSiyam.Core.Models;
+@{
+
+}
+
+<div class="upcoming-events__section">
+    <div class="upcoming-events__wrap">
+        <div class="container">
+            <div class="upcoming-events__head">
+                <h6 class="block__sub-title text-black mb-xl-4">@Model.SubHeading</h6>
+                <div class="row">
+                    <div class="col-12 col-lg-6 col-xxl-6">
+                        <h2 class="block__title">@Model.Heading</h2>
+                    </div>
+                    <div class="col-12 col-lg-6 col-xxl-5">
+                        <div class="block__description text-navy-blue font-20">
+                            @Model.Description
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @if (Model.Events.Any())
+            {
+                <div class="upcoming-events__content gridfilter__items">
+                    @foreach (var eventItem in Model.Events.OfType<CalendarEventPage>())
+                    {
+                        var startDateDay = eventItem.EventStartDate.Day;
+                        var startDateMonth = eventItem.EventStartDate.ToString("MMMM");
+                        var startDateYear = eventItem.EventStartDate.Year;
+                        var endDateDay = eventItem.EventEndDate.Day;
+                        var endDateMonth = eventItem.EventEndDate.ToString("MMMM");
+                        var endDateYear = eventItem.EventEndDate.Year;
+
+                        var eventDate = "";
+                        if (eventItem.DateType == "Full Month")
+                        {
+                            if(startDateMonth == endDateMonth && startDateYear == endDateYear)
+                            {
+                                eventDate = startDateMonth + " " + startDateYear;
+                            }
+                            else if (startDateMonth != endDateMonth && startDateYear == endDateYear)
+                            {
+                                eventDate = startDateMonth + " - " + endDateMonth + " " + startDateYear;
+                            }
+                            else
+                            {
+                                eventDate = startDateMonth + " " + startDateYear + " - " + endDateMonth + " " + endDateYear;
+                            }
+
+                        }
+                        else {
+                            if (startDateMonth == endDateMonth && startDateYear == endDateYear)
+                            {
+                                eventDate = startDateDay + " - " + endDateDay + " " + startDateMonth + " " + startDateYear;
+                            }
+                            else if (startDateMonth != endDateMonth && startDateYear == endDateYear)
+                            {
+                                eventDate = startDateDay + " " + startDateMonth + " - " + endDateDay + " " + endDateMonth + " " + startDateYear;
+                            }
+                            else {
+                                eventDate = startDateDay + " " + startDateMonth + " " + startDateYear + " - " + endDateDay + " " + endDateMonth + " " + endDateYear;
+                            }
+                        }
+
+                        <div class="gridfilter__item">
+                            <div class="gridfilter__item-image">
+                                <img src="@eventItem.FeaturedImage.GetCroppedImageUrl("536x536")" alt="@eventItem.FeaturedImage.Name" class="img-fluid" />
+                            </div>
+                            <div class="gridfilter__item-content">
+                                <div class="gridfilter__item-date">@eventDate</div>
+                                <h5 class="gridfilter__item-title">@eventItem.Name</h5>
+                                <div class="gridfilter__item-description font-18">
+                                    @eventItem.Description
+                                </div>
+                                <div class="gridfilter__item-button">
+                                    <a href="@eventItem.Url()" class="btn btn-outline-black">@Umbraco.GetDictionaryValue("Read more")</a>
+                                </div>
+                            </div>
+                        </div>
+                     }
+                </div>
+            }
+
+            @if (Model.EnableExploreButton == true && Model.ExploreButton != null)
+            {
+                <div class="upcoming-events__button text-center">
+                    <a href="@Model.ExploreButton.GetLinkUrl()" class="btn btn-outline-black">@Model.ExploreButton.Name</a>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="divider divider-gray"></div>
+</div>

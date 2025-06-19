@@ -1,0 +1,40 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Awards>
+@using ContentModels = SunSiyam.Core.Models;
+
+
+<div class="awards__section">
+    <div class="awards__wrap text-center">
+        <div class="container">
+            <div class="awards__head">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-lg-7 col-xl-6">
+                        <h2 class="block__title">@Model.Heading</h2>
+                        <div class="block__description text-black font-20">
+                            @Model.Description
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="awards__content">
+                <div class="awards__items">
+                    @if (Model.AwardsList != null && Model.AwardsList.Count() > 0)
+                    {
+                        foreach (var award in Model.AwardsList)
+                        {
+                            <div class="awards__item">
+                                <div class="awards__item-image">
+                                    <img src="@award.AwardImage.GetCroppedImageUrl("536x536")" alt="@award.AwardImage.Name">
+                                </div>
+                                <div class="awards__item-content">
+                                    <div class="awards__item-category">@award.SubHeading</div>
+                                    <h5 class="awards__item-title">@award.Heading</h5>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="divider divider-gray"></div>
+</div>

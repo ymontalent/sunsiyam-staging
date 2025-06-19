@@ -1,0 +1,325 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.GridPanel>
+@using ContentModels = SunSiyam.Core.Models;
+@{
+    if (Model.GridContent == null)
+    {
+        return;
+    }
+
+    var totalPost = 0;
+
+    string contentType = Model.GridContent.ContentType.Alias;
+
+    if (contentType == "offersPage" && Model.GridContent.Children<OfferDetailsPage>().Count() > 0)
+    {
+        totalPost= Model.GridContent.Children<OfferDetailsPage>().Count();
+    }
+    else if (contentType == "blogPage" && Model.GridContent.Children<BlogDetailsPage>().Count() > 0)
+    {
+        totalPost = Model.GridContent.Children<BlogDetailsPage>().Count();
+    }
+    else if (contentType == "calendarPage" && Model.GridContent.Children<CalendarEventPage>().Count() > 0)
+    {
+        totalPost = Model.GridContent.Children<CalendarEventPage>().Count();
+    }
+    else if (contentType == "experiencesPage" && Model.GridContent.Children<ExperienceDetailsPage>().Count() > 0)
+    {
+        totalPost = Model.GridContent.Children<ExperienceDetailsPage>().Count();
+    }
+    else if (contentType == "restaurantsBars" && Model.GridContent.Children<RestaurantsBarsDetailPage>().Count() > 0)
+    {
+        totalPost = Model.GridContent.Children<RestaurantsBarsDetailPage>().Count();
+    }
+    else if (contentType == "facilities" && Model.GridContent.Children<FacilitiesDetailsPage>().Count() > 0)
+    {
+        totalPost = Model.GridContent.Children<FacilitiesDetailsPage>().Count();
+    }
+}
+
+@if (totalPost > 0)
+{
+    <div class="gridfilter__section">
+        <div class="gridfilter__wrap">
+            <div class="container">
+                @if (!string.IsNullOrEmpty(Model.Heading) || !string.IsNullOrEmpty(Model.Description.ToString()))
+                {
+                    <div class="gridfilter__head">
+                        <div class="row justify-content-center text-center">
+                            <div class="col-12 col-lg-11 col-xl-10 col-xxl-7">
+                                @if (!string.IsNullOrEmpty(Model.HeadingTag))
+                                {
+                                    var titleClass = "";
+                                    if (Model.HeadingTag.ToLower() == "h1")
+                                    {
+                                        titleClass = " h2";
+                                    }
+                                    <div class="transform--will-fade-up transition--1000" data-animate-in-view="transform--completed-fade-up">
+                                        @Html.Wrap(Model.HeadingTag.Trim(), Model.Heading.Trim(), new { @class = "block__title" + titleClass })
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="transform--will-fade-up transition--1000" data-animate-in-view="transform--completed-fade-up">
+                                        <h2 class="block__title">@Model.Heading.Trim()</h2>
+                                    </div>
+                                }
+                                <div class="block__description font-20">
+                                    @Model.Description
+                                </div>
+                                @if (Model.Buttons != null && Model.Buttons.Count() > 0)
+                                {
+                                    <div class="block__button mt-4">
+                                        @foreach (var btn in Model.Buttons)
+                                        {
+                                            <a href="@btn.ButtonLink.GetLinkUrl()" class="btn btn-outline-navy-blue">@btn.ButtonLabel</a>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="gridfilter__content">
+                    <input type="hidden" id="gridItemsPerPage" value="@Model.ShowItemPerPage">
+
+                    @{
+                        var gridMainClass = "gridfilter__items";
+                        if (contentType == "experiencesPage" || contentType == "restaurantsBars")
+                        {
+                            gridMainClass = "gridfilter__experiences";
+                        }
+
+                    }
+                    <div class="@gridMainClass">
+                        @if (contentType == "offersPage")
+                        {
+                            foreach (var offer in Model.GridContent.Children<OfferDetailsPage>().OrderByDescending(x => x.PriorityLevel))
+                            {
+                                if (offer.AncestorOrSelf<ResortsHomePage>() == null)
+                                {
+                                    continue;
+                                }
+
+                                ResortsHomePage resort = offer.AncestorOrSelf<ResortsHomePage>();
+
+                                <div class="gridfilter__offer-item">
+                                    <div class="gridfilter__offer-image">
+                                        <img src="@offer.OfferImage.GetCroppedImageUrl("536x450")" alt="@offer.OfferImage.Name" class="img-fluid" />
+                                    </div>
+                                    <div class="gridfilter__offer-tag">@resort.Name</div>
+                                    <div class="gridfilter__offer-content">
+                                        <h5 class="gridfilter__offer-title">@offer.OfferTitle</h5>
+                                        @if (offer.OfferFeatures !=null && offer.OfferFeatures.Count() > 0)
+                                        {
+                                            <ul class="gridfilter__offer-list list-unstyled font-18">
+                                                @foreach (var feature in offer.OfferFeatures.Take(3))
+                                                {
+                                                    <li>@feature</li>
+                                                }
+                                            </ul>
+                                            <div class="gridfilter__offer-button">
+                                                <a href="@offer.Url()" class="btn btn-outline-black">@Umbraco.GetDictionaryValue("Discover")</a>
+                                                @if (offer.OfferBookingUrl != null)
+                                                {
+                                                    <a href="@offer.OfferBookingUrl.GetLinkUrl()" class="btn btn-outline-black btn-hover-black">@offer.OfferBookingUrl.Name</a>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else if (contentType == "blogPage")
+                        {
+                            foreach (var child in Model.GridContent.Children<BlogDetailsPage>().OrderByDescending(x => x.PublishDate))
+                            {
+                                <div class="gridfilter__item">
+                                    <div class="gridfilter__item-image">
+                                        <a href="@child.Url()"><img src="@child.FeaturedImage.GetCroppedImageUrl("536x536")" alt="@child.FeaturedImage.Name" class="img-fluid" /></a>
+                                    </div>
+                                    <div class="gridfilter__item-content">
+                                        <div class="gridfilter__item-sub-title">@child.PublishDate.ToString("MMMM yyyy")</div>
+                                        <h5 class="gridfilter__item-title">@child.Name</h5>
+                                        <div class="gridfilter__item-description font-18">
+                                            @child.SortDescription
+                                        </div>
+                                        <div class="gridfilter__item-button">
+                                            <a href="@child.Url()" class="btn btn-outline-black">@Umbraco.GetDictionaryValue("Read More")</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else if (contentType == "calendarPage")
+                        {
+                            foreach (var eventItem in Model.GridContent.Children.OfType<CalendarEventPage>())
+                            {
+                                var startDateDay = eventItem.EventStartDate.Day;
+                                var startDateMonth = eventItem.EventStartDate.ToString("MMMM");
+                                var startDateYear = eventItem.EventStartDate.Year;
+                                var endDateDay = eventItem.EventEndDate.Day;
+                                var endDateMonth = eventItem.EventEndDate.ToString("MMMM");
+                                var endDateYear = eventItem.EventEndDate.Year;
+
+                                var eventDate = "";
+                                if (eventItem.DateType == "Full Month")
+                                {
+                                    if (startDateMonth == endDateMonth && startDateYear == endDateYear)
+                                    {
+                                        eventDate = startDateMonth + " " + startDateYear;
+                                    }
+                                    else if (startDateMonth != endDateMonth && startDateYear == endDateYear)
+                                    {
+                                        eventDate = startDateMonth + " - " + endDateMonth + " " + startDateYear;
+                                    }
+                                    else
+                                    {
+                                        eventDate = startDateMonth + " " + startDateYear + " - " + endDateMonth + " " + endDateYear;
+                                    }
+
+                                }
+                                else
+                                {
+                                    if (startDateMonth == endDateMonth && startDateYear == endDateYear)
+                                    {
+                                        eventDate = startDateDay + " - " + endDateDay + " " + startDateMonth + " " + startDateYear;
+                                    }
+                                    else if (startDateMonth != endDateMonth && startDateYear == endDateYear)
+                                    {
+                                        eventDate = startDateDay + " " + startDateMonth + " - " + endDateDay + " " + endDateMonth + " " + startDateYear;
+                                    }
+                                    else
+                                    {
+                                        eventDate = startDateDay + " " + startDateMonth + " " + startDateYear + " - " + endDateDay + " " + endDateMonth + " " + endDateYear;
+                                    }
+                                }
+
+                                <div class="gridfilter__item @startDateMonth.ToLower()">
+                                    <div class="gridfilter__item-image">
+                                        <img src="@eventItem.FeaturedImage.GetCroppedImageUrl("536x536")" alt="@eventItem.FeaturedImage.Name" class="img-fluid" />
+                                    </div>
+                                    <div class="gridfilter__item-content">
+                                        <div class="gridfilter__item-sub-title">@eventDate</div>
+                                        <h5 class="gridfilter__item-title">@eventItem.Name</h5>
+                                        <div class="gridfilter__item-description font-18">
+                                            @eventItem.Description
+                                        </div>
+                                        <div class="gridfilter__item-button">
+                                            <a href="@eventItem.Url()" class="btn btn-outline-black">@Umbraco.GetDictionaryValue("Read more")</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else if (contentType == "experiencesPage")
+                        {
+                            var i = 0;
+
+                            foreach (var experienceItem in Model.GridContent.Children<ExperienceDetailsPage>().OrderByDescending(x => x.PriorityLevel))
+                            {
+                                var divPostition = "odd";
+                                i++;
+                                if (i % 2 == 0)
+                                {
+                                    divPostition = "even";
+
+                                }
+
+                                <div class="gridfilter__experiences-item @divPostition">
+                                    <div class="row g-0">
+                                        <div class="col-12 col-lg-6 col-xxl-7">
+                                            <div class="gridfilter__experiences-item-image">
+                                                <img src="@experienceItem.FeaturedImage.GetCroppedImageUrl("957x637")" alt="@experienceItem.FeaturedImage.Name" class="img-fluid">
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-lg-6 col-xxl-5">
+                                            <div class="gridfilter__experiences-item-content">
+                                                <h2 class="gridfilter__experiences-item-title h3 mb-xl-4">@experienceItem.Heading</h2>
+                                                <div class="gridfilter__experiences-item-description font-20 mt-auto">
+                                                    @experienceItem.ShortDescription
+                                                </div>
+                                                <div class="gridfilter__experiences-item-button">
+                                                    <a href="@experienceItem.Url()" class="btn btn-outline-black">@Umbraco.GetDictionaryValue("Read More")</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else if (contentType == "restaurantsBars")
+                        {
+                            foreach (var restaurantsBarsItem in Model.GridContent.Children<RestaurantsBarsDetailPage>().OrderByDescending(x => x.CreateDate))
+                            {
+                                <div class="gridfilter__experiences-item">
+                                    <div class="row g-0">
+                                        <div class="col-12 col-lg-6 col-xxl-7">
+                                            @if (restaurantsBarsItem.GalleryImages != null && restaurantsBarsItem.GalleryImages.Count() > 1)
+                                            {
+                                                <div class="gridfilter__experiences-item-slider">
+                                                    @foreach (var item in restaurantsBarsItem.GalleryImages)
+                                                    {
+                                                        <div class="gridfilter__experiences-item-slide">
+                                                            <div class="gridfilter__experiences-item-image">
+                                                                <img src="@item.GetCroppedImageUrl("957x637")" alt="@item.Name" class="img-fluid">
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="gridfilter__experiences-item-image">
+                                                    <img src="@restaurantsBarsItem.FeaturedImage.GetCroppedImageUrl("957x637")" alt="@restaurantsBarsItem.FeaturedImage.Name" class="img-fluid">
+                                                </div>
+                                            }
+                                        </div>
+                                        <div class="col-12 col-lg-6 col-xxl-5">
+                                            <div class="gridfilter__experiences-item-content">
+                                                <h2 class="gridfilter__experiences-item-title h3 mb-xl-4">@restaurantsBarsItem.Name</h2>
+                                                <div class="gridfilter__experiences-item-description font-20 mt-auto">
+                                                    @restaurantsBarsItem.ShortDescription
+                                                </div>
+                                                <div class="gridfilter__experiences-item-button">
+                                                    <a href="@restaurantsBarsItem.Url()" class="btn btn-outline-black">@Umbraco.GetDictionaryValue("Read More")</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else if (contentType == "facilities")
+                        {
+                            foreach (var facilitiesItem in Model.GridContent.Children<FacilitiesDetailsPage>().OrderByDescending(x => x.CreateDate))
+                            {
+                                <div class="gridfilter__item">
+                                    <div class="gridfilter__item-image">
+                                        <a href="@facilitiesItem.Url()"><img src="@facilitiesItem.FeaturedImage.GetCroppedImageUrl("536x536")" alt="@facilitiesItem.FeaturedImage.Name" class="img-fluid" /></a>
+                                    </div>
+                                    <div class="gridfilter__item-content">
+                                        <h5 class="gridfilter__item-title">@facilitiesItem.Name</h5>
+                                        <div class="gridfilter__item-description font-18">
+                                            @facilitiesItem.ShortDescription
+                                        </div>
+                                        <div class="gridfilter__item-button">
+                                            <a href="@facilitiesItem.Url()" class="btn btn-outline-black">@Umbraco.GetDictionaryValue("Read More")</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                    @if (Model.ShowItemPerPage < Model.GridContent.Children.Count())
+                    {
+                        <div class="gridfilter__button text-center">
+                            <button type="button" class="btn btn-outline-black">@Umbraco.GetDictionaryValue("Load More")</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="divider divider-gray"></div>
+    </div>
+}

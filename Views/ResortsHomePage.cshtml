@@ -1,0 +1,7 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.ResortsHomePage>
+@using ContentModels = SunSiyam.Core.Models;
+@{
+    Layout = "layout.cshtml";
+    ViewBag.BodyClass = "resortpage resort-" + Model.ResortCategory.ToLower().Trim();
+    this.RenderElements(Model.BodyElements, "BodyElements");
+}
