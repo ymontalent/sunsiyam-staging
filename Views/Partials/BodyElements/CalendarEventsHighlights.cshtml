@@ -1,25 +1,31 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.CalendarEventsHighlights>
 @using ContentModels = SunSiyam.Core.Models;
 @{
-
+    var subHeading  = Model.Value<string>("subHeading");
+    var heading     = Model.Value<string>("heading");
+    var description = Model.Value<string>("description");
 }
 
 <div class="upcoming-events__section">
     <div class="upcoming-events__wrap">
         <div class="container">
-            <div class="upcoming-events__head">
-                <h6 class="block__sub-title text-black mb-xl-4">@Model.SubHeading</h6>
-                <div class="row">
-                    <div class="col-12 col-lg-6 col-xxl-6">
-                        <h2 class="block__title">@Model.Heading</h2>
-                    </div>
-                    <div class="col-12 col-lg-6 col-xxl-5">
-                        <div class="block__description text-navy-blue font-20">
-                            @Model.Description
+            @if (!string.IsNullOrWhiteSpace(subHeading)
+            && !string.IsNullOrWhiteSpace(heading)
+            && !string.IsNullOrWhiteSpace(description)){
+                <div class="upcoming-events__head">
+                    <h6 class="block__sub-title text-black mb-xl-4">@subHeading</h6>
+                    <div class="row">
+                        <div class="col-12 col-lg-6 col-xxl-6">
+                            <h2 class="block__title">@heading</h2>
+                        </div>
+                        <div class="col-12 col-lg-6 col-xxl-5">
+                            <div class="block__description text-navy-blue font-20">
+                                @description
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            }
             @if (Model.Events.Any())
             {
                 <div class="upcoming-events__content gridfilter__items">
@@ -69,8 +75,8 @@
                             </div>
                             <div class="gridfilter__item-content">
                                 <div class="gridfilter__item-date">@eventDate</div>
-                                <h5 class="gridfilter__item-title">@eventItem.Name</h5>
-                                <div class="gridfilter__item-description font-18">
+                                <div class="gridfilter__item-title">@eventItem.Name</div>
+                                <div class="gridfilter__item-description">
                                     @eventItem.Description
                                 </div>
                                 <div class="gridfilter__item-button">

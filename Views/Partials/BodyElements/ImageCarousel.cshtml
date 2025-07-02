@@ -1,7 +1,7 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.ImageCarousel>
 @using ContentModels = SunSiyam.Core.Models;
 
-<div class="gallery__section">
+@*<div class="gallery__section">
     <div class="gallery__wrap">
         <div class="gallery__head">
             <div class="container">
@@ -47,4 +47,15 @@
         }
     </div>
     <div class="divider divider-gray"></div>
-</div>
+</div>*@
+
+
+@if (Model.Images != null && Model.Images.Count() > 0)
+    {
+        foreach (var item in Model.Images)
+            {
+                <a href="@item.Url()" data-toggle="lightbox" data-gallery="@Model.Heading.ToLower().Replace(" ","")-gallery" class="gallery__slide-image">
+                    <img src="@item.GetCroppedImageUrl("536x348")" alt="@item.Name" class="img-fluid">
+                </a>
+            }
+    }

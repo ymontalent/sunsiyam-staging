@@ -290,7 +290,7 @@
                                 </div>
                             }
                         }
-                        else if (contentType == "facilities")
+                        @*else if (contentType == "facilities")
                         {
                             foreach (var facilitiesItem in Model.GridContent.Children<FacilitiesDetailsPage>().OrderByDescending(x => x.CreateDate))
                             {
@@ -309,7 +309,7 @@
                                     </div>
                                 </div>
                             }
-                        }
+                        }*@
                     </div>
                     @if (Model.ShowItemPerPage < Model.GridContent.Children.Count())
                     {
@@ -318,6 +318,28 @@
                         </div>
                     }
                 </div>
+                @if (contentType == "facilities")
+                {
+                    <div class="facilities-block accommodation__slider">
+                        @foreach (var facilitiesItem in Model.GridContent.Children<FacilitiesDetailsPage>().OrderByDescending(x => x.CreateDate))
+                        {
+                            <div class="accommodation__slide">
+                                <div class="accommodation__slide-image">
+                                    <a href="@facilitiesItem.Url()">
+                                        <img src="@facilitiesItem.FeaturedImage.GetCroppedImageUrl("536x536")" alt="@facilitiesItem.FeaturedImage.Name" class="img-fluid" />
+                                        <h4 class="accommodation__slide-title">@facilitiesItem.Name</h4>
+                                    </a>
+                                </div>
+                                <div class="accommodation__slide-content">
+                                    @facilitiesItem.ShortDescription
+                                    <div class="accommodation__slide-button">
+                                        <a href="@facilitiesItem.Url()" class="btn btn-outline-navy-blue">@Umbraco.GetDictionaryValue("Read More")</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
             </div>
         </div>
         <div class="divider divider-gray"></div>

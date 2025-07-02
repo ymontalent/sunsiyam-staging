@@ -1,0 +1,104 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<Umbraco.Core.Models.PublishedContent.IPublishedElement>
+@using Umbraco.Web.Models
+@using Umbraco.Core.Models.PublishedContent
+@{
+    // 1) Simple fields
+    var heading     = Model.Value<string>("heading");
+    var description = Model.Value<IHtmlString>("description");
+
+    // 2) Single‐URL picker (buttons)
+    var cta = Model.Value<Link>("buttons");  
+
+    // 3) Repeatable features
+    var features = Model.Value<IEnumerable<string>>("features") 
+                   ?? Enumerable.Empty<string>();
+
+    // 4) Optional anchor
+    var anchor = Model.Value<Link>("anchor");
+
+    // 5) Media gallery
+    var media = Model.Value<IEnumerable<IPublishedContent>>("media") 
+                ?? Enumerable.Empty<IPublishedContent>();
+}
+
+@{
+    // compute an empty or real ID
+    var anchorId = anchor != null ? anchor.Url.TrimStart('#') : String.Empty;
+    bool hasMedia = media != null && media.Any();
+    string typeClass = (hasMedia ? "" : "wedding-packages");
+}
+<div class="wedding-packages-section @typeClass" id="@(anchorId)">
+    <div class="container">
+        @if(!string.IsNullOrWhiteSpace(heading)) {
+            <h2 class="wedding-heading">@heading</h2>
+        }
+        <div class="row align-items-start gx-5 align-items-stretch">
+            @if (!hasMedia){
+                <div class="col-md-6">
+                    @if(description != null) {
+                        <div class="mb-4">@Html.Raw(description)</div>
+                    }
+                </div>
+                <div class="col-md-6">
+                    @if(features.Any()) {
+                        <ul class="custom__list list-unstyled mb-0">
+                            @foreach(var feat in features) {
+                                <li>@feat</li>
+                            }
+                        </ul>
+                    }
+                </div>
+            }
+            else{
+                <!-- LEFT: heading, description, features & CTA -->
+                <div class="col-md-6 d-flex flex-column justify-content-between">
+                    @if(description != null) {
+                        <div class="mb-4">@Html.Raw(description)</div>
+                    }
+                    
+                    @if(features.Any()) {
+                    <ul class="custom__list list-unstyled mb-0">
+                        @foreach(var feat in features) {
+                            <li>@feat</li>
+                        }
+                    </ul>
+                    }
+                    
+                    @if(cta != null) {
+                        <a href="@cta.Url" class="btn btn-outline">@cta.Name</a>
+                    }
+                </div>
+            }
+            
+            @if (media != null && media.Count() > 1)
+            {
+                <div class="col-md-6">
+                    <div class="content-slider__section">
+                        <div class="content-slider__wrap">
+                            <div class="container">
+                                <div class="content-slider__items">
+                                    @foreach (var item in media)
+                                    {
+                                        <div class="content-slider__item">
+                                            <div class="content-slider__image">
+                                                <img src="@item.GetCroppedImageUrl("1033x1234")" alt="@item.Name" class="img-fluid" />
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else{
+                <!-- RIGHT: media gallery -->
+                foreach(var img in media) {
+                    <div class="col-6">
+                        <img src="@img.GetCroppedImageUrl("1033x1234")" alt="@img.Name" class="img-fluid" />
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

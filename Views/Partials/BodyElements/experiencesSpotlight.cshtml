@@ -1,0 +1,94 @@
+﻿@using System
+@using System.Linq
+@using System.Collections.Generic
+@using System.Web
+@using Umbraco.Core.Models.PublishedContent
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<IPublishedElement>
+
+@{
+    // 1) grab the pages you picked in your MNTP
+    var selected = Model
+        .Value<IEnumerable<IPublishedContent>>("selectExperiencesDetails")
+        ?? Enumerable.Empty<IPublishedContent>();
+
+    // 2) section heading + description on the Spotlight block
+    var sectionTitle       = Model.Value<string>("heading") ?? "";
+    var sectionDescription = Model.Value<IHtmlString>("description") 
+                                 ?? new HtmlString("");
+}
+
+<div class="accommodation__section">
+    <div class="accommodation__intro">
+        <div class="container">
+            <h2 class="block__title">@sectionTitle</h2>
+            <div class="block__description">@sectionDescription</div>
+        </div>
+    </div>
+
+    @if (selected.Any())
+    {
+        <div class="accommodation__wrap">
+            <div class="accommodation__content">
+                <div class="accommodation__slider">
+
+                    @foreach (var exp in selected)
+                    {
+                        // 3) read the composition fields directly off the page
+                        var expHeading       = exp.Value<string>("heading") ?? exp.Name;
+                        var expDescription   = exp.Value<string>("shortDescription") ?? "";
+                        var expCategoryCsv   = exp.Value<string>("experienceCategory") ?? "";
+                        var expCategories    = expCategoryCsv
+                                                  .Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries)
+                                                  .Select(x => x.Trim())
+                                                  .ToList();
+
+                        // 4) resolve the featuredImage picker
+                        var imgNode = exp.Value<IPublishedContent>("featuredImage");
+                        string imgUrl = "";
+                        if (imgNode != null)
+                        {
+                            var media = Umbraco.Media(imgNode.Id);
+                            if (media != null)
+                            {
+                                imgUrl = media.Url;
+                            }
+                        }
+
+                        <div class="accommodation__slide">
+                            <div class="accommodation__slide-image">
+                                <a href="@exp.Url()">
+                                    <img
+                                        src="@imgUrl"
+                                        alt="@expHeading"
+                                        class="img-fluid" />
+                                    <h4 class="accommodation__slide-title">
+                                        @expHeading
+                                    </h4>
+                                </a>
+                            </div>
+                            <div class="accommodation__slide-content">
+                                <p>@Html.Raw(expDescription)</p>
+@*
+                                @if (expCategories.Any())
+                                {
+                                    <ul class="custom__list list-unstyled mb-0">
+                                        @foreach (var cat in expCategories)
+                                        {
+                                            <li class="list-inline-item">@Html.Raw(HttpUtility.HtmlEncode(cat))</li>
+                                        }
+                                    </ul>
+                                }
+*@
+                                <div class="accommodation__slide-button">
+                                    <a href="@exp.Url()" class="btn btn-outline-navy-blue">
+                                        @Umbraco.GetDictionaryValue("Discover")
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

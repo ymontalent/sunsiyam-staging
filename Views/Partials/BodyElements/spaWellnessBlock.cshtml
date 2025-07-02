@@ -1,0 +1,161 @@
+﻿@using System.Web
+@using Umbraco.Core.Models.PublishedContent
+@using System.Text.RegularExpressions
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<Umbraco.Core.Models.PublishedContent.IPublishedElement>
+
+@{
+    // 1) pull each field off the nested-content model
+    var headingMain     = Model.Value<string>("heading") ?? "";
+    var descriptionMain = Model.Value<IHtmlString>("description") ?? new HtmlString("");
+    var items           = Model.Value<IEnumerable<IPublishedElement>>("blocks");
+}
+<div class="container">
+    <div class="spa-wellness-block">
+        <div class="row position-relative main-block">
+            <div class="col-12 col-lg-6">
+                <h3 class="spa-wellness-block__heading">@headingMain</h3>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="spa-wellness-block__description">
+                    @descriptionMain
+                </div>
+            </div>
+        </div>
+        
+        @if (items != null && items.Any()){
+        <div class="spa-wellness-blocks">
+            @foreach (var block in items)
+                {
+                    var headingBlock        = block.Value<string>("spaBlockHeading");
+                    var descriptionBlock    = block.Value<string>("spaBlockDescription");
+                    var img1                = block.Value<IPublishedContent>("spaBlockImage1");
+                    var img2                = block.Value<IPublishedContent>("spaBlockImage2");
+                    
+                    var rawHtml = block.Value<string>("spaBlockDescription") ?? "";
+                    var pattern = @"<div[^>]*>\s*<em>(?<h>.*?)</em>\s*</div>\s*(?<c>[\s\S]*?)(?=<div[^>]*>\s*<em>|$)";
+                    var sections = Regex.Matches(rawHtml, pattern, RegexOptions.IgnoreCase)
+                        .Cast<Match>()
+                        .Select(m => new {
+                            Heading = m.Groups["h"].Value.Trim(),
+                            Content = m.Groups["c"].Value.Trim()
+                        })
+                        .ToList();
+
+                    <div class="row position-relative weddingOptions__one flexbox">
+                        <div class="col-12 col-lg-6 flex-item">
+                            <div class="weddingOptions__info">
+                                @if (!string.IsNullOrWhiteSpace(headingBlock))
+                                {
+                                    <h3>@headingBlock</h3>
+                                }
+                                @if (sections.Any())
+                                {
+                                    <div class='accordion-spa'>
+                                        @for (var i = 0; i < sections.Count; i++)
+                                        {
+                                            var section = sections[i];
+                                                if (string.IsNullOrWhiteSpace(section.Heading))
+                                                {
+                                                    continue;
+                                                }
+                                            <div class='accordion-item'>
+                                                <div class='accordion-header'>
+                                                    @Html.Raw(section.Heading)
+                                                </div>
+                                                <div id='panel-@i' class='accordion-panel'>
+                                                    @Html.Raw(section.Content)
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    @Html.Raw(rawHtml)
+                                }
+
+
+                                @*@Html.Raw(descriptionBlock)
+                                <div class="weddingOptions__parallax-image">
+                                    @if (img2 != null)
+                                    {
+                                        <img src="@img2.GetCroppedImageUrl("1033x1234")" alt="@img2.Name" class="img-fluid" />
+                                    }
+                                </div>*@
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 flex-item">
+                            @if (img1 != null)
+                            {
+                                <img src="@img1.GetCroppedImageUrl("674x993")" alt="@img1.Name" class="img-fluid" />
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const containers = document.querySelectorAll('.accordion-spa');
+
+  containers.forEach(container => {
+    const headers = container.querySelectorAll('.accordion-header');
+
+    headers.forEach((header, idx) => {
+      const panel = header.nextElementSibling;
+
+      // initial styles for every panel
+      panel.style.overflow   = 'hidden';
+      panel.style.transition = 'height 300ms ease';
+
+      if (idx === 0) {
+        // open the first one immediately
+        header.setAttribute('aria-expanded','true');
+        panel.style.height = 'auto';
+      } else {
+        // closed by default
+        header.setAttribute('aria-expanded','false');
+        panel.style.height = '0';
+      }
+
+      header.addEventListener('click', function() {
+        const isOpen = header.getAttribute('aria-expanded') === 'true';
+
+        // 1) close any open panel in this container
+        headers.forEach(h => {
+          const p = h.nextElementSibling;
+          if (h.getAttribute('aria-expanded') === 'true') {
+            // animate from auto (or current) down to 0
+            p.style.height = p.scrollHeight + 'px';
+            p.getBoundingClientRect(); // force reflow
+            p.style.height = '0';
+            h.setAttribute('aria-expanded','false');
+          }
+        });
+
+        // 2) if it was closed, open it
+        if (!isOpen) {
+          panel.style.height = '0';           // ensure start at 0
+          panel.getBoundingClientRect();      // force reflow
+          panel.style.height = panel.scrollHeight + 'px';
+          header.setAttribute('aria-expanded','true');
+
+          // after opening, reset to auto
+          panel.addEventListener('transitionend', function handler() {
+            if (header.getAttribute('aria-expanded') === 'true') {
+              panel.style.height = 'auto';
+            }
+            panel.removeEventListener('transitionend', handler);
+          });
+        }
+      });
+    });
+  });
+});
+</script>
+
+
+

@@ -6,7 +6,7 @@
         <form class="static-search__form">
             <div class="static-search__destination">
                 <label for="destination">Destination</label>
-                <div class="static-search__select font-25">
+                <div class="static-search__select">
                     <select id="resort" name="resort" value="">
                         <option value="" selected disabled>Where would you like to go?</option>
                         @if (Model.ResortPicker != null && Model.ResortPicker.Count() > 0)
@@ -21,7 +21,7 @@
             </div>
             <div class="static-search__datepicker">
                 <label for="date">Date</label>
-                <div class="static-search__datepicker-input font-25">
+                <div class="static-search__datepicker-input">
                     <input type="text" id="date" value="Check In – Check Out" readonly />
                 </div>
                 <div class="static-search__datepicker-dropdown p-3 p-md-4">
@@ -72,7 +72,7 @@
             </div>
             <div class="static-search__guests">
                 <label for="guests">Number of guests</label>
-                <div class="static-search__select font-25">
+                <div class="static-search__select">
                     <select id="guests" value="">
                         <option value="" selected disabled>0</option>
                         @for (var i = 1; i <= 20; i++)

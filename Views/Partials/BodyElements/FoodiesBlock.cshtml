@@ -1,0 +1,136 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<dynamic>
+@using System.Linq
+@using Umbraco.Web
+@using Umbraco.Core.Models.PublishedContent
+@using Umbraco.Web.Models
+
+@{
+    var contentElement = (IPublishedElement)Model;
+    var moduleHeading  = contentElement.Value<string>("heading");
+    var moduleDesc     = contentElement.Value<string>("description");
+
+    var page  = Umbraco.AssignedContentItem;
+    var items = page
+      .Children
+      .Where(x => x.ContentType.Alias == "restaurantsBarsDetailPage")
+      .ToList();
+}
+
+<section class='foodies-intro text-center mb-5'>
+  <div class='container'>
+    <div class='flexbox'>
+      <div class='flex-item'>
+        @if (!string.IsNullOrWhiteSpace(moduleHeading))
+        {
+          <h2 class='display-4 mb-3'>@moduleHeading</h2>
+        }
+      </div>
+      <div class='flex-item'>
+        @if (!string.IsNullOrWhiteSpace(moduleDesc))
+        {
+          <p class='lead mb-4'>@Html.Raw(moduleDesc)</p>
+        }
+      </div>
+    </div>
+    <label for='foodies-filter'>VENUES</label>
+    <div class='select-wrapper'>
+      <select id='foodies-filter' class='font-25'>
+        <option value=''>All</option>
+        <option value='restaurants'>I'm hungry</option>
+        <option value='bars'>I'm thirsty</option>
+      </select>
+    </div>
+  </div>
+</section>
+
+<section class='foodies-blocks'>
+  <div class='container'>
+    @if (items.Any())
+    {
+      for (var i = 0; i < items.Count; i++)
+      {
+        var item     = items[i];
+        var rawCat   = item.Value<string>("restaurantsBarsCategory");
+        var category = !string.IsNullOrWhiteSpace(rawCat)
+                     ? rawCat.ToLower().Trim()
+                     : "";
+
+        // determine crop size by block index
+        int width, height;
+        switch (i)
+        {
+          case 0:
+            width  = 957; height = 637; break;
+          case 1:
+            width  = 468; height = 468; break;
+          case 2:
+            width  = 468; height = 630; break;
+          case 3:
+            width  = 820; height = 547; break;
+          case 4:
+            width  = 536; height = 690; break;
+          default:
+            width  = 812; height = 993; break; // your original fallback
+        }
+
+        var heading   = item.Name;
+        var shortDesc = item.Value<string>("shortDescription");
+        var longDesc  = item.Value<string>("longDescription");
+        var hoursList = item.Value<IEnumerable<IPublishedElement>>("restaurantsBarsInfo");
+        var img1      = item.Value<IPublishedContent>("featuredImage");
+
+        string url1 = img1 != null
+          ? img1.GetCropUrl(width, height)
+          : null;
+    <div class='row py-5 align-items-center' data-category='@category'>
+      <div class='col-md-6 pe-lg-5 text-container'>
+        <h3 class='h2 mb-3'>@heading</h3>
+
+        @if (!string.IsNullOrWhiteSpace(shortDesc))
+        {
+          @Html.Raw(shortDesc)
+        }
+@*
+        @if (hoursList != null && hoursList.Any())
+        {
+          <ul class='list-unstyled mt-3'>
+            @foreach (var h in hoursList)
+            {
+                var hourTitle = h.Value<string>("heading");
+                var links     = h.Value<IEnumerable<Link>>("itemLinks");
+            
+                <li>
+                  @hourTitle
+                  @if (links != null && links.Any())
+                  {
+                    <ul class='ps-3'>
+                      @foreach (var l in links)
+                      {
+                        <li><a href='@l.Url'>@l.Name</a></li>
+                      }
+                    </ul>
+                  }
+                </li>
+            }
+          </ul>
+        }
+*@
+        @if (!string.IsNullOrWhiteSpace(longDesc))
+        {
+          @Html.Raw(longDesc)
+        }
+      </div>
+
+      <div class='col-md-6 d-flex flex-column gap-3'>
+        <div class='image-container'>
+          @if (!string.IsNullOrEmpty(url1))
+          {
+            <img src='@url1' alt='@img1.Name' class='img-fluid' />
+          }
+        </div>
+      </div>
+    </div>
+      }
+    }
+  </div>
+</section>

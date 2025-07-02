@@ -20,6 +20,7 @@
     @Html.Partial("HrefLang")
     @Html.Raw(websiteSettings.HeaderMarkup)
     <link rel="stylesheet" type="text/css" href="/assets/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/new-css.css">
     <!--<script src="/scripts/links.js"></script>-->
     <!-- Userback Widget -->
 <script>
@@ -71,8 +72,11 @@
     <script src="/assets/js/lightbox.bundle.min.js"></script>
 
     <script src="/assets/main.js"></script>
+    <script src="/assets/js/isotope.js"></script>
     @RenderSection("FooterScript", required: false)
 
     @Html.Raw(websiteSettings.BodyBottomMarkup)
+    <script src="/scripts/new-script.js"></script>
+    
 </body>
 </html>

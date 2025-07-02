@@ -1,0 +1,455 @@
+/* — Foodies Intro — */
+.foodies-intro .flexbox {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 4rem;
+  text-align: left;
+}
+.foodies-intro .flexbox .flex-item {
+  flex: 1;
+}
+
+.foodies-intro label {
+  display: block;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #333;
+  font-family: 'Rework Display', sans-serif;
+  font-size: 18px;
+}
+
+.foodies-intro h2 {
+  margin: 0;
+  padding: 0.5rem 1rem;
+  display: inline-block;
+}
+
+.foodies-intro p.lead {
+  margin: 0;
+  line-height: 1.6;
+  text-align: left;
+}
+
+/* Dropdown */
+.foodies-intro .select-wrapper {
+  position: relative;
+  border-top: 1px solid #333;
+  max-width: 200px;
+  margin: 10px auto 2rem;
+}
+
+.foodies-intro .select-wrapper select {
+  appearance: none;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-weight: 100;
+}
+
+.foodies-intro .select-wrapper::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  right: 7px;
+  width: 24px;
+  height: 24px;
+  border-top: 2px solid;
+  border-right: 2px solid;
+  transform: rotate(135deg);
+  pointer-events: none;
+}
+
+.foodies-intro .select-wrapper select option {
+  background: #fff;
+  color: #000;
+  padding: 0.75rem 1rem;
+  font-size: 18px;
+  font-weight: 100;
+}
+
+.foodies-intro .select-wrapper select option:hover {
+  color: #b49d7c;
+}
+
+.foodies-intro .select-wrapper select:focus {
+  outline: none;
+}
+
+/* — Foodies Blocks — */
+.foodies-blocks .row {
+  display: flex;
+  align-items: flex-start !important;
+  margin-bottom:0;
+}
+
+.foodies-blocks .col-md-6 {
+  flex: 0 0 50%;
+  max-width: 50%;
+  position: relative;
+}
+
+/* alternating layouts */
+.foodies-blocks .row {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.foodies-blocks .row.reverse {
+  flex-direction: row;
+}
+
+
+.foodies-blocks .row:nth-child(5n+1) .second-image {
+  position: absolute;
+  width: 50%;
+  bottom: -25%;
+  left: -15%;
+}
+
+.foodies-blocks .row:nth-child(5n+3) .second-image {
+  position: absolute;
+  width: 50%;
+  top: -35%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.foodies-blocks .text-container {
+  padding: 0 5rem !important;
+}
+
+@media (max-width: 1200px){
+    .foodies-blocks .row:nth-child(5n+3){
+        margin-top: 5rem;
+    }
+}
+
+/* — Mobile (≤767px) — */
+@media (max-width: 767px) {
+  .foodies-intro {
+    flex-direction: column;
+    text-align: center;
+  }
+  .foodies-intro h2 {
+    margin-bottom: 1.5rem;
+  }
+  .foodies-intro p.lead {
+    margin-top: 1.5rem;
+  }
+  .foodies-intro .select-wrapper {
+    max-width: 100%;
+    margin-bottom: 1.5rem;
+  }
+  .foodies-intro .select-wrapper select {
+    padding: 0.75rem 2rem 0.75rem 1rem;
+  }
+  .foodies-blocks .row {
+    flex-direction: column !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .foodies-blocks .col-md-6 {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    margin-bottom: 3rem;
+  }
+  .foodies-blocks .col-md-6 img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .foodies-blocks .image-container .second-image{
+      display: none;
+  }
+}
+
+/* Wedding Options */
+.no-heading{
+    margin-top:0 !important;
+}
+.weddingOptions__wrap.no-heading{
+    padding-top: 0 !important;
+}
+
+.divider.wedding{
+    display: none;
+}
+
+.wedding-options-block {
+  padding: 80px 15px;
+}
+
+.wedding-options-block .row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: top;
+  margin: 0 -15px;
+}
+
+.wedding-options-block .col-md-6 {
+  padding: 0 2rem;
+}
+
+@media (max-width: 767px) {
+  .wedding-options-block .col-md-6:first-child {
+    margin-top: 30px;
+  }
+}
+
+.wedding-options-block h2 {
+  line-height: 1.2;
+  margin-bottom: 24px;
+}
+
+.wedding-options-block .description p {
+  line-height: 1.75;
+}
+
+.wedding-options-block img.img-fluid {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Wedding Packages*/
+.wedding-packages-section {
+  padding: 80px 15px;
+}
+
+.wedding-packages-section:nth-child(even) {
+  background-color: #BA8C66;
+}
+
+.wedding-packages-section .row.align-items-start {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.wedding-packages-section .col-md-6 {
+  padding: 0 15px;
+}
+
+@media (min-width: 768px) {
+  .wedding-packages-section .col-md-6:first-child,
+  .wedding-packages-section .col-md-6:last-child {
+    flex: 0 0 50%;
+  }
+}
+
+@media (max-width: 767px) {
+  .wedding-packages-section .col-md-6:first-child {
+    margin-bottom: 32px;
+  }
+  .wedding-packages-section .col-6 {
+      width: 100%;
+  }
+}
+
+.wedding-packages-section ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.wedding-packages-section ul li {
+    margin-bottom: 12px;
+    padding-left: 20px;
+    position: relative;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 18px;
+}
+
+/* outline button */
+.btn-outline {
+  display: inline-block;
+  padding: 10px 30px;
+  border: 1px solid;
+  border-radius: 30px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+/* two-column media gallery gutters */
+.wedding-packages-section .row.g-3 {
+  margin: 0 -8px;
+}
+
+.wedding-packages-section .row.g-3 > div {
+  padding: 8px;
+}
+
+.wedding-packages-section img.img-fluid {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.wedding-heading{
+    margin-bottom:100px;
+}
+
+.wedding-packages-section .content-slider__image{
+    padding-top:143% !important;
+}
+.wedding-packages-section img{
+    width: 100%;
+}
+
+.wedding-packages-section .content-slider__wrap{
+    padding: 0 !important;
+}
+
+.row.align-items-stretch {
+  align-items: stretch;
+}
+
+.facilities-block .accommodation__slide-button .btn{
+    max-width:200px;
+}
+
+/* Reworking Font sizes */
+@media (min-width: 768px) {
+  h1, .h1 {
+    font-size: 4rem !important;
+  }
+  h2, .h2 {
+    font-size: 3rem !important;
+  }
+  h3, .h3 {
+    font-size: 2.25rem !important;
+  }
+  h4, .h4 {
+    font-size: 2rem !important;
+  }
+  h5, .h5 {
+    font-size: 1rem !important;
+  }
+  .offers__slide-title h5{
+      font-size: 1.5rem !important;
+  }
+  
+  .rewarded__list li{
+      font-size: 1.5rem !important;
+  }
+  
+  .custom__list li{
+      font-size: 1rem !important;
+  }
+  
+  .content__description.font-20{
+      font-size: 1rem !important;
+  }
+}
+
+@media (max-width: 1399.98px) {
+    .static-search__form {
+        flex-wrap: nowrap;
+        column-gap: 30px;
+    }
+    
+    .static-search__form > * {
+        flex: 0 0 calc(100% / 4);
+    }
+    
+    .static-search__guests {
+        flex: 0 0 calc(90% / 4);
+    }
+    
+    .static-search__button button{
+        font-size:12px;
+    }
+    
+    .static-search__select-option::after{
+        height: 18px;
+        width: 18px;
+    }
+}
+
+.static-search__form label{
+    font-size:12px;
+}
+
+.spa-wellness-block .row{
+    margin-bottom:100px;
+}
+
+.spa-wellness-block .accordion-header{
+    margin:15px 0 25px;
+    font-style:italic;
+    position:relative;
+    border-bottom:1px solid black;
+    cursor:pointer;
+}
+
+.spa-wellness-block .accordion-header:after{
+    border-left: none;
+    border-right: 2px solid;
+    border-top: 2px solid;
+    content: '';
+    color: #211E2B;
+    pointer-events: none;
+    position: absolute;
+    right: 7px;
+    top: -3px;
+    -webkit-transform: rotate(135deg);
+    -ms-transform: rotate(135deg);
+    transform: rotate(135deg);
+    height: 12px;
+    width: 12px;
+}
+
+.spa-wellness-block .accordion-panel{
+    height: 0;
+}
+
+.spa-wellness-block .flexbox {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 4rem;
+  text-align: left;
+}
+
+.spa-wellness-block .flexbox .flex-item {
+  flex: 1;
+}
+
+.spa-wellness-block .flexbox:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+.upcoming-events__wrap {
+    padding-top: 0 !important;
+}
+
+.upcoming-events__wrap .gridfilter__item-date, .calendar-event__slide-date{
+    font:11px "Rework Display", sans-serif;
+    text-transform:uppercase;
+    color: #7E7E7E;
+}
+
+.upcoming-events__wrap .gridfilter__item-title, .calendar-event__slide-title{
+    font-size: 20px;
+}
+
+.upcoming-events__wrap .gridfilter__item-description p{
+    font-size:14px;
+}
+
+.upcoming-events__wrap .gridfilter__item-button a{
+    font-size:11px;
+}
+
+.calendar-gallery__info .block__sub-title{
+    font-size: 14px;
+    margin-top: 80px;
+}
