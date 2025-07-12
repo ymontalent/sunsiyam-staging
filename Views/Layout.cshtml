@@ -8,6 +8,11 @@
     var websiteSettings = Umbraco.GetAuxiliaryContent<IAuxiliaryFoldersComposition, WebsiteSettings>(s => s.WebsiteSettings);
     var page = Umbraco.AssignedContentItem;
     Umbraco.RenderMacro("TestError");
+    var alias = Model.ContentType.Alias;
+    var name = Model.Name;
+    var aliasClass  = alias.ToLowerInvariant();  
+    var nameClass   = name.ToLowerInvariant().Replace(" ", "-").Replace("&","n");  
+    var bodyClass   = aliasClass + " " + nameClass;  
 }
 <!DOCTYPE html>
 <html lang="@lang" class="@lang">
@@ -21,7 +26,7 @@
     @Html.Raw(websiteSettings.HeaderMarkup)
     <link rel="stylesheet" type="text/css" href="/assets/main.css">
     <link rel="stylesheet" type="text/css" href="/css/new-css.css">
-    <!--<script src="/scripts/links.js"></script>-->
+    <script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
     <!-- Userback Widget -->
 <script>
   window.Userback = window.Userback || {};
@@ -38,7 +43,7 @@
 
 </head>
 
-<body class="@ViewBag.BodyClass">
+<body class="@ViewBag.BodyClass @bodyClass">
 
     @if (websiteSettings.ShowCookiePanel == true && !websiteSettings.CookiePanelText.ToString().IsNullOrWhiteSpace())
     {
@@ -72,10 +77,16 @@
     <script src="/assets/js/lightbox.bundle.min.js"></script>
 
     <script src="/assets/main.js"></script>
-    <script src="/assets/js/isotope.js"></script>
+    <script src='https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js'></script>
+    <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
     @RenderSection("FooterScript", required: false)
 
     @Html.Raw(websiteSettings.BodyBottomMarkup)
+    <script>
+        var translations = {
+            allFilter: "@Umbraco.GetDictionaryValue("All Filters")"
+        };
+    </script>
     <script src="/scripts/new-script.js"></script>
     
 </body>

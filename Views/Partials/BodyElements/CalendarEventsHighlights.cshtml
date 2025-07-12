@@ -4,9 +4,10 @@
     var subHeading  = Model.Value<string>("subHeading");
     var heading     = Model.Value<string>("heading");
     var description = Model.Value<string>("description");
+    var eventsList     = Model.Events;
 }
 
-<div class="upcoming-events__section">
+<div class="upcoming-events__section block__padding">
     <div class="upcoming-events__wrap">
         <div class="container">
             @if (!string.IsNullOrWhiteSpace(subHeading)
@@ -20,13 +21,13 @@
                         </div>
                         <div class="col-12 col-lg-6 col-xxl-5">
                             <div class="block__description text-navy-blue font-20">
-                                @description
+                                @Html.Raw(description)
                             </div>
                         </div>
                     </div>
                 </div>
             }
-            @if (Model.Events.Any())
+            @if (eventsList != null && eventsList.Any())
             {
                 <div class="upcoming-events__content gridfilter__items">
                     @foreach (var eventItem in Model.Events.OfType<CalendarEventPage>())

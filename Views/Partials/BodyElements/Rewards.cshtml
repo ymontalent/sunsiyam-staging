@@ -13,7 +13,6 @@
                 <div class="row">
                     <div class="col-12 col-lg-6 col-xl-6 position-relative">
                         <div class="rewarded__image" style="background-image:url('@Model.Image.GetCroppedImageUrl("808x730")');"></div>
-                        <div class="rewarded__caption">@Model.ImageCaption</div>
                         <div class="rewarded__stamp">
                             <video src="@Model.ImageBadge.Url()" type="video/mp4" muted loop autoplay></video>
                         </div>
@@ -30,6 +29,7 @@
                                     }
                                 </ul>
                             }
+                            <div class="rewarded__caption">@Model.ImageCaption</div>
                             @if (Model.Buttons != null && Model.Buttons.Count() > 0)
                             {
                                 <div class="rewarded__button">

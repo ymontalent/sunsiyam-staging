@@ -5,132 +5,111 @@
 @using Umbraco.Web.Models
 
 @{
-    var contentElement = (IPublishedElement)Model;
-    var moduleHeading  = contentElement.Value<string>("heading");
-    var moduleDesc     = contentElement.Value<string>("description");
-
-    var page  = Umbraco.AssignedContentItem;
-    var items = page
+    var contentElement  = (IPublishedElement)Model;
+    var moduleHeading   = contentElement.Value<string>("heading");
+    var moduleDesc      = contentElement.Value<string>("description");
+    var page            = Umbraco.AssignedContentItem;
+    var items           = page
       .Children
       .Where(x => x.ContentType.Alias == "restaurantsBarsDetailPage")
       .ToList();
+    var bars = contentElement.Value<IEnumerable<IPublishedContent>>("restaurantBar") ?? Enumerable.Empty<IPublishedContent>();
 }
 
-<section class='foodies-intro text-center mb-5'>
-  <div class='container'>
-    <div class='flexbox'>
-      <div class='flex-item'>
+<div class='foodies-intro text-center mb-5'>
+    <div class='container'>
         @if (!string.IsNullOrWhiteSpace(moduleHeading))
         {
           <h2 class='display-4 mb-3'>@moduleHeading</h2>
         }
-      </div>
-      <div class='flex-item'>
         @if (!string.IsNullOrWhiteSpace(moduleDesc))
         {
-          <p class='lead mb-4'>@Html.Raw(moduleDesc)</p>
+            <div class="block__description intro__description">
+                    @Html.Raw(moduleDesc)
+            </div>
         }
-      </div>
-    </div>
-    <label for='foodies-filter'>VENUES</label>
-    <div class='select-wrapper'>
-      <select id='foodies-filter' class='font-25'>
-        <option value=''>All</option>
-        <option value='restaurants'>I'm hungry</option>
-        <option value='bars'>I'm thirsty</option>
-      </select>
-    </div>
+        <ul class="accommodation-sliderfilter__tabs d-flex align-items-center justify-content-center flex-wrap">
+            <li data-filter="restaurants" class="accommodation-sliderfilter__tabs-btn btn active">I'm hungry</li>
+            <li data-filter="bars" class="accommodation-sliderfilter__tabs-btn btn">I'm thirsty</li>
+        </ul>
   </div>
-</section>
+</div>
 
-<section class='foodies-blocks'>
-  <div class='container'>
-    @if (items.Any())
-    {
-      for (var i = 0; i < items.Count; i++)
-      {
-        var item     = items[i];
-        var rawCat   = item.Value<string>("restaurantsBarsCategory");
-        var category = !string.IsNullOrWhiteSpace(rawCat)
-                     ? rawCat.ToLower().Trim()
-                     : "";
-
-        // determine crop size by block index
-        int width, height;
-        switch (i)
-        {
-          case 0:
-            width  = 957; height = 637; break;
-          case 1:
-            width  = 468; height = 468; break;
-          case 2:
-            width  = 468; height = 630; break;
-          case 3:
-            width  = 820; height = 547; break;
-          case 4:
-            width  = 536; height = 690; break;
-          default:
-            width  = 812; height = 993; break; // your original fallback
-        }
-
-        var heading   = item.Name;
-        var shortDesc = item.Value<string>("shortDescription");
-        var longDesc  = item.Value<string>("longDescription");
-        var hoursList = item.Value<IEnumerable<IPublishedElement>>("restaurantsBarsInfo");
-        var img1      = item.Value<IPublishedContent>("featuredImage");
-
-        string url1 = img1 != null
-          ? img1.GetCropUrl(width, height)
-          : null;
-    <div class='row py-5 align-items-center' data-category='@category'>
-      <div class='col-md-6 pe-lg-5 text-container'>
-        <h3 class='h2 mb-3'>@heading</h3>
-
-        @if (!string.IsNullOrWhiteSpace(shortDesc))
-        {
-          @Html.Raw(shortDesc)
-        }
-@*
-        @if (hoursList != null && hoursList.Any())
-        {
-          <ul class='list-unstyled mt-3'>
-            @foreach (var h in hoursList)
+<div class="upcoming-events__section">
+    <div class="upcoming-events__wrap">
+        <div class="container">
+           @if (bars.Any())
             {
-                var hourTitle = h.Value<string>("heading");
-                var links     = h.Value<IEnumerable<Link>>("itemLinks");
+                <div class='foodies-block upcoming-events__content gridfilter__items'>
+                    @foreach (var bar in bars)
+                    {
+                        var img = bar.Value<IPublishedContent>("featuredImage");
+                        var url = img != null
+                                  ? img.GetCropUrl(width: 536, height: 536)
+                                  : null;
+                        var raw = bar.Value<string>("restaurantType");
+                        var type = string.IsNullOrWhiteSpace(raw) ? "Cuisine" : raw;
+                        var rawCategory = bar.Value<string>("restaurantsBarsCategory");
+                        var category    = string.IsNullOrWhiteSpace(rawCategory)
+                                          ? "Cuisine"
+                                          : rawCategory;
             
-                <li>
-                  @hourTitle
-                  @if (links != null && links.Any())
-                  {
-                    <ul class='ps-3'>
-                      @foreach (var l in links)
-                      {
-                        <li><a href='@l.Url'>@l.Name</a></li>
-                      }
-                    </ul>
-                  }
-                </li>
+                        <div class='gridfilter__item @category.ToLower()'>
+                            <div class='gridfilter__item-image'>
+                                @if (!string.IsNullOrEmpty(url))
+                                {
+                                    <img src='@url' alt='@img.Name' class='img-fluid' />
+                                }
+                            </div>
+                            <div class='gridfilter__item-content'>
+                                @if (!string.IsNullOrWhiteSpace(type))
+                                {
+                                    <div class="gridfilter__item-date">@type</div>
+                                }
+                                <div class='gridfilter__item-title'>@bar.Name</div>
+                                <div class='gridfilter__item-description'>
+                                    @Html.Raw(bar.Value<string>("shortDescription"))
+                                </div>
+                                <div class='gridfilter__item-button'>
+                                    <a href='@bar.Url()' class='btn btn-outline-black'>
+                                        @Umbraco.GetDictionaryValue("Read more")
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
             }
-          </ul>
-        }
-*@
-        @if (!string.IsNullOrWhiteSpace(longDesc))
-        {
-          @Html.Raw(longDesc)
-        }
-      </div>
 
-      <div class='col-md-6 d-flex flex-column gap-3'>
-        <div class='image-container'>
-          @if (!string.IsNullOrEmpty(url1))
-          {
-            <img src='@url1' alt='@img1.Name' class='img-fluid' />
-          }
         </div>
-      </div>
     </div>
-      }
-    }
-  </div>
-</section>
+    <div class="divider divider-gray"></div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var gridItems = document.querySelectorAll('.gridfilter__item');
+  var buttons   = document.querySelectorAll('.accommodation-sliderfilter__tabs-btn');
+  window.setTimeout(function(){
+      gridItems.forEach(function(item) {
+        item.style.display = 'block';
+      });
+  },300)
+
+  buttons.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var filter = btn.getAttribute('data-filter');
+
+      // show/hide items
+      gridItems.forEach(function(item) {
+        if (filter === 'all' || item.classList.contains(filter)) {
+          item.style.display = '';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  });
+});
+</script>
+

@@ -1,0 +1,98 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<Umbraco.Core.Models.PublishedContent.IPublishedElement>
+@using Umbraco.Web.Models
+@using Umbraco.Core.Models.PublishedContent
+
+@{
+    // heading
+    var headingRaw         = Model.Value<string>("heading");
+    var heading            = string.IsNullOrWhiteSpace(headingRaw) ? "" : headingRaw.Trim();
+    bool isHeadingEmpty    = string.IsNullOrWhiteSpace(headingRaw);
+
+    // classes
+    var contentClass       = isHeadingEmpty ? " no-heading" : "";
+    var typeClass          = isHeadingEmpty ? " wedding"    : "";
+
+    // other simple fields
+    var description     = Model.Value<string>("glance");
+
+    // images for glance
+    var glanceOverlay      = Model.Value<IPublishedContent>("glanceLeftOverlayImage");
+    var glanceLeftImg      = Model.Value<IPublishedContent>("glanceLeftImage");
+
+    // other-section fields
+    var otherLeft          = Model.Value<IPublishedContent>("otherSectionLeftImage");
+    var otherOverlay       = Model.Value<IPublishedContent>("otherSectionLeftOverlayImage");
+    var otherTitleRaw      = Model.Value<string>("otherSectionTitle");
+    var otherDescriptionRaw= Model.Value<string>("otherSectionDescription");
+}
+
+<div class="weddingOptions__section">
+    <div class="weddingOptions__wrap @contentClass">
+        <div class="container">
+
+            @* Section 1 block *@
+            <div class="weddingOptions__content font-18 @contentClass">
+                <div class="weddingOptions__one">
+                    <div class="row position-relative">
+                        <div class="col-12 col-lg-6">
+                            <div class="weddingOptions__info">
+                                <h3 class="weddingOptions__title mb-0">@heading</h3>
+                                <div class="weddingOptions__description">
+                                    @Html.Raw(description)
+                                </div>
+                                @if (glanceOverlay != null)
+                                {
+                                    <div class="weddingOptions__parallax-image">
+                                        <img src="@glanceOverlay.GetCroppedImageUrl("383x542")"
+                                             alt="@glanceOverlay.Name"
+                                             class="img-fluid" />
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6 pe-xxl-0">
+                            @if (glanceLeftImg != null)
+                            {
+                                <div class="weddingOptions__image">
+                                    <img src="@glanceLeftImg.GetCroppedImageUrl("820x995")"
+                                         alt="@glanceLeftImg.Name"
+                                         class="img-fluid" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                @* other section *@
+                @if (otherLeft != null && !string.IsNullOrWhiteSpace(otherTitleRaw))
+                {
+                    <div class="weddingOptions__two">
+                        <div class="row flex-column-reverse flex-lg-row">
+                            <div class="col-12 col-lg-6 position-relative">
+                                <div class="text-center">
+                                    <div class="divider__logo rounded-circle">
+                                        <img src="/assets/img/tree.svg" alt="Shell" class="img-fluid">
+                                    </div>
+                                </div>
+                                <div class="weddingOptions__image">
+                                    <img src="@otherLeft.GetCroppedImageUrl("820x1046")"
+                                         alt="@otherLeft.Name"
+                                         class="img-fluid" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 position-relative d-flex justify-content-between flex-column">
+                                <div class="weddingOptions__info">
+                                    <h3 class="weddingOptions__title mb-0">@otherTitleRaw</h3>
+                                    <div class="weddingOptions__description font-18">
+                                        @Html.Raw(otherDescriptionRaw)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
