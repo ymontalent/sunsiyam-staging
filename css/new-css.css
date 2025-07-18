@@ -92,6 +92,11 @@
     display:block;
 }
 
+.foodies-block .gridfilter__item-description{
+    height: 100px !important;
+    margin-bottom: 0 !important;
+}
+
 @media (max-width: 1200px){
   .foodies-blocks .row:nth-child(5n+3){
     margin-top: 5rem;
@@ -101,7 +106,7 @@
 /* — Mobile (≤767px) — */
 @media (max-width: 767px) {
   .foodies-intro {
-    flex-direction: column;
+    flex-direction: column;e
     text-align: center;
   }
   .foodies-intro h2 {
@@ -169,6 +174,13 @@
   .wedding-options-block .col-md-6:first-child {
     margin-top: 30px;
   }
+  .weddingOptions__one .weddingOptions__parallax-image{
+      display: none;
+  }
+  .weddingOptions__one .weddingOptions__image{
+      width: 100%;
+      margin: 50px 0 0;
+  }
 }
 .wedding-options-block h2 {
   line-height: 1.2;
@@ -182,6 +194,12 @@
   width: 100%;
   height: auto;
   object-fit: cover;
+}
+
+.wedding-options-block .badgeContainer .divider__logo.weddingBadge{
+    width: auto;
+    top:-3%;
+    left:15%;
 }
 
 /* — Wedding Packages — */
@@ -224,6 +242,42 @@
   padding-top: 15px;
   padding-bottom: 15px;
   font-size: 18px;
+}
+
+.wedding-packages-section .factsheet{
+    display:flex;
+    align-items:center;
+}
+.wedding-packages-section .factsheet .title{
+    margin-right:50px;
+}
+
+.wedding-packages-section .factsheet .btn{
+    width:275px;
+}
+
+.wedding-packages-section .factsheet-with-image{
+    margin-top:50px;
+}
+
+.wedding-packages-section .factsheet-with-image .title{
+    margin-bottom: 20px;
+}
+
+.wedding-packages-section .factsheet-with-image a{
+    width:275px;
+}
+
+.wedding-packages-section .enquire-cta{
+    margin:80px 0 50px;
+}
+.wedding-packages-section .enquire-cta a{
+    width: 100%;
+    max-width: 350px;
+}
+
+.weddingCelebration__slide-title{
+    font-size: 18px;
 }
 
 /* outline button */
@@ -347,34 +401,41 @@
   flex-direction: row-reverse;
 }
 
-@media (min-width: 1200px) and (max-width: 1679.98px) {
-    .weddingOptions__content {
-        margin-top: 0;
+.resort-luxury .divider__logo.weddingBadge{
+    position:absolute;
+    z-index: 1;
+    background:transparent;
+    display: flex;
+    justify-content:center;
+    width: 100%;
+    top:1%;
+}
+
+@media (max-width: 992px) {
+    .resort-luxury .divider__logo.weddingBadge{
+        top:12%;
     }
-    .weddingOptions__wrap {
-        padding: 0;
-        padding-bottom:100px;
+}
+
+@media (max-width: 767px){
+    .resort-luxury .divider__logo.weddingBadge{
+        top:8%;
     }
 }
 
-.contentpage.spa-n-wellness .upcoming-events__section{
-    padding-top: 50px;
-    padding-bottom: 50px;
+.weddingOptions__content {
+    margin-top: 0 !important;
 }
-
-.contentpage.spa-n-wellness .upcoming-events__head{
-    padding-bottom: 0px;
-}
-
-.contentpage.spa-n-wellness .divider-gray{
-    display:none;
+.weddingOptions__wrap {
+    padding: 0 !important;
+    padding-bottom:100px !important;
 }
 
 /* Upcoming Events */
 .upcoming-events__wrap {
   padding-top: 0 !important;
 }
-.upcoming-events__wrap .gridfilter__item-date,
+.upcoming-events__wrap .gridfilter__item-datee,
 .calendar-event__slide-date {
   font:11px "Rework Display", sans-serif;
   text-transform:uppercase;
@@ -482,6 +543,14 @@
     width: 18px;
   }
 }
+@media (max-width: 767px){
+    .static-search__form{
+        flex-wrap:wrap;
+    }
+    .static-search__form > * {
+        flex: 0 0 calc(100%);
+    }
+}
 .static-search__form label {
   font-size:12px;
 }
@@ -503,5 +572,116 @@
     .homepage .intro__wrap, .resortpage .intro__wrap {
         padding-top: 100px;
         padding-bottom: 100px;
+    }
+}
+
+/*  Destination Info */
+.brandSignature__section .brandSignature__wrap{
+    padding-top: 150px;
+    padding-bottom: 150px;
+}
+
+.spacing-block{
+    margin-bottom:100px;
+}
+
+/* Destination useful information */
+@media (min-width: 1200px) and (max-width: 1679.98px) {
+    .usefulInformation__accordion-button {
+        font-size: 18px;
+    }
+}
+
+/* Container */
+@media (min-width: 1680px) {
+    .container {
+        max-width: calc(1440px + var(--bs-gutter-x));
+    }
+}
+
+/* Offers Detail page*/
+.offers-spacing{
+    padding-top: 140px;
+    padding-bottom: 140px;
+}
+.offersDetail .weddingOptions__content{
+    padding-bottom: 140px;
+    margin-bottom:100px;
+}
+.offersDetail .weddingOptions__info{
+    padding-right:12%;
+}
+.offersDetail .weddingOptions__one .weddingOptions__description{
+    margin-bottom:40px;
+}
+.offers-intro__detail-button a{
+    width: 275px;
+}
+.offersDetail .calendar-gallery__info{
+    padding-left: 10%;
+}
+.offersDetail .calendar-gallery__slide-link:before{
+    display: none;
+}
+.offerdetailspage #mainContent{
+    display:flex;
+    flex-direction:column;
+}
+.offerdetailspage #mainContent .offers__section{
+    order:4;
+}
+.offerdetailspage #mainContent .offers__section .block__description{
+    display: none;
+}
+.offerdetailspage #mainContent .offers__wrap{
+    padding-top:30px !important;
+}
+@media (min-width:768px) and (max-width:1023px){
+    .offersDetail .weddingOptions__info{
+        padding-right:0;
+    }
+    .offersDetail .calendar-gallery__info{
+        padding-left: 0;
+    }
+}
+@media (max-width:767px){
+    .offersDetail .weddingOptions__content{
+        margin-bottom: 50px;
+        padding-bottom: 0;
+    }
+    .offersDetail .weddingOptions__info{
+        padding-top: 30px;
+        padding-right:0;
+    }
+    .offerIncludes{
+        flex-direction:column-reverse;
+    }
+    .offersDetail .calendar-gallery__info{
+        padding-left: 0;
+        margin-top: 0;
+    }
+}
+
+/* Experiences */
+.accommodation__slide-content p:empty {
+    display: none;
+}
+
+.experiencespage .no-carrousel_spacing{
+    max-width: 100% !important;
+    padding: 0;
+    margin: 0;
+}
+
+/* Mobile */
+@media (max-width:767px){
+    .umbraco-forms-field .field-validation-error{
+        position:initial;
+    }
+    .experiences__slide-title{
+        font-size: 15px;
+    }
+    .font-18 {
+        font-size: 18px;
     }
 }

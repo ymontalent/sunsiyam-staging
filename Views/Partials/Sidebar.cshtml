@@ -240,6 +240,18 @@
                                         </a>
                                     </div>
                                 }
+                                else if (resort.ContentType.Alias == "calendarPage")
+                                {
+                                    var selectedPage = resort as CalendarPage;
+                                    <div class="offcanvas__resort-list">
+                                        <a href="@selectedPage.Url()">
+                                            <div class="offcanvas__resort-image">
+                                                <img src="@selectedPage.FeaturedImage.GetCroppedImageUrl("516x301")" alt="@selectedPage.Name.Trim()">
+                                            </div>
+                                            <div class="offcanvas__resort-title">@selectedPage.Name.Trim()</div>
+                                        </a>
+                                    </div>
+                                }
                                 else if (resort.ContentType.Alias == "contentPage")
                                 {
                                     var selectedPage = resort as ContentPage;

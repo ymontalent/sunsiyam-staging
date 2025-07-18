@@ -40,7 +40,7 @@
 {
     <div class="gridfilter__section">
         <div class="gridfilter__wrap">
-            <div class="container">
+            <div class="container @(contentType == "facilities" ? "no-carrousel_spacing" : string.Empty)">
                 @if (!string.IsNullOrEmpty(Model.Heading) || !string.IsNullOrEmpty(Model.Description.ToString()))
                 {
                     <div class="gridfilter__head">
@@ -323,17 +323,26 @@
                     <div class="facilities-block accommodation__slider">
                         @foreach (var facilitiesItem in Model.GridContent.Children<FacilitiesDetailsPage>().OrderByDescending(x => x.CreateDate))
                         {
+                            bool showLink = facilitiesItem.Value<bool>("showLink");
                             <div class="accommodation__slide">
                                 <div class="accommodation__slide-image">
-                                    <a href="@facilitiesItem.Url()">
+                                    @if (showLink){
+                                        <a href="@facilitiesItem.Url()">
+                                            <img src="@facilitiesItem.FeaturedImage.GetCroppedImageUrl("536x536")" alt="@facilitiesItem.FeaturedImage.Name" class="img-fluid" />
+                                            <h4 class="accommodation__slide-title">@facilitiesItem.Name</h4>
+                                        </a>
+                                    }
+                                    else{
                                         <img src="@facilitiesItem.FeaturedImage.GetCroppedImageUrl("536x536")" alt="@facilitiesItem.FeaturedImage.Name" class="img-fluid" />
                                         <h4 class="accommodation__slide-title">@facilitiesItem.Name</h4>
-                                    </a>
+                                    }
                                 </div>
                                 <div class="accommodation__slide-content">
                                     @facilitiesItem.ShortDescription
                                     <div class="accommodation__slide-button">
-                                        <a href="@facilitiesItem.Url()" class="btn btn-outline-navy-blue">@Umbraco.GetDictionaryValue("Read More")</a>
+                                        @if (showLink){
+                                            <a href="@facilitiesItem.Url()" class="btn btn-outline-navy-blue">@Umbraco.GetDictionaryValue("Read More")</a>
+                                        }
                                     </div>
                                 </div>
                             </div>

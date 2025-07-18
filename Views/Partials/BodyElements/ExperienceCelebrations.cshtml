@@ -1,5 +1,16 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.ExperienceCelebrations>
 @using ContentModels = SunSiyam.Core.Models;
+@{
+    // get the current page
+    IPublishedContent currentPage = Umbraco.AssignedContentItem;
+    // safely read its DocType alias
+    string currentAlias = String.Empty;
+    if (currentPage != null && 
+        !String.IsNullOrWhiteSpace(currentPage.ContentType.Alias))
+    {
+        currentAlias = currentPage.ContentType.Alias;
+    }
+}
 
 <div class="weddingCelebration__section">
     <div class="weddingCelebration__wrap">
@@ -10,7 +21,7 @@
                         <h2 class="block__title">@Html.Raw(Model.Heading)</h2>
                     </div>
                     <div class="col-12 col-lg-6 col-xxl-5">
-                        <div class="block__description text-black font-20">
+                        <div class="block__description text-black font-18">
                             @Model.Description
                         </div>
                     </div>
@@ -45,5 +56,8 @@
             </div>
         }
     </div>
-    <div class="divider divider-gray"></div>
+    @if (currentAlias != "experiencesPage")
+    {
+        <div class="divider divider-gray"></div>
+    }
 </div>

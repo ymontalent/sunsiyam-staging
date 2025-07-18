@@ -12,7 +12,7 @@
                         <h2 class="block__title">@Html.Raw(Model.Heading)</h2>
                     </div>
                     <div class="col-12 col-lg-5">
-                        <div class="block__description font-20 mt-lg-2">
+                        <div class="block__description font-18 mt-lg-2">
                             @Model.Description
                         </div>
                     </div>
@@ -24,7 +24,7 @@
                     <div class="col-12 col-lg-7 align-content-lg-end">
                         @if (Model.LocationDetails != null && Model.LocationDetails.Count() > 0)
                         {
-                            <div class="locationTransport__info font-26">
+                            <div class="locationTransport__info font-18">
                                 <ul>
                                     @foreach (var details in Model.LocationDetails)
                                     {

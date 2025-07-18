@@ -10,6 +10,15 @@
     {
         headerButton = resortsHomePage.HeaderButtons;
     }
+    string logoLink = "/";
+    if (resortsHomePage != null)
+    {
+        string resortUrl = resortsHomePage.Url();
+        if (string.IsNullOrWhiteSpace(resortUrl) == false)
+        {
+            logoLink = resortUrl;
+        }
+    }
 }
 
 <header class="header">
@@ -26,7 +35,7 @@
             </div>
         </div>
         <div class="header__logo">
-            <a href="/">
+            <a href="@logoLink">
                 @if (resortsHomePage == null)
                 {
                     <div class="logo logo__large">

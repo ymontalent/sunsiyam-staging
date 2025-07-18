@@ -1,24 +1,27 @@
-﻿@using ContentModels = SunSiyam.Core.Models;
-@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.OfferDetailsPage>
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.OfferDetailsPage>
+@using ContentModels = SunSiyam.Core.Models;
+@using Umbraco.Core.Models.PublishedContent;
+@using Umbraco.Web
+
 @{
     Layout = "layout.cshtml";
     var page = Umbraco.AssignedContentItem;
     var hasResortParent = Model.AncestorOrSelf<ResortsHomePage>();
     if (hasResortParent != null)
     {
-        ViewBag.BodyClass = "resort-" + hasResortParent.ResortCategory.ToLower().Trim() + " single header__black";
+        ViewBag.BodyClass = "resort-" + hasResortParent.ResortCategory.ToLower().Trim();
     }
+    var bodyElements = Model.Value<IEnumerable<IPublishedElement>>("bodyElements")
+                       ?? Enumerable.Empty<IPublishedElement>();
+    this.RenderElements(bodyElements, "BodyElements");
+    var feature1 = Model.Value<IPublishedContent>("OfferFeaturesImage1");
+    var feature2 = Model.Value<IPublishedContent>("OfferFeaturesImage2");
+    var termsImg = Model.Value<IPublishedContent>("OfferTermsConditionsImage");
 }
-
-@RenderPage("Partials/BodyElements/Breadcrumb.cshtml")
-
-<div class="offers-intro__section">
-    <div class="offers-intro__wrap text-center">
+<div class="offersDetail offers-intro__section">
+    <div class="offers-intro__wrap">
         <div class="container">
-            <div class="offers-intro__image">
-                <img src="@Model.OfferImage.GetCroppedImageUrl("1640x705")" alt="@Model.OfferImage.Name" class="img-fluid">
-            </div>
-            <div class="row justify-content-center">
+            <div class="row justify-content-center text-center offers-spacing">
                 <div class="col-12 col-lg-11 col-xl-10 col-xxl-7">
                     <h1 class="block__title h2">@Model.OfferTitle.Trim()</h1>
                     @if (!string.IsNullOrEmpty(Model.OfferSubtitle))
@@ -34,50 +37,105 @@
                     }
                 </div>
             </div>
-            
-        </div>
-    </div>
-    <div class="offers-intro__detail">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 col-lg-5 col-xxl-4">
-                    <div class="offers-intro__detail-includes">
-                        @if (Model.OfferFeatures != null && Model.OfferFeatures.Count() > 0)
-                        {
-                            <h3 class="offers-intro__detail-title h4 mb-xl-4">@Umbraco.GetDictionaryValue("Offer Includes")</h3>
-                            <ul class="custom__list list-unstyled mb-4 mb-xl-5">
+            <div class="weddingOptions__content">
+                <div class="weddingOptions__one">
+                    <div class="row position-relative offerIncludes">
+                        <div class="col-12 col-lg-6">
+                            @if (Model.OfferFeatures != null && Model.OfferFeatures.Count() > 0)
+                            {
+                                <div class="weddingOptions__info">
+                                        <h3 class="weddingOptions__title">@Umbraco.GetDictionaryValue("Offer Includes")</h3>
+                                        <div class="weddingOptions__description">
+                                            <ul class="custom__list list-unstyled mb-0">
+                                                @foreach (var item in Model.OfferFeatures)
+                                                {
+                                                    <li>@Html.Raw(item)</li>
+                                                }
+                                            </ul>
+                                        </div>
+                                        @if (Model.OfferBookingUrl != null)
+                                        {
+                                            <div class="offers-intro__detail-button">
+                                                <a href="@Model.OfferBookingUrl.GetLinkUrl()" class="btn btn-outline-black">@Model.OfferBookingUrl.Name</a>
+                                            </div>
+                                        }
+                                        @if (feature2 != null)
+                                        {
+                                            <div class="weddingOptions__parallax-image">
+                                                <img 
+                                                    src="@feature2.GetCroppedImageUrl("383x542")" 
+                                                    alt="@feature2.Name" 
+                                                    class="img-fluid" 
+                                                />
+                                            </div>
+                                        }
+                                        else{
+                                            <div class="weddingOptions__parallax-image" style="transform: translate3d(0px, 70.9432px, 0px);">
+                                                <img src="/media/ggyivt2k/photography_111-min.jpg?anchor=center&amp;mode=crop&amp;quality=70&amp;width=383&amp;height=542&amp;rnd=133828585769130000" alt="Photography 111 Min" class="img-fluid">
+                                            </div>
+                                        }
+                                </div>
+                            }
+                        </div>
+                        <div class="col-12 col-lg-6 pe-xxl-0">
+                            @if (feature1 != null)
+                            {
+                                <div class="offers-intro__detail-button">
+                                    <img 
+                                        src="@feature1.GetCroppedImageUrl("820x995")" 
+                                        alt="@feature1.Name" 
+                                        class="img-fluid" 
+                                    />
+                                </div>
+                            }
+                            else{
+                                <div class="weddingOptions__image">
+                                    <img src="/media/a2jhfxcu/weddings_001-min.jpg?anchor=center&amp;mode=crop&amp;quality=70&amp;width=820&amp;height=995&amp;rnd=133827045282170000" alt="Weddings 001 Min" class="img-fluid">
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row terms_conditions">
+                <div class="col-12 col-lg-6 col-xxl-7">
+                        <div class="calendar-gallery__slider">
+                                <div class="calendar-gallery__slide">
+                                    <div class="calendar-gallery__slide-wrap">
+                                        @if (termsImg != null)
+                                        {
+                                            <div class="calendar-gallery__slide-link">
+                                                <img 
+                                                    src="@termsImg.GetCroppedImageUrl("947x1120")" 
+                                                    alt="@termsImg.Name" 
+                                                    class="calendar-gallery__slide-image" 
+                                                />
+                                            </div>
+                                        }
+                                        else{
+                                            <div class="calendar-gallery__slide-link">
+                                                <img src="/media/4cvpthra/upcoming-events-4.jpg?anchor=center&amp;mode=crop&amp;quality=70&amp;width=947&amp;height=1120&amp;rnd=133959502358230000" class="calendar-gallery__slide-image" alt="Upcoming Events 4">
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                        </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xxl-5">
+                    @if (Model.TermsConditions != null && Model.TermsConditions.Count() > 0)
+                    {
+                        <div class="calendar-gallery__info">
+                            <div class="calendar-gallery__title-wrap mb-xl-4">
+                                <h3 class="block__title h3">@Umbraco.GetDictionaryValue("Terms & Conditions")</h3>
+                            </div>
+                            <ul class="custom__list list-unstyled mb-0">
                                 @foreach (var item in Model.OfferFeatures)
                                 {
                                     <li>@Html.Raw(item)</li>
                                 }
                             </ul>
-                        }
-
-                        <div class="offers-intro__detail-button">
-                            <a href="@Model.Parent.Url()" class="btn btn-outline-currentColor">@Umbraco.GetDictionaryValue("View All Offers")</a>
                         </div>
-                    </div>
-                </div>
-                <div class="col-12 col-lg-7 col-xxl-8">
-                    <div class="offers-intro__detail-terms">
-                        @if (Model.TermsConditions != null && Model.TermsConditions.Count() > 0)
-                        {
-                            <h3 class="offers-intro__detail-title h4 mb-xl-4">@Umbraco.GetDictionaryValue("Terms & Conditions")</h3>
-                            <ul class="custom__list list-unstyled mb-4 mb-xl-5">
-                                @foreach (var item in Model.TermsConditions)
-                                {
-                                    <li>@Html.Raw(item)</li>
-                                }
-                            </ul>
-                        }
-
-                        @if (Model.OfferBookingUrl != null)
-                        {
-                            <div class="offers-intro__detail-button">
-                                <a href="@Model.OfferBookingUrl.GetLinkUrl()" class="btn btn-outline-black">@Model.OfferBookingUrl.Name</a>
-                            </div>
-                        }
-                    </div>
+                    }
                 </div>
             </div>
         </div>

@@ -56,7 +56,7 @@
                             <h2 class="block__title">@Html.Raw(Model.SliderHeading)</h2>
                         </div>
                         <div class="col-12 col-lg-6 col-xxl-5">
-                            <div class="text-black font-20">
+                            <div class="text-black font-18">
                                 @Model.SliderDescription
                             </div>
                         </div>
@@ -64,7 +64,7 @@
                 </div>
                 <div class="sliderfilter__content">
                     <ul class="sliderfilter__tabs">
-                        @{
+                        @if (sliderType == "Accomodations"){
                             var i = 0;
                             foreach (var lable in filterTabLable)
                             {
@@ -76,6 +76,12 @@
                                 i++;
                                 <li data-filter="@lable.Replace(" ", "_").ToLower()" class="sliderfilter__item @isActive">@lable @filterTabLableSuffix</li>
                             }
+                        }
+                        else{
+                            <li data-filter="all" class="sliderfilter__item active">@Umbraco.GetDictionaryValue("All Collections")</li>
+                            <li data-filter="luxury" class="sliderfilter__item ">@Umbraco.GetDictionaryValue("Luxury Collection")</li>
+                            <li data-filter="prive" class="sliderfilter__item ">@Umbraco.GetDictionaryValue("Privé Collection")</li>
+                            <li data-filter="lifestyle" class="sliderfilter__item ">@Umbraco.GetDictionaryValue("Lifestyle Collection")</li>
                         }
                     </ul>
                     <div class="sliderfilter__tab-content">

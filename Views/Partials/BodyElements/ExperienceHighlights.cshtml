@@ -1,12 +1,19 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.ExperienceHighlights>
 @using ContentModels = SunSiyam.Core.Models;
 
+@{
+    var resortsCategory = Model.ResortsCategory;
+    if (!string.IsNullOrWhiteSpace(resortsCategory) && resortsCategory == "Prive")
+    {
+        resortsCategory = "Privé";
+    }
+}
 <div class="experiences__section experiences__@Model.ResortsCategory.ToLower()">
     <div class="experiences__intro divider">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-lg-11 col-xl-10 col-xxl-7">
-                    <div class="experiences__intro-title">@Model.ResortsCategory Collection</div>
+                    <div class="experiences__intro-title">@resortsCategory @Umbraco.GetDictionaryValue("Collection")</div>
                     <div class="experiences__intro-description font-18">
                         @Model.Description
                     </div>

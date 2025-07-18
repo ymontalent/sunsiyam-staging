@@ -12,9 +12,8 @@
         ?? Enumerable.Empty<IPublishedContent>();
 
     // 2) section heading + description on the Spotlight block
-    var sectionTitle       = Model.Value<string>("heading") ?? "";
-    var sectionDescription = Model.Value<IHtmlString>("description") 
-                                 ?? new HtmlString("");
+    var sectionTitle        = Model.Value<string>("heading") ?? "";
+    var sectionDescription  = Model.Value<IHtmlString>("description") ?? new HtmlString("");
 }
 
 <div class="accommodation__section">
@@ -41,6 +40,12 @@
                                                   .Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries)
                                                   .Select(x => x.Trim())
                                                   .ToList();
+                        bool showLink = exp.Value<bool>("showLink");
+                        var additionalClass = string.Empty;
+                        if (!showLink)
+                        {
+                            additionalClass = "additionalSpace";
+                        }
 
                         // 4) resolve the featuredImage picker
                         var imgNode = exp.Value<IPublishedContent>("featuredImage");
@@ -56,20 +61,30 @@
 
                         <div class="accommodation__slide">
                             <div class="accommodation__slide-image">
-                                <a href="@exp.Url()">
-                                    <img
-                                        src="@imgUrl"
-                                        alt="@expHeading"
-                                        class="img-fluid" />
+                                @if (showLink)
+                                {
+                                    <a href="@exp.Url()">
+                                        <img
+                                            src="@imgUrl"
+                                            alt="@expHeading"
+                                            class="img-fluid" />
+                                        <h4 class="accommodation__slide-title">
+                                            @expHeading
+                                        </h4>
+                                    </a>
+                                }
+                                else{
+                                    <img src="@imgUrl" alt="@expHeading" class="img-fluid" />
                                     <h4 class="accommodation__slide-title">
                                         @expHeading
                                     </h4>
-                                </a>
+                                }
+                                
                             </div>
-                            <div class="accommodation__slide-content">
+                            <div class="accommodation__slide-content @additionalClass">
                                 <p>@Html.Raw(expDescription)</p>
-@*
-                                @if (expCategories.Any())
+
+                                @*@if (expCategories.Any())
                                 {
                                     <ul class="custom__list list-unstyled mb-0">
                                         @foreach (var cat in expCategories)
@@ -77,13 +92,16 @@
                                             <li class="list-inline-item">@Html.Raw(HttpUtility.HtmlEncode(cat))</li>
                                         }
                                     </ul>
+                                }*@
+
+                                @if (showLink)
+                                {
+                                    <div class="accommodation__slide-button">
+                                        <a href="@exp.Url()" class="btn btn-outline-navy-blue">
+                                            @Umbraco.GetDictionaryValue("Discover")
+                                        </a>
+                                    </div>
                                 }
-*@
-                                <div class="accommodation__slide-button">
-                                    <a href="@exp.Url()" class="btn btn-outline-navy-blue">
-                                        @Umbraco.GetDictionaryValue("Discover")
-                                    </a>
-                                </div>
                             </div>
                         </div>
                     }

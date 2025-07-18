@@ -6,7 +6,7 @@
 
 <div class="brandSignature__section">
     <div class="divider divider-gray"></div>
-    <div class="brandSignature__wrap block__padding">
+    <div class="brandSignature__wrap">
         <div class="container">
             <div class="brandSignature__head">
                 <h6 class="block__sub-title text-navy-blue mb-xl-3">@Html.Raw(Model.SubHeading.Trim())</h6>
@@ -27,18 +27,18 @@
                         }
                     </div>
                     <div class="col-12 col-lg-6 col-xxl-5">
-                        <div class="block__description text-navy-blue font-20 mt-lg-3">
+                        <div class="block__description text-navy-blue font-18 mt-lg-3">
                             @Model.Description
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="brandSignature__content font-20">
-                @if (Model.InfoSections != null && Model.InfoSections.Count() > 0)
+            @if (Model.InfoSections != null && Model.InfoSections.Count() > 0)
                 {
                     var i = 0;
-                    foreach (var item in Model.InfoSections)
+                    <div class="brandSignature__content font-20">
+                    @foreach (var item in Model.InfoSections)
                     {
                         i++;
 
@@ -179,8 +179,8 @@
 
                         }
                     }
-                }
-            </div>
+                </div>
+            }
         </div>
     </div>
 </div>

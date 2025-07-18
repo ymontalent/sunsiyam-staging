@@ -22,20 +22,8 @@
       ?? Enumerable.Empty<SunSiyam.Core.Models.HeadingWithLinkItem>(); 
     var longDesc = content.Value<string>("longDescription") ?? "";
     var page = Umbraco.AssignedContentItem;
+    var pageName = page.Name;
 }
-
-@*@foreach(var prop in content.Properties)
-{
-  var alias = prop.Alias;
-  var raw   = prop.GetValue();
-  var text  = raw != null 
-            ? raw.ToString() 
-            : "";
-
-  <div>
-    @alias : @text
-  </div>
-}*@
 
 <div class="restaurant-detail-page calendar-gallery__section">
     <div class="calendar-gallery__wrap">
@@ -62,7 +50,7 @@
                     <div class="calendar-gallery__info">
                         <div class="calendar-gallery__title-wrap">
                             <h6 class="block__sub-title text-black mb-0">@type</h6>
-                            <h1 class="block__title h3">@resort.Name</h1>
+                            <h1 class="block__title h3">@pageName</h1>
                         </div>
                         @if (infos.Any())
                         {

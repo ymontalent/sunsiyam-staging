@@ -13,7 +13,7 @@
                         <h2 class="block__title">@Html.Raw(Model.Heading)</h2>
                     </div>
                     <div class="col-12 col-lg-6 col-xxl-4">
-                        <div class="block__description text-navy-blue font-20">
+                        <div class="block__description text-navy-blue font-18">
                             @Model.Description
                         </div>
                     </div>
@@ -36,10 +36,10 @@
                                     {
                                         <div class="usefulInformation__accordion-item">
                                             <div class="usefulInformation__accordion-header" id="usefulInformation__accordion-@i">
-                                                <button class="usefulInformation__accordion-button collapsed font-26" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@i" aria-expanded="false" aria-controls="collapse-@i">@faq.Question</button>
+                                                <button class="usefulInformation__accordion-button collapsed font-20" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@i" aria-expanded="false" aria-controls="collapse-@i">@faq.Question</button>
                                             </div>
                                             <div id="collapse-@i" class="usefulInformation__accordion-collapse collapse" aria-labelledby="usefulInformation__accordion-@i" data-bs-parent="#usefulInformation__accordion">
-                                                <div class="usefulInformation__accordion-content font-20">
+                                                <div class="usefulInformation__accordion-content font-16">
                                                     @faq.Answer
                                                 </div>
                                             </div>
@@ -53,10 +53,10 @@
                                     {
                                         <div class="usefulInformation__accordion-item">
                                             <div class="usefulInformation__accordion-header" id="usefulInformation__accordion-@i">
-                                                <button class="usefulInformation__accordion-button collapsed font-26" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@i" aria-expanded="false" aria-controls="collapse-@i">@faq.Question</button>
+                                                <button class="usefulInformation__accordion-button collapsed font-20" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@i" aria-expanded="false" aria-controls="collapse-@i">@faq.Question</button>
                                             </div>
                                             <div id="collapse-@i" class="usefulInformation__accordion-collapse collapse" aria-labelledby="usefulInformation__accordion-@i" data-bs-parent="#usefulInformation__accordion">
-                                                <div class="usefulInformation__accordion-content font-20">
+                                                <div class="usefulInformation__accordion-content font-16">
                                                     @faq.Answer
                                                 </div>
                                             </div>

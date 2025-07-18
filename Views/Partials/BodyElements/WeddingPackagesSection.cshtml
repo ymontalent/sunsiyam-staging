@@ -38,6 +38,12 @@
                     @if(description != null) {
                         <div class="mb-4">@Html.Raw(description)</div>
                     }
+                    @if(anchor != null) {
+                        <div class="factsheet">
+                            <div class="title">@Umbraco.GetDictionaryValue("Click to download")</div>
+                            <a href="@anchor.Url" class="btn btn-outline-navy-blue" target="_blank">@anchor.Name.Trim()</a>
+                        </div>
+                    }
                 </div>
                 <div class="col-md-6">
                     @if(features.Any()) {
@@ -51,7 +57,7 @@
             }
             else{
                 <!-- LEFT: heading, description, features & CTA -->
-                <div class="col-md-6 d-flex flex-column justify-content-between">
+                <div class="col-md-6 d-flex flex-column">
                     @if(description != null) {
                         <div class="mb-4">@Html.Raw(description)</div>
                     }
@@ -64,8 +70,11 @@
                     </ul>
                     }
                     
-                    @if(cta != null) {
-                        <a href="@cta.Url" class="btn btn-outline">@cta.Name</a>
+                    @if(anchor != null) {
+                        <div class="factsheet-with-image">
+                            <div class="title">@Umbraco.GetDictionaryValue("Click to download")</div>
+                            <a href="@anchor.Url" class="btn btn-outline-navy-blue" target="_blank">@anchor.Name.Trim()</a>
+                        </div>
                     }
                 </div>
             }
@@ -100,5 +109,12 @@
                 }
             }
         </div>
+        @if(cta != null) {
+            <div class="row justify-content-center enquire-cta">
+                <div class="col-12 col-lg-11 col-xl-10 col-xxl-7 text-center">
+                    <a href="@cta.Url" class="btn btn-outline-navy-blue" target="_blank">@cta.Name.Trim()</a>
+                </div>
+            </div>
+        }
     </div>
 </div>

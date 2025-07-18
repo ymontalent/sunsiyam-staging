@@ -9,10 +9,7 @@
     var page = Umbraco.AssignedContentItem;
     Umbraco.RenderMacro("TestError");
     var alias = Model.ContentType.Alias;
-    var name = Model.Name;
-    var aliasClass  = alias.ToLowerInvariant();  
-    var nameClass   = name.ToLowerInvariant().Replace(" ", "-").Replace("&","n");  
-    var bodyClass   = aliasClass + " " + nameClass;  
+    var aliasClass  = alias.ToLowerInvariant(); 
 }
 <!DOCTYPE html>
 <html lang="@lang" class="@lang">
@@ -43,7 +40,7 @@
 
 </head>
 
-<body class="@ViewBag.BodyClass @bodyClass">
+<body class="@ViewBag.BodyClass @aliasClass">
 
     @if (websiteSettings.ShowCookiePanel == true && !websiteSettings.CookiePanelText.ToString().IsNullOrWhiteSpace())
     {
