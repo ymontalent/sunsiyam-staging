@@ -8,7 +8,7 @@
                 <label for="destination">Destination</label>
                 <div class="static-search__select">
                     <select id="resort" name="resort" value="">
-                        <option value="" selected disabled>Where would you like to go?</option>
+                        <option value="" selected disabled>@Umbraco.GetDictionaryValue("Where would you like to go?")</option>
                         @if (Model.ResortPicker != null && Model.ResortPicker.Count() > 0)
                         {
                             foreach (var resort in Model.ResortPicker.OfType<ResortsHomePage>())
@@ -27,21 +27,21 @@
                 <div class="static-search__datepicker-dropdown p-3 p-md-4">
                     <ul class="nav nav-pills mb-3" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="exactDate_tab" data-bs-toggle="pill" data-bs-target="#exactDate" type="button" role="tab" aria-controls="exactDate" aria-selected="true">Exact Dates</button>
+                            <button class="nav-link active" id="exactDate_tab" data-bs-toggle="pill" data-bs-target="#exactDate" type="button" role="tab" aria-controls="exactDate" aria-selected="true">@Umbraco.GetDictionaryValue("Exact Dates")</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="flexibleDate_tab" data-bs-toggle="pill" data-bs-target="#flexibleDate" type="button" role="tab" aria-controls="flexibleDate" aria-selected="false">Flexible Dates</button>
+                            <button class="nav-link" id="flexibleDate_tab" data-bs-toggle="pill" data-bs-target="#flexibleDate" type="button" role="tab" aria-controls="flexibleDate" aria-selected="false">@Umbraco.GetDictionaryValue("Flexible Dates")</button>
                         </li>
                     </ul>
                     <div class="tab-content py-3">
                         <div class="tab-pane fade show active" id="exactDate" role="tabpanel" aria-labelledby="exactDate_tab">
                             <div class="static-search__datepicker-exact">
                                 <div class="static-search__datepicker-in">
-                                    <label for="check_in">Check In</label>
+                                    <label for="check_in">@Umbraco.GetDictionaryValue("Check In")</label>
                                     <input type="text" name="check_in_text" id="check_in_text" readonly />
                                 </div>
                                 <div class="static-search__datepicker-out">
-                                    <label for="check_out">Check Out</label>
+                                    <label for="check_out">@Umbraco.GetDictionaryValue("Check Out")</label>
                                     <input type="text" name="check_out_text" id="check_out_text" readonly />
                                 </div>
                                 <input type="hidden" class="static-search__datepicker-range" readonly />
@@ -53,7 +53,7 @@
                         <div class="tab-pane fade" id="flexibleDate" role="tabpanel" aria-labelledby="flexibleDate_tab">
                             <div class="static-search__datepicker-flexible">
                                 <div class="static-search__datepicker-nights">
-                                    <label for="nights">How many nights?</label>
+                                    <label for="nights">@Umbraco.GetDictionaryValue("How many nights?")</label>
                                     <div class="static-search__datepicker-nights-selector">
                                         <button id="decreaseNights">-</button>
                                         <span id="nightsCount">1</span>
@@ -62,8 +62,8 @@
                                 </div>
                                 <div class="static-search__datepicker-month-selection"></div>
                                 <div class="static-search__datepicker-buttons">
-                                    <button class="cancelBtn btn btn-sm btn-default" type="button">Reset</button>
-                                    <button class="doneBtn btn btn-sm btn-primary" type="button">Done</button>
+                                    <button class="cancelBtn btn btn-sm btn-default" type="button">@Umbraco.GetDictionaryValue("Reset")</button>
+                                    <button class="doneBtn btn btn-sm btn-primary" type="button">@Umbraco.GetDictionaryValue("Done")</button>
                                 </div>
                             </div>
                         </div>
@@ -71,21 +71,64 @@
                 </div>
             </div>
             <div class="static-search__guests">
-                <label for="guests">Number of guests</label>
+                <label for="guests">@Umbraco.GetDictionaryValue("Number of guests")</label>
                 <div class="static-search__select">
-                    <select id="guests" value="">
+                    @*<select id="guests" value="">
                         <option value="" selected disabled>2</option>
                         @for (var i = 1; i <= 20; i++)
                         {
                             <option value="@i">@i</option>
                         }
-                    </select>
+                    </select>*@
+                    <input type="text" id="guests" value="2" readonly/>
+                    <input type="text" id="hiddenGuest" readonly/>
+                </div>
+                <!-- Room Selector Modal -->
+                <div id="guestsDropdown">
+                    <div id="roomsContainer">
+                        <div class="room-section mb-3" data-adults="2" data-children="0">
+                            <div class="remove-room">x</div>
+                            <h6>@Umbraco.GetDictionaryValue("Room") 1</h6>
+                            <div class="row">
+                                <div class="col-12 col-lg-6 col-xxl-6">
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                        <p class="mb-0"><span class="number-adults">2</span> @Umbraco.GetDictionaryValue("Adults") (18+)</p>
+                                        <div class="incrementors">
+                                            <a class="btn decrement-adult">−</a>
+                                            <a class="btn increment-adult">+</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 col-xxl-6">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <p class="mb-0"><span class="number-children">0</span> @Umbraco.GetDictionaryValue("Children") (<12)</p>
+                                        <div class="incrementors">
+                                            <a class="btn decrement-child">−</a>
+                                            <a class="btn increment-child">+</a>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                    <a id="addRoomBtn" class="btn-link p-0 mb-3">@Umbraco.GetDictionaryValue("Add another room")</a>
+                    <div class="d-flex align-items-center total-values">
+                        <p id="summaryText" class="mb-0">
+                            <span class="number-rooms">1</span> 
+                            @Umbraco.GetDictionaryValue("Room") | 
+                            <span class="total-adults">2</span> 
+                            @Umbraco.GetDictionaryValue("Adults"), 
+                            <span class="total-children">0</span> 
+                            @Umbraco.GetDictionaryValue("Children")
+                        </p>
+                        <a id="updateRoomsBtn" class="btn btn-primary">@Umbraco.GetDictionaryValue("Update")</a>
+                    </div>
                 </div>
             </div>
             <div class="static-search__button">
-                <input type="hidden" id="desktopView" value="@Model.DesktopCheckAvaibility.ToString().ToLower()" />
-                <input type="hidden" id="mobileView" value="@Model.ResponsiveCheckAvaibility.ToString().ToLower()" />
-                <button type="button" id="checkAvailability" class="btn btn-outline-black btn-large" disabled>Check Availability</button>
+                @*<input type="hidden" id="desktopView" class="@Model.DesktopCheckAvaibility.ToString().ToLower()" value="@Model.DesktopCheckAvaibility.ToString().ToLower()" />
+                <input type="hidden" id="mobileView" class="@Model.ResponsiveCheckAvaibility.ToString().ToLower()" value="@Model.ResponsiveCheckAvaibility.ToString().ToLower()" />*@
+                <button type="button" id="checkAvailability" class="btn btn-outline-black btn-large" disabled>@Umbraco.GetDictionaryValue("Check Availability")</button>
             </div>
         </form>
     </div>
