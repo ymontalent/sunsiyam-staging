@@ -13090,6 +13090,8 @@ function bookingWidget() {
 		t.preventDefault(), e()
 	}), $(".doneBtn").on("click", function(e) {
 		e.preventDefault(), $(".static-search__datepicker-dropdown").toggleClass("open"), enableButton()
+	}),$(".applyBtn").on("click", function(e) {
+		e.preventDefault(), $(".static-search__datepicker-dropdown").toggleClass("open"), enableButton()
 	}), /*$("#checkAvailability").on("click", function(e) {
 		e.preventDefault();
 		var t = $("#resort option:selected").attr("data-url"),
