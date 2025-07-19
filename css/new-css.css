@@ -523,6 +523,133 @@
     background-color:#EFEAE1;
 }
 
+.static-search__guests .static-search__select{
+    position:relative;
+    cursor:pointer;
+}
+
+.static-search__guests .static-search__select::after{
+    content:"";
+    border-right: 2px solid;
+    border-top: 2px solid;
+    cursor: pointer;
+    color: #211E2B;
+    pointer-events: none;
+    position: absolute;
+    right: 7px;
+    top: -3px;
+    -webkit-transform: rotate(135deg);
+    -ms-transform: rotate(135deg);
+    transform: rotate(135deg);
+    height: 18px;
+    width: 18px;
+}
+
+.static-search__guests .static-search__select input{
+    cursor:pointer;
+}
+
+.static-search__form input, .static-search__form select, .static-search__select-option{
+    font-size: 14px;
+}
+
+#hiddenGuest{
+    display:none;
+}
+
+#guestsDropdown{
+    display: none;
+    position: absolute;
+    background-color: #EFEAE1;
+    padding: 1rem;
+    z-index: 1000;
+    width: 510px;
+    margin-top: 1rem;
+}
+
+.guests-dropdown-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+#guestsDropdown .room-section {
+    margin-bottom: 1rem;
+    background-color: #E3DACB;
+    padding:1rem;
+    position:relative;
+}
+
+#guestsDropdown .room-section .remove-room{
+    position:absolute;
+    top: 0;
+    right: 2%;
+    cursor:pointer;
+}
+
+#guestsDropdown .room-section:first-child .remove-room{
+    display: none;
+}
+
+#guestsDropdown .room-section:last-child {
+    margin-bottom: 0;
+}
+
+#guestsDropdown .room-section h6 {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 15px;
+}
+
+#guestsDropdown .room-section .d-flex > p {
+    flex: 1;
+    margin: 0;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+}
+
+#guestsDropdown .incrementors .btn{
+    border-radius:0;
+    border: 1px solid #CCC;
+    background-color: #FFF;
+    padding: 7px 9px;
+    text-align: center;
+    width: 29px;
+}
+
+#guestsDropdown #addRoomBtn {
+    display: inline-block;
+    font-size: 15px;
+    text-decoration: underline;
+    padding: 0;
+    margin-bottom: 1rem;
+    background: none;
+    border: none;
+    color: #000;
+    text-transform: uppercase;
+}
+
+#guestsDropdown .total-values{
+    justify-content: end;
+}
+
+#guestsDropdown #summaryText {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    margin-right: 10px;
+}
+
+#updateRoomsBtn {
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    background-color: transparent;
+    border: 1px solid #333;
+    color: #000;
+}
+
+
 /* Static Search Form (≤1399.98px) */
 @media (max-width: 1399.98px) {
   .static-search__form {
